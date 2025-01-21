@@ -32,29 +32,29 @@ void EmulatorWindow::start() {
 
     while(!WindowShouldClose()) {
         if (IsKeyPressed(KEY_BACKSPACE)) {
-            cpu->io.getTerminal().removeLastChar();
+            cpu->getIO().getTerminal().removeLastChar();
         } else if (IsKeyPressed(KEY_ENTER)) {
-            cpu.io.getTerminal().processCommand(cpu.io.getTerminal().getLastCommand(), cpu);
-            cpu.io.getTerminal().printChar('\n');
+            // cpu->getIO().getTerminal().processCommand(cpu->getIO().getTerminal().getLastCommand(), cpu);
+            cpu->getIO().getTerminal().printChar('\n');
         } else if (IsKeyPressed(KEY_SPACE)) {
-            cpu.io.getTerminal().printChar(' ');
+            cpu->getIO().getTerminal().printChar(' ');
         } else {
             std::string ch = "";
             for (int key = KEY_A; key <= KEY_Z; key++) {
                 if (IsKeyPressed(key)) {
                     char chKey = (char)(key - KEY_A + 'a');
-                    cpu.io.getTerminal().printChar(chKey);
+                    cpu->getIO().getTerminal().printChar(chKey);
                     ch = chKey;
                 }
             }
             for (int key = KEY_ZERO; key <= KEY_NINE; key++) {
                 if (IsKeyPressed(key)) {
                     char chKey = (char)(key - KEY_ZERO + '0');
-                    cpu.io.getTerminal().printChar(chKey);
+                    cpu->getIO().getTerminal().printChar(chKey);
                     ch = chKey;
                 }
             }
-            cpu.io.getTerminal().setLastCommand(ch);
+            cpu->getIO().getTerminal().setLastCommand(ch);
         }
 
         BeginDrawing();
@@ -67,9 +67,9 @@ void EmulatorWindow::start() {
         float pX = termX + panelWidth - 80;
 
         GuiGroupBox(Rectangle{termX - 10, 20, panelWidth, 135}, "REGISTERS");
-        GuiRegisterBox(termX, 30, "A:", cpu.regs.A);
-        GuiRegisterBox(termX, 55, "B:", cpu.regs.B);
-        GuiRegisterBox(pX + 5, 55, "C:", cpu.regs.C);
+        GuiRegisterBox(termX, 30, "A:", cpu->regs->A);
+        GuiRegisterBox(termX, 55, "B:", cpu->regs->B);
+        GuiRegisterBox(pX + 5, 55, "C:", cpu->regs->C);
         GuiRegisterBox(termX, 80, "D:", cpu.regs.D);
         GuiRegisterBox(pX + 5, 80, "E:", cpu.regs.E);
         GuiRegisterBox(termX, 105, "H:", cpu.regs.H);
