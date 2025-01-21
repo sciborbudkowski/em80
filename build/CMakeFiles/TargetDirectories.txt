@@ -1,0 +1,3 @@
+/home/scibor/qt-raylib/build/CMakeFiles/qt-raylib.dir
+/home/scibor/qt-raylib/build/CMakeFiles/edit_cache.dir
+/home/scibor/qt-raylib/build/CMakeFiles/rebuild_cache.dir
