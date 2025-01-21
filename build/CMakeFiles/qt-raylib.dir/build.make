@@ -47,19 +47,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/scibor/qt-raylib
+CMAKE_SOURCE_DIR = /Users/scibor/em80
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/scibor/qt-raylib/build
+CMAKE_BINARY_DIR = /Users/scibor/em80/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/qt-raylib.dir/depend.make
@@ -72,212 +72,156 @@ include CMakeFiles/qt-raylib.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/qt-raylib.dir/flags.make
 
-include/moc_MainWindow.cpp: /home/scibor/qt-raylib/include/MainWindow.h
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating include/moc_MainWindow.cpp"
-	cd /home/scibor/qt-raylib/build/include && /usr/lib/qt6/moc @/home/scibor/qt-raylib/build/include/moc_MainWindow.cpp_parameters
+include/moc_MainWindow.cpp: /Users/scibor/em80/include/MainWindow.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating include/moc_MainWindow.cpp"
+	cd /Users/scibor/em80/build/include && /usr/local/opt/qt/share/qt/libexec/moc @/Users/scibor/em80/build/include/moc_MainWindow.cpp_parameters
 
-include/moc_NewMachineDialog.cpp: /home/scibor/qt-raylib/include/NewMachineDialog.h
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating include/moc_NewMachineDialog.cpp"
-	cd /home/scibor/qt-raylib/build/include && /usr/lib/qt6/moc @/home/scibor/qt-raylib/build/include/moc_NewMachineDialog.cpp_parameters
+include/moc_NewMachineDialog.cpp: /Users/scibor/em80/include/NewMachineDialog.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating include/moc_NewMachineDialog.cpp"
+	cd /Users/scibor/em80/build/include && /usr/local/opt/qt/share/qt/libexec/moc @/Users/scibor/em80/build/include/moc_NewMachineDialog.cpp_parameters
 
 CMakeFiles/qt-raylib.dir/codegen:
 .PHONY : CMakeFiles/qt-raylib.dir/codegen
 
 CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o: /home/scibor/qt-raylib/src/EmulatorWindow.cpp
+CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o: /Users/scibor/em80/src/EmulatorWindow.cpp
 CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o -MF CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o -c /home/scibor/qt-raylib/src/EmulatorWindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o -MF CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o -c /Users/scibor/em80/src/EmulatorWindow.cpp
 
 CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/EmulatorWindow.cpp > CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/EmulatorWindow.cpp > CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/EmulatorWindow.cpp -o CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/EmulatorWindow.cpp -o CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.s
 
 CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o: /home/scibor/qt-raylib/src/MachinesManager.cpp
+CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o: /Users/scibor/em80/src/MachinesManager.cpp
 CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o -MF CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o -c /home/scibor/qt-raylib/src/MachinesManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o -MF CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o -c /Users/scibor/em80/src/MachinesManager.cpp
 
 CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/MachinesManager.cpp > CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/MachinesManager.cpp > CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/MachinesManager.cpp -o CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/MachinesManager.cpp -o CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.s
 
 CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o: /home/scibor/qt-raylib/src/MainWindow.cpp
+CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o: /Users/scibor/em80/src/MainWindow.cpp
 CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o -MF CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o -c /home/scibor/qt-raylib/src/MainWindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o -MF CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o -c /Users/scibor/em80/src/MainWindow.cpp
 
 CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/MainWindow.cpp > CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/MainWindow.cpp > CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/MainWindow.cpp -o CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/MainWindow.cpp -o CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.s
 
 CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o: /home/scibor/qt-raylib/src/NewMachineDialog.cpp
+CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o: /Users/scibor/em80/src/NewMachineDialog.cpp
 CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o -MF CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o -c /home/scibor/qt-raylib/src/NewMachineDialog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o -MF CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o -c /Users/scibor/em80/src/NewMachineDialog.cpp
 
 CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/NewMachineDialog.cpp > CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/NewMachineDialog.cpp > CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/NewMachineDialog.cpp -o CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.s
-
-CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o: /home/scibor/qt-raylib/src/emulator/ALU.cpp
-CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o -c /home/scibor/qt-raylib/src/emulator/ALU.cpp
-
-CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/ALU.cpp > CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.i
-
-CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/ALU.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.s
-
-CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o: /home/scibor/qt-raylib/src/emulator/CPU.cpp
-CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o -c /home/scibor/qt-raylib/src/emulator/CPU.cpp
-
-CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/CPU.cpp > CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.i
-
-CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/CPU.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/NewMachineDialog.cpp -o CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.s
 
 CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o: /home/scibor/qt-raylib/src/emulator/Disk.cpp
+CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o: /Users/scibor/em80/src/emulator/Disk.cpp
 CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o -c /home/scibor/qt-raylib/src/emulator/Disk.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o -c /Users/scibor/em80/src/emulator/Disk.cpp
 
 CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/Disk.cpp > CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/emulator/Disk.cpp > CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/Disk.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/emulator/Disk.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.s
+
+CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
+CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o: /Users/scibor/em80/src/emulator/DiskController.cpp
+CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o -c /Users/scibor/em80/src/emulator/DiskController.cpp
+
+CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/emulator/DiskController.cpp > CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.i
+
+CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/emulator/DiskController.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.s
 
 CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o: /home/scibor/qt-raylib/src/emulator/IO.cpp
+CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o: /Users/scibor/em80/src/emulator/IO.cpp
 CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o -c /home/scibor/qt-raylib/src/emulator/IO.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o -c /Users/scibor/em80/src/emulator/IO.cpp
 
 CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/IO.cpp > CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/emulator/IO.cpp > CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/IO.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.s
-
-CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o: /home/scibor/qt-raylib/src/emulator/Memory.cpp
-CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o -c /home/scibor/qt-raylib/src/emulator/Memory.cpp
-
-CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/Memory.cpp > CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.i
-
-CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/Memory.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.s
-
-CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o: /home/scibor/qt-raylib/src/emulator/Registers.cpp
-CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o -c /home/scibor/qt-raylib/src/emulator/Registers.cpp
-
-CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/Registers.cpp > CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.i
-
-CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/Registers.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.s
-
-CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o: /home/scibor/qt-raylib/src/emulator/Terminal.cpp
-CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o -MF CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o -c /home/scibor/qt-raylib/src/emulator/Terminal.cpp
-
-CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/emulator/Terminal.cpp > CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.i
-
-CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/emulator/Terminal.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/emulator/IO.cpp -o CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.s
 
 CMakeFiles/qt-raylib.dir/src/main.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
-CMakeFiles/qt-raylib.dir/src/main.cpp.o: /home/scibor/qt-raylib/src/main.cpp
+CMakeFiles/qt-raylib.dir/src/main.cpp.o: /Users/scibor/em80/src/main.cpp
 CMakeFiles/qt-raylib.dir/src/main.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/qt-raylib.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/main.cpp.o -MF CMakeFiles/qt-raylib.dir/src/main.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/main.cpp.o -c /home/scibor/qt-raylib/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/qt-raylib.dir/src/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/src/main.cpp.o -MF CMakeFiles/qt-raylib.dir/src/main.cpp.o.d -o CMakeFiles/qt-raylib.dir/src/main.cpp.o -c /Users/scibor/em80/src/main.cpp
 
 CMakeFiles/qt-raylib.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/src/main.cpp > CMakeFiles/qt-raylib.dir/src/main.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/src/main.cpp > CMakeFiles/qt-raylib.dir/src/main.cpp.i
 
 CMakeFiles/qt-raylib.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/src/main.cpp -o CMakeFiles/qt-raylib.dir/src/main.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/src/main.cpp -o CMakeFiles/qt-raylib.dir/src/main.cpp.s
 
 CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
 CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o: include/moc_MainWindow.cpp
 CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o -MF CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o.d -o CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o -c /home/scibor/qt-raylib/build/include/moc_MainWindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o -MF CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o.d -o CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o -c /Users/scibor/em80/build/include/moc_MainWindow.cpp
 
 CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/build/include/moc_MainWindow.cpp > CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/build/include/moc_MainWindow.cpp > CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.i
 
 CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/build/include/moc_MainWindow.cpp -o CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/build/include/moc_MainWindow.cpp -o CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.s
 
 CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o: CMakeFiles/qt-raylib.dir/flags.make
 CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o: include/moc_NewMachineDialog.cpp
 CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o -MF CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o.d -o CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o -c /home/scibor/qt-raylib/build/include/moc_NewMachineDialog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o -MF CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o.d -o CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o -c /Users/scibor/em80/build/include/moc_NewMachineDialog.cpp
 
 CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/scibor/qt-raylib/build/include/moc_NewMachineDialog.cpp > CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scibor/em80/build/include/moc_NewMachineDialog.cpp > CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.i
 
 CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/scibor/qt-raylib/build/include/moc_NewMachineDialog.cpp -o CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scibor/em80/build/include/moc_NewMachineDialog.cpp -o CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.s
 
 # Object files for target qt-raylib
 qt__raylib_OBJECTS = \
@@ -285,13 +229,9 @@ qt__raylib_OBJECTS = \
 "CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o" \
 "CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o" \
 "CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o" \
-"CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o" \
-"CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o" \
 "CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o" \
+"CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o" \
 "CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o" \
-"CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o" \
-"CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o" \
-"CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o" \
 "CMakeFiles/qt-raylib.dir/src/main.cpp.o" \
 "CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o" \
 "CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o"
@@ -303,26 +243,19 @@ qt-raylib: CMakeFiles/qt-raylib.dir/src/EmulatorWindow.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/src/MachinesManager.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/src/MainWindow.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.o
-qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o
-qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.o
+qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.o
-qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o
-qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o
-qt-raylib: CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/src/main.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/include/moc_MainWindow.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/include/moc_NewMachineDialog.cpp.o
 qt-raylib: CMakeFiles/qt-raylib.dir/build.make
-qt-raylib: CMakeFiles/qt-raylib.dir/compiler_depend.ts
-qt-raylib: /usr/lib/libQt6Widgets.so.6.8.1
-qt-raylib: /usr/lib/libraylib.so
-qt-raylib: /usr/lib/libQt6Gui.so.6.8.1
-qt-raylib: /usr/lib/libGLX.so
-qt-raylib: /usr/lib/libOpenGL.so
-qt-raylib: /usr/lib/libQt6Core.so.6.8.1
+qt-raylib: /usr/local/opt/qt/lib/QtWidgets.framework/Versions/A/QtWidgets
+qt-raylib: /usr/local/lib/libraylib.dylib
+qt-raylib: /usr/local/opt/qt/lib/QtGui.framework/Versions/A/QtGui
+qt-raylib: /usr/local/opt/qt/lib/QtCore.framework/Versions/A/QtCore
 qt-raylib: CMakeFiles/qt-raylib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/scibor/qt-raylib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable qt-raylib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable qt-raylib"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/qt-raylib.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -335,6 +268,6 @@ CMakeFiles/qt-raylib.dir/clean:
 
 CMakeFiles/qt-raylib.dir/depend: include/moc_MainWindow.cpp
 CMakeFiles/qt-raylib.dir/depend: include/moc_NewMachineDialog.cpp
-	cd /home/scibor/qt-raylib/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/scibor/qt-raylib /home/scibor/qt-raylib /home/scibor/qt-raylib/build /home/scibor/qt-raylib/build /home/scibor/qt-raylib/build/CMakeFiles/qt-raylib.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/scibor/em80/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/scibor/em80 /Users/scibor/em80 /Users/scibor/em80/build /Users/scibor/em80/build /Users/scibor/em80/build/CMakeFiles/qt-raylib.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/qt-raylib.dir/depend
 

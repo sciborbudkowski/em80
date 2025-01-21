@@ -21,6 +21,27 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include",
+                "/usr/local/opt/qt6/include",
+                "/usr/local/opt/qt6/QtWidgets",
+                "/usr/local/opt/qt6/QtCore",
+                "/usr/local/opt/qt6/mkspecs/macx-clang"
+            ],
+            "defines": [
+                "QT_WIDGETS_LIB",
+                "QT_GUI_LIB",
+                "QT_CORE_LIB",
+                "_REENTRANT"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-x64"
         }
     ],
     "version": 4

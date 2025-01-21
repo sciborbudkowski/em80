@@ -51,19 +51,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/scibor/qt-raylib
+CMAKE_SOURCE_DIR = /Users/scibor/em80
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/scibor/qt-raylib/build
+CMAKE_BINARY_DIR = /Users/scibor/em80/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /home/scibor/qt-raylib/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -81,7 +81,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -90,16 +90,16 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/qt-raylib/build/CMakeFiles /home/scibor/qt-raylib/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles /Users/scibor/em80/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/qt-raylib/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
 .PHONY : all
 
 # The main codegen target
 codegen: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/qt-raylib/build/CMakeFiles /home/scibor/qt-raylib/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles /Users/scibor/em80/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 codegen
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/qt-raylib/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
 .PHONY : codegen
 
 # The main clean target
@@ -283,54 +283,6 @@ src/NewMachineDialog.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/NewMachineDialog.cpp.s
 .PHONY : src/NewMachineDialog.cpp.s
 
-src/emulator/ALU.o: src/emulator/ALU.cpp.o
-.PHONY : src/emulator/ALU.o
-
-# target to build an object file
-src/emulator/ALU.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.o
-.PHONY : src/emulator/ALU.cpp.o
-
-src/emulator/ALU.i: src/emulator/ALU.cpp.i
-.PHONY : src/emulator/ALU.i
-
-# target to preprocess a source file
-src/emulator/ALU.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.i
-.PHONY : src/emulator/ALU.cpp.i
-
-src/emulator/ALU.s: src/emulator/ALU.cpp.s
-.PHONY : src/emulator/ALU.s
-
-# target to generate assembly for a file
-src/emulator/ALU.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/ALU.cpp.s
-.PHONY : src/emulator/ALU.cpp.s
-
-src/emulator/CPU.o: src/emulator/CPU.cpp.o
-.PHONY : src/emulator/CPU.o
-
-# target to build an object file
-src/emulator/CPU.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.o
-.PHONY : src/emulator/CPU.cpp.o
-
-src/emulator/CPU.i: src/emulator/CPU.cpp.i
-.PHONY : src/emulator/CPU.i
-
-# target to preprocess a source file
-src/emulator/CPU.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.i
-.PHONY : src/emulator/CPU.cpp.i
-
-src/emulator/CPU.s: src/emulator/CPU.cpp.s
-.PHONY : src/emulator/CPU.s
-
-# target to generate assembly for a file
-src/emulator/CPU.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/CPU.cpp.s
-.PHONY : src/emulator/CPU.cpp.s
-
 src/emulator/Disk.o: src/emulator/Disk.cpp.o
 .PHONY : src/emulator/Disk.o
 
@@ -355,6 +307,30 @@ src/emulator/Disk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Disk.cpp.s
 .PHONY : src/emulator/Disk.cpp.s
 
+src/emulator/DiskController.o: src/emulator/DiskController.cpp.o
+.PHONY : src/emulator/DiskController.o
+
+# target to build an object file
+src/emulator/DiskController.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.o
+.PHONY : src/emulator/DiskController.cpp.o
+
+src/emulator/DiskController.i: src/emulator/DiskController.cpp.i
+.PHONY : src/emulator/DiskController.i
+
+# target to preprocess a source file
+src/emulator/DiskController.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.i
+.PHONY : src/emulator/DiskController.cpp.i
+
+src/emulator/DiskController.s: src/emulator/DiskController.cpp.s
+.PHONY : src/emulator/DiskController.s
+
+# target to generate assembly for a file
+src/emulator/DiskController.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/DiskController.cpp.s
+.PHONY : src/emulator/DiskController.cpp.s
+
 src/emulator/IO.o: src/emulator/IO.cpp.o
 .PHONY : src/emulator/IO.o
 
@@ -378,78 +354,6 @@ src/emulator/IO.s: src/emulator/IO.cpp.s
 src/emulator/IO.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/IO.cpp.s
 .PHONY : src/emulator/IO.cpp.s
-
-src/emulator/Memory.o: src/emulator/Memory.cpp.o
-.PHONY : src/emulator/Memory.o
-
-# target to build an object file
-src/emulator/Memory.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.o
-.PHONY : src/emulator/Memory.cpp.o
-
-src/emulator/Memory.i: src/emulator/Memory.cpp.i
-.PHONY : src/emulator/Memory.i
-
-# target to preprocess a source file
-src/emulator/Memory.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.i
-.PHONY : src/emulator/Memory.cpp.i
-
-src/emulator/Memory.s: src/emulator/Memory.cpp.s
-.PHONY : src/emulator/Memory.s
-
-# target to generate assembly for a file
-src/emulator/Memory.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Memory.cpp.s
-.PHONY : src/emulator/Memory.cpp.s
-
-src/emulator/Registers.o: src/emulator/Registers.cpp.o
-.PHONY : src/emulator/Registers.o
-
-# target to build an object file
-src/emulator/Registers.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.o
-.PHONY : src/emulator/Registers.cpp.o
-
-src/emulator/Registers.i: src/emulator/Registers.cpp.i
-.PHONY : src/emulator/Registers.i
-
-# target to preprocess a source file
-src/emulator/Registers.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.i
-.PHONY : src/emulator/Registers.cpp.i
-
-src/emulator/Registers.s: src/emulator/Registers.cpp.s
-.PHONY : src/emulator/Registers.s
-
-# target to generate assembly for a file
-src/emulator/Registers.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Registers.cpp.s
-.PHONY : src/emulator/Registers.cpp.s
-
-src/emulator/Terminal.o: src/emulator/Terminal.cpp.o
-.PHONY : src/emulator/Terminal.o
-
-# target to build an object file
-src/emulator/Terminal.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.o
-.PHONY : src/emulator/Terminal.cpp.o
-
-src/emulator/Terminal.i: src/emulator/Terminal.cpp.i
-.PHONY : src/emulator/Terminal.i
-
-# target to preprocess a source file
-src/emulator/Terminal.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.i
-.PHONY : src/emulator/Terminal.cpp.i
-
-src/emulator/Terminal.s: src/emulator/Terminal.cpp.s
-.PHONY : src/emulator/Terminal.s
-
-# target to generate assembly for a file
-src/emulator/Terminal.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/src/emulator/Terminal.cpp.s
-.PHONY : src/emulator/Terminal.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -503,27 +407,15 @@ help:
 	@echo "... src/NewMachineDialog.o"
 	@echo "... src/NewMachineDialog.i"
 	@echo "... src/NewMachineDialog.s"
-	@echo "... src/emulator/ALU.o"
-	@echo "... src/emulator/ALU.i"
-	@echo "... src/emulator/ALU.s"
-	@echo "... src/emulator/CPU.o"
-	@echo "... src/emulator/CPU.i"
-	@echo "... src/emulator/CPU.s"
 	@echo "... src/emulator/Disk.o"
 	@echo "... src/emulator/Disk.i"
 	@echo "... src/emulator/Disk.s"
+	@echo "... src/emulator/DiskController.o"
+	@echo "... src/emulator/DiskController.i"
+	@echo "... src/emulator/DiskController.s"
 	@echo "... src/emulator/IO.o"
 	@echo "... src/emulator/IO.i"
 	@echo "... src/emulator/IO.s"
-	@echo "... src/emulator/Memory.o"
-	@echo "... src/emulator/Memory.i"
-	@echo "... src/emulator/Memory.s"
-	@echo "... src/emulator/Registers.o"
-	@echo "... src/emulator/Registers.i"
-	@echo "... src/emulator/Registers.s"
-	@echo "... src/emulator/Terminal.o"
-	@echo "... src/emulator/Terminal.i"
-	@echo "... src/emulator/Terminal.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
