@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
 
-enum class CPUType {
+enum CPUType {
     I8080,
     I8085,
     Z80,
@@ -18,4 +19,6 @@ std::string getCPUName(CPUType type) {
         case CPUType::I8088: return "Intel 8088";
         case CPUType::I8086: return "Intel 8086";
     }
+
+    throw std::runtime_error("Invalid CPU type");
 }

@@ -1,3 +1,3 @@
 # Hashes of file build rules.
-6dd620eb8f3c1be39230347aa46a9fc4 include/moc_MainWindow.cpp
-cf85f6ff528b27578c011516f4f71f62 include/moc_NewMachineDialog.cpp
+00bea4dec6849fcae02f4c8abe2333af include/moc_MainWindow.cpp
+4dd6acfe0d85c87fbb42b8f6926ee2e9 include/moc_NewMachineDialog.cpp

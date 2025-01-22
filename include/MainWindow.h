@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CPUType.h"
+
 #include <QMainWindow>
 #include <QPushButton>
 #include <QListWidget>

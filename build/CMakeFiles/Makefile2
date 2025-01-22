@@ -48,29 +48,29 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/bin/cmake -E rm -f
+RM = /usr/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/scibor/em80
+CMAKE_SOURCE_DIR = /home/scibor/em80
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/scibor/em80/build
+CMAKE_BINARY_DIR = /home/scibor/em80/build
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/qt-raylib.dir/all
+all: CMakeFiles/em80.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/qt-raylib.dir/codegen
+codegen: CMakeFiles/em80.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -78,40 +78,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/qt-raylib.dir/clean
+clean: CMakeFiles/em80.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/qt-raylib.dir
+# Target rules for target CMakeFiles/em80.dir
 
 # All Build rule for target.
-CMakeFiles/qt-raylib.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Built target qt-raylib"
-.PHONY : CMakeFiles/qt-raylib.dir/all
+CMakeFiles/em80.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Built target em80"
+.PHONY : CMakeFiles/em80.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/qt-raylib.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 13
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/qt-raylib.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
-.PHONY : CMakeFiles/qt-raylib.dir/rule
+CMakeFiles/em80.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 13
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/em80.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
+.PHONY : CMakeFiles/em80.dir/rule
 
 # Convenience name for target.
-qt-raylib: CMakeFiles/qt-raylib.dir/rule
-.PHONY : qt-raylib
+em80: CMakeFiles/em80.dir/rule
+.PHONY : em80
 
 # codegen rule for target.
-CMakeFiles/qt-raylib.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Finished codegen for target qt-raylib"
-.PHONY : CMakeFiles/qt-raylib.dir/codegen
+CMakeFiles/em80.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Finished codegen for target em80"
+.PHONY : CMakeFiles/em80.dir/codegen
 
 # clean rule for target.
-CMakeFiles/qt-raylib.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qt-raylib.dir/build.make CMakeFiles/qt-raylib.dir/clean
-.PHONY : CMakeFiles/qt-raylib.dir/clean
+CMakeFiles/em80.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/clean
+.PHONY : CMakeFiles/em80.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

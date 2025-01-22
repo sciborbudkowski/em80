@@ -12,8 +12,8 @@ class IOBase {
         IOBase() : terminal(80, 25) {}
         virtual ~IOBase() = default;
 
-        virtual uint8_t input(uint8_t port);
-        virtual void output(uint8_t port, uint8_t value);
+        // virtual uint8_t input(uint8_t port);
+        // virtual void output(uint8_t port, uint8_t value);
 
         void registerInputDevice(uint8_t port, std::function<uint8_t()> handler) { inputDevices[port] = handler; }
         void registerOutputDevice(uint8_t port, std::function<void(uint8_t)> handler) { outputDevices[port] = handler; }

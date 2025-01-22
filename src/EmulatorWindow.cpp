@@ -67,22 +67,22 @@ void EmulatorWindow::start() {
         float pX = termX + panelWidth - 80;
 
         GuiGroupBox(Rectangle{termX - 10, 20, panelWidth, 135}, "REGISTERS");
-        GuiRegisterBox(termX, 30, "A:", cpu->regs->A);
-        GuiRegisterBox(termX, 55, "B:", cpu->regs->B);
-        GuiRegisterBox(pX + 5, 55, "C:", cpu->regs->C);
-        GuiRegisterBox(termX, 80, "D:", cpu.regs.D);
-        GuiRegisterBox(pX + 5, 80, "E:", cpu.regs.E);
-        GuiRegisterBox(termX, 105, "H:", cpu.regs.H);
-        GuiRegisterBox(pX + 5, 105, "L:", cpu.regs.L);
-        GuiRegisterBox(termX - 5, 130, "PC:", cpu.regs.PC);
-        GuiRegisterBox(pX, 130, "SP:", cpu.regs.SP);
+        // GuiRegisterBox(termX, 30, "A:", cpu->regs->A);
+        // GuiRegisterBox(termX, 55, "B:", cpu->regs->B);
+        // GuiRegisterBox(pX + 5, 55, "C:", cpu->regs->C);
+        // GuiRegisterBox(termX, 80, "D:", cpu.regs.D);
+        // GuiRegisterBox(pX + 5, 80, "E:", cpu.regs.E);
+        // GuiRegisterBox(termX, 105, "H:", cpu.regs.H);
+        // GuiRegisterBox(pX + 5, 105, "L:", cpu.regs.L);
+        // GuiRegisterBox(termX - 5, 130, "PC:", cpu.regs.PC);
+        // GuiRegisterBox(pX, 130, "SP:", cpu.regs.SP);
 
         GuiGroupBox(Rectangle{termX - 10, 165, panelWidth, 60}, "FLAGS");
-        GuiRegisterBox(termX, 175, "Z:", cpu.regs.Z);
-        GuiRegisterBox(termX + 45, 175, "S:", cpu.regs.S);
-        GuiRegisterBox(termX + 90, 175, "P:", cpu.regs.P);
-        GuiRegisterBox(termX - 5, 200, "CY:", cpu.regs.CY);
-        GuiRegisterBox(termX + 40, 200, "AC:", cpu.regs.AC);
+        // GuiRegisterBox(termX, 175, "Z:", cpu.regs.Z);
+        // GuiRegisterBox(termX + 45, 175, "S:", cpu.regs.S);
+        // GuiRegisterBox(termX + 90, 175, "P:", cpu.regs.P);
+        // GuiRegisterBox(termX - 5, 200, "CY:", cpu.regs.CY);
+        // GuiRegisterBox(termX + 40, 200, "AC:", cpu.regs.AC);
 
         GuiGroupBox(Rectangle{termX - 10, 235, panelWidth, 100}, "ASM");
         for(float i=4; i>=0; i--) {
@@ -90,41 +90,41 @@ void EmulatorWindow::start() {
                 DrawRectangleRec(Rectangle{termX, 245 + i*15 + 5, panelWidth - 20, 10}, DARKGREEN);
             }
             std::string label = " ";
-            if(cpu.lastInstructions.size() > i) label = cpu.lastInstructions[i];
+            // if(cpu.lastInstructions.size() > i) label = cpu.lastInstructions[i];
             GuiLabel(Rectangle{termX + 15, 245 + i*15, panelWidth - 30, 20}, label.c_str());
         }
 
-        drawTerminal(cpu.io.getTerminal());
-        if(memoryViewVisible) drawMemoryView(cpu.memory, memoryViewStartAddress);
+        // drawTerminal(cpu.io.getTerminal());
+        // if(memoryViewVisible) drawMemoryView(cpu.memory, memoryViewStartAddress);
 
-        if(GuiButton(Rectangle{20, buttonsY, 100, 30}, cpu.isRunning() ? "Stop" : "Start")) {
-            cpu.setRunning(!cpu.isRunning());
-        }
+        // if(GuiButton(Rectangle{20, buttonsY, 100, 30}, cpu.isRunning() ? "Stop" : "Start")) {
+        //     cpu.setRunning(!cpu.isRunning());
+        // }
         if(GuiButton(Rectangle{130, buttonsY, 100, 30}, "Load PRG")) {
             QString fileName = QFileDialog::getOpenFileName(nullptr, "Load Program", ".", "Binary files (*.bin)");
             if(!fileName.isEmpty()) {
-                if(cpu.memory.loadProgram(fileName.toStdString(), 0x0100)) {
-                    cpu.regs.PC = 0x0100;
-                    strncpy(prgPath, fileName.toStdString().c_str(), sizeof(prgPath) - 1);
-                    cpu.io.getTerminal().printString("Loaded program from %s to address: %04Xh\n", prgPath, cpu.regs.PC);
-                }
+                // if(cpu.memory.loadProgram(fileName.toStdString(), 0x0100)) {
+                //     cpu.regs.PC = 0x0100;
+                //     strncpy(prgPath, fileName.toStdString().c_str(), sizeof(prgPath) - 1);
+                //     cpu.io.getTerminal().printString("Loaded program from %s to address: %04Xh\n", prgPath, cpu.regs.PC);
+                // }
             }
         }
         if(GuiButton(Rectangle{240, buttonsY, 100, 30}, "Load DSK")) {
             QString fileName = QFileDialog::getOpenFileName(nullptr, "Load Disk", ".", "Disk files (*.dsk)");
             if(!fileName.isEmpty()) {
-                cpu.disk.loadDiskFromFile(fileName.toStdString(), cpu.memory, 0x0100);
-                cpu.io.getTerminal().printString("Loaded disk from %s\n", fileName.toStdString().c_str());
+                // cpu.disk.loadDiskFromFile(fileName.toStdString(), cpu.memory, 0x0100);
+                // cpu.io.getTerminal().printString("Loaded disk from %s\n", fileName.toStdString().c_str());
             }
         }
         if(GuiButton(Rectangle{350, buttonsY, 100, 30}, "Step >")) {
-            cpu.step();
+            // cpu.step();
         }
         if(GuiButton(Rectangle{460, buttonsY, 100, 30}, "Reset")) {
             cpu.reset();
         }
         if(GuiButton(Rectangle{570, buttonsY, 100, 30}, "Dump CPU")) {
-            cpu.consoleDump();
+            // cpu.consoleDump();
         }
         if(GuiButton(Rectangle{680, buttonsY, 100, 30}, "Dump MEM")) {
             memoryViewVisible = !memoryViewVisible;
@@ -136,12 +136,12 @@ void EmulatorWindow::start() {
             }
         }
         if(GuiButton(Rectangle{790, buttonsY, 100, 30}, "Test Opcodes")) {
-            cpu.testOpcodes();
+            // cpu.testOpcodes();
         }
 
-        if(cpu.isRunning()) {
-            cpu.step();
-        }
+        // if(cpu.isRunning()) {
+        //     cpu.step();
+        // }
 
         EndDrawing();
     }
@@ -152,7 +152,7 @@ void EmulatorWindow::start() {
     CloseWindow();
 }
 
-void EmulatorWindow::drawTerminal(const Terminal& terminal) {
+void EmulatorWindow::drawTerminal(const TerminalBase& terminal) {
     int charWidth = MeasureTextEx(font, "A", 16, 1).x + 1;
     int charHeight = 16;
     int offsetX = 20, offsetY = 20;
@@ -193,7 +193,7 @@ void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, bool& reg, 
     }
 }
 
-void EmulatorWindow::drawMemoryView(Memory& memory, int startAddress) {
+void EmulatorWindow::drawMemoryView(MemoryBase& memory, int startAddress) {
     float posY = buttonsY + 40;
     GuiGroupBox(Rectangle{20, posY, WINDOW_WIDTH - 40, 350}, "Memory Dump");
 
@@ -218,9 +218,9 @@ void EmulatorWindow::drawMemoryView(Memory& memory, int startAddress) {
     for(int i=0; i<=0xF; i++) {
         for(int j=0; j<=0xF; j++) {
             uint16_t pc = startAddress + i*16 + j;
-            if(pc == cpu.regs.PC) {
-                DrawRectangle(100 + j*50, buttonsY + 80 + i*20, 30, 15, RED);
-            }
+            // if(pc == cpu.regs.PC) {
+            //     DrawRectangle(100 + j*50, buttonsY + 80 + i*20, 30, 15, RED);
+            // }
             auto color = WHITE;
             if(j % 2 == 0) color = LIGHTGRAY;
             char memLabel[3];

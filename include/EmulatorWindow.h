@@ -1,10 +1,10 @@
 #pragma once
 
-#include "CPUBase.h"
-#include "CPUType.h"
-#include "CPUFactory.h"
-#include "MemoryBase.h"
-#include "TerminalBase.h"
+#include "emulator/base/CPUBase.h"
+#include "emulator/base/CPUType.h"
+#include "emulator/base/CPUFactory.h"
+#include "emulator/base/MemoryBase.h"
+#include "emulator/base/TerminalBase.h"
 
 #include "raylib_wrapper.h"
 

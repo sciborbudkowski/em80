@@ -1,8 +1,8 @@
 #include "DiskController.h"
 
-DiskController::DiskController(const std::string& filename, size_t sectorSize) : sectorSize(sectorSize) {
-    loadDiskImage(filename);
-}
+// DiskController::DiskController(const std::string& filename, size_t sectorSize) : sectorSize(sectorSize) {
+//     loadDiskImage(filename);
+// }
 
 std::vector<uint8_t> DiskController::readSector(size_t sectorNumber) const {
     if(sectorNumber * sectorSize >= disk.size()) {

@@ -5,6 +5,11 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/include",
+                "${workspaceFolder}/include/emulator",
+                "${workspaceFolder}/include/emulator/cpu",
+                "${workspaceFolder}/include/emulator/base",
+                "${workspaceFolder}/include/emulator/memory",
+                "${workspaceFolder}/include/emulator/io",
                 "/usr/include/qt6",
                 "/usr/include/qt6/QtWidgets",
                 "/usr/include/qt6/QtGui",
@@ -27,6 +32,11 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/include",
+                "${workspaceFolder}/include/emulator",
+                "${workspaceFolder}/include/emulator/cpu",
+                "${workspaceFolder}/include/emulator/base",
+                "${workspaceFolder}/include/emulator/memory",
+                "${workspaceFolder}/include/emulator/io",
                 "/usr/local/opt/qt6/include",
                 "/usr/local/opt/qt6/QtWidgets",
                 "/usr/local/opt/qt6/QtCore",

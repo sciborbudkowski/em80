@@ -5,38 +5,45 @@
 #include "MemoryZ80.h"
 #include "IOZ80.h"
 
-#define CPU_NAME "Z80"
+namespace CPU_Z80 {
 
-class CPUZ80 : public CPUBase {
-    public:
-        RegistersZ80 regs;
-        MemoryZ80 memory;
-        IOZ80 io;
+    class CPUZ80 : public CPUBase {
+        public:
+            RegistersZ80 regs;
+            MemoryZ80 memory;
+            IOZ80 io;
+            bool interruptEnabled;
 
-        CPUZ80();
-        CPUZ80(const CPUZ80&) = delete;
-        CPUZ80& operator=(const CPUZ80&) = delete;
-        CPUZ80(CPUZ80&&) = delete;
-        CPUZ80& operator=(CPUZ80&&) = delete;
+            CPUZ80() = default;
+            CPUZ80(const CPUZ80&) = delete;
+            CPUZ80& operator=(const CPUZ80&) = delete;
+            CPUZ80(CPUZ80&&) = delete;
+            CPUZ80& operator=(CPUZ80&&) = delete;
 
-        void reset();
-        void step();
-        void execute(uint16_t opcode);
-        bool isHalted() const;
-        void run();
+            void reset() override;
+            void step() override;
+            void execute(uint8_t opcode) override;
+            void execute(uint8_t opcode, uint8_t subOpcode) override;
+            void run() override;
 
-        bool loadProgram(const std::string& filename, uint16_t startAddress);
+            void pushStack(uint16_t value);
+            uint16_t popStack();
 
-        void consoleDump();
-        void testOpcodes();
+            bool loadProgram(const std::string& filename, uint16_t startAddress);
+
+            void consoleDump();
+            void testOpcodes();
 
         private:
             bool halted = false;
             std::deque<std::string> lastInstructions;
 
-            void push(uint16_t value);
-            uint16_t pop();
-
             const double clockSpeed = 40000000.0;
             uint64_t lastCycleTime = 0;
-};
+
+            std::map<uint8_t, int> cycles {
+                {0x00, 1}
+            };
+    };
+
+} // namespace CPU_Z80

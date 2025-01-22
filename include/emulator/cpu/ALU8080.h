@@ -7,7 +7,7 @@
 class ALU8080 {
     public:
         static uint8_t ALU8080::adc(uint8_t acc, uint8_t value, Registers8080& regs) {
-            uint16_t result = acc + value + regs.CY;
+            uint16_t result = acc + value + (uint16_t)regs.CY;
             regs.CY = (result > 0xFF);
             uint8_t result8 = result & 0xFF;
             setFlags(result8, regs);
