@@ -1038,7 +1038,7 @@ namespace CPU_8080 {
     }
 
     void CPU8080::testOpcodes() {
-        std::cout << "Testing " << "CPU_NAME" << " opcodes..." << std::endl;
+        std::cout << "Testing Intel 8080 CPU opcodes..." << std::endl;
         for(uint16_t opcode=0; opcode<=0xFF; opcode++) {
             regs.reset();
             setRunning(true);

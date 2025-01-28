@@ -63,7 +63,9 @@ void MainWindow::createMachine() {
 void MainWindow::startMachine()
 {
     this->hide();
-    emulatorWindow = new EmulatorWindow(getSelectedCPUType());
+    CPUType cpuType = getSelectedCPUType();
+    std::cout << "CPU Type: " << cpuType << std::endl;
+    emulatorWindow = new EmulatorWindow(cpuType);
     emulatorWindow->start();
     this->show();
 }

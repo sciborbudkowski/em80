@@ -44,6 +44,8 @@ class CPUBase {
         IOBase& getIO() { return *io; }
         MemoryBase& getMemory() { return *memory; }
 
+        virtual void testOpcodes() = 0;
+
     protected:
         std::unique_ptr<RegistersBase> regs;
         std::unique_ptr<MemoryBase> memory;

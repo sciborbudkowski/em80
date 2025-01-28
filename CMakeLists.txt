@@ -15,12 +15,21 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Precompiled headers
+set(CMAKE_USE_PCH ON)
+
 # Compiler flags
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmax-errors=5")
+    set(CMAKE_CXX_COMPILER "${CMAKE_SOURCE_DIR}/scripts/cxx-wrapper.sh")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ferror-limit=5")
+    set(CMAKE_CXX_COMPILER "${CMAKE_SOURCE_DIR}/scripts/clang-wrapper.sh")
 endif()
+
+# These options should be used for release builds
+# add_compile_options(-O2 -Wall -Wextra -Wpedantic)
+add_compile_options(-O2)
 
 set(CMAKE_AUTOMOC ON)
 
@@ -41,15 +50,6 @@ file(GLOB_RECURSE SOURCE_FILES
     src/emulator/io/*.cpp
 )
 file(GLOB_RECURSE HEADER_FILES include/*.h)
-
-#set(MOC_HEADERS "")
-#foreach(_header ${HEADER_FILES})
-#    file(READ ${_header} _content)
-#    if("${_content}" MATCHES "Q_OBJECT")
-#        list(APPEND MOC_HEADERS ${_header})
-#    endif()
-#endforeach(_header ${HEADER_FILES})
-#qt6_wrap_cpp(MOC_SOURCES ${MOC_HEADERS})
 
 qt_add_executable(${PROJECT_NAME}
     ${SOURCE_FILES}

@@ -34,7 +34,7 @@ namespace CPU_Z80 {
             bool loadProgram(const std::string& filename, uint16_t startAddress);
 
             void consoleDump();
-            void testOpcodes();
+            void testOpcodes() override;
 
             enum Prefix {
                 BASE = 0,

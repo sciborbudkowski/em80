@@ -11,12 +11,15 @@
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 490
 
+
 EmulatorWindow::EmulatorWindow(CPUType type) {
+    std::cout << "EmulatorWindow::EmulatorWindow(CPUType type) start" << std::endl;
     cpu = createCPU(type);
+    std::cout << "EmulatorWindow::EmulatorWindow(CPUType type) end" << std::endl;
 }
 
 void EmulatorWindow::start() {
-    cpu.reset();
+    cpu->reset();
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Emulator");
     SetTargetFPS(60);
@@ -54,7 +57,7 @@ void EmulatorWindow::start() {
                     ch = chKey;
                 }
             }
-            cpu->getIO().getTerminal().setLastCommand(ch);
+            // cpu->getIO().getTerminal().setLastCommand(ch);
         }
 
         BeginDrawing();
@@ -121,7 +124,7 @@ void EmulatorWindow::start() {
             // cpu.step();
         }
         if(GuiButton(Rectangle{460, buttonsY, 100, 30}, "Reset")) {
-            cpu.reset();
+            cpu->reset();
         }
         if(GuiButton(Rectangle{570, buttonsY, 100, 30}, "Dump CPU")) {
             // cpu.consoleDump();
@@ -136,7 +139,8 @@ void EmulatorWindow::start() {
             }
         }
         if(GuiButton(Rectangle{790, buttonsY, 100, 30}, "Test Opcodes")) {
-            // cpu.testOpcodes();
+            std::cout << "EmulatorWindow::start() Test Opcodes" << std::endl;
+            cpu->testOpcodes();
         }
 
         // if(cpu.isRunning()) {
