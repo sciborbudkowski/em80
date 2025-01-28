@@ -48,19 +48,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/bin/cmake -E rm -f
+RM = /usr/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/scibor/em80
+CMAKE_SOURCE_DIR = /home/scibor/em80
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/scibor/em80/build
+CMAKE_BINARY_DIR = /home/scibor/em80/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -87,18 +87,18 @@ clean: CMakeFiles/em80_autogen.dir/clean
 # Target rules for target CMakeFiles/em80.dir
 
 # All Build rule for target.
-CMakeFiles/em80.dir/all: CMakeFiles/em80_autogen.dir/all
 CMakeFiles/em80.dir/all: CMakeFiles/em80_autogen_timestamp_deps.dir/all
+CMakeFiles/em80.dir/all: CMakeFiles/em80_autogen.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Built target em80"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Built target em80"
 .PHONY : CMakeFiles/em80.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/em80.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 14
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 14
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/em80.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
 .PHONY : CMakeFiles/em80.dir/rule
 
 # Convenience name for target.
@@ -108,7 +108,7 @@ em80: CMakeFiles/em80.dir/rule
 # codegen rule for target.
 CMakeFiles/em80.dir/codegen: CMakeFiles/em80_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Finished codegen for target em80"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13 "Finished codegen for target em80"
 .PHONY : CMakeFiles/em80.dir/codegen
 
 # clean rule for target.
@@ -123,14 +123,14 @@ CMakeFiles/em80.dir/clean:
 CMakeFiles/em80_autogen_timestamp_deps.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen_timestamp_deps.dir/build.make CMakeFiles/em80_autogen_timestamp_deps.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen_timestamp_deps.dir/build.make CMakeFiles/em80_autogen_timestamp_deps.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num= "Built target em80_autogen_timestamp_deps"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num= "Built target em80_autogen_timestamp_deps"
 .PHONY : CMakeFiles/em80_autogen_timestamp_deps.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/em80_autogen_timestamp_deps.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/em80_autogen_timestamp_deps.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
 .PHONY : CMakeFiles/em80_autogen_timestamp_deps.dir/rule
 
 # Convenience name for target.
@@ -140,7 +140,7 @@ em80_autogen_timestamp_deps: CMakeFiles/em80_autogen_timestamp_deps.dir/rule
 # codegen rule for target.
 CMakeFiles/em80_autogen_timestamp_deps.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen_timestamp_deps.dir/build.make CMakeFiles/em80_autogen_timestamp_deps.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num= "Finished codegen for target em80_autogen_timestamp_deps"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num= "Finished codegen for target em80_autogen_timestamp_deps"
 .PHONY : CMakeFiles/em80_autogen_timestamp_deps.dir/codegen
 
 # clean rule for target.
@@ -155,14 +155,14 @@ CMakeFiles/em80_autogen_timestamp_deps.dir/clean:
 CMakeFiles/em80_autogen.dir/all: CMakeFiles/em80_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen.dir/build.make CMakeFiles/em80_autogen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen.dir/build.make CMakeFiles/em80_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=14 "Built target em80_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num=14 "Built target em80_autogen"
 .PHONY : CMakeFiles/em80_autogen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/em80_autogen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 1
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/em80_autogen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
 .PHONY : CMakeFiles/em80_autogen.dir/rule
 
 # Convenience name for target.
@@ -172,7 +172,7 @@ em80_autogen: CMakeFiles/em80_autogen.dir/rule
 # codegen rule for target.
 CMakeFiles/em80_autogen.dir/codegen: CMakeFiles/em80_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen.dir/build.make CMakeFiles/em80_autogen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/scibor/em80/build/CMakeFiles --progress-num=14 "Finished codegen for target em80_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/scibor/em80/build/CMakeFiles --progress-num=14 "Finished codegen for target em80_autogen"
 .PHONY : CMakeFiles/em80_autogen.dir/codegen
 
 # clean rule for target.

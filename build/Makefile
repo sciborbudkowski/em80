@@ -51,19 +51,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/bin/cmake -E rm -f
+RM = /usr/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/scibor/em80
+CMAKE_SOURCE_DIR = /home/scibor/em80
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/scibor/em80/build
+CMAKE_BINARY_DIR = /home/scibor/em80/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /Users/scibor/em80/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/local/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -81,7 +81,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/usr/local/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -90,9 +90,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles /Users/scibor/em80/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles /home/scibor/em80/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -182,6 +182,30 @@ em80_autogen/mocs_compilation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/em80_autogen/mocs_compilation.cpp.s
 .PHONY : em80_autogen/mocs_compilation.cpp.s
 
+src/AddMachineDialog.o: src/AddMachineDialog.cpp.o
+.PHONY : src/AddMachineDialog.o
+
+# target to build an object file
+src/AddMachineDialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/AddMachineDialog.cpp.o
+.PHONY : src/AddMachineDialog.cpp.o
+
+src/AddMachineDialog.i: src/AddMachineDialog.cpp.i
+.PHONY : src/AddMachineDialog.i
+
+# target to preprocess a source file
+src/AddMachineDialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/AddMachineDialog.cpp.i
+.PHONY : src/AddMachineDialog.cpp.i
+
+src/AddMachineDialog.s: src/AddMachineDialog.cpp.s
+.PHONY : src/AddMachineDialog.s
+
+# target to generate assembly for a file
+src/AddMachineDialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/AddMachineDialog.cpp.s
+.PHONY : src/AddMachineDialog.cpp.s
+
 src/EmulatorWindow.o: src/EmulatorWindow.cpp.o
 .PHONY : src/EmulatorWindow.o
 
@@ -253,30 +277,6 @@ src/MainWindow.s: src/MainWindow.cpp.s
 src/MainWindow.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/MainWindow.cpp.s
 .PHONY : src/MainWindow.cpp.s
-
-src/NewMachineDialog.o: src/NewMachineDialog.cpp.o
-.PHONY : src/NewMachineDialog.o
-
-# target to build an object file
-src/NewMachineDialog.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/NewMachineDialog.cpp.o
-.PHONY : src/NewMachineDialog.cpp.o
-
-src/NewMachineDialog.i: src/NewMachineDialog.cpp.i
-.PHONY : src/NewMachineDialog.i
-
-# target to preprocess a source file
-src/NewMachineDialog.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/NewMachineDialog.cpp.i
-.PHONY : src/NewMachineDialog.cpp.i
-
-src/NewMachineDialog.s: src/NewMachineDialog.cpp.s
-.PHONY : src/NewMachineDialog.s
-
-# target to generate assembly for a file
-src/NewMachineDialog.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/NewMachineDialog.cpp.s
-.PHONY : src/NewMachineDialog.cpp.s
 
 src/emulator/Disk.o: src/emulator/Disk.cpp.o
 .PHONY : src/emulator/Disk.o
@@ -436,6 +436,9 @@ help:
 	@echo "... em80_autogen/mocs_compilation.o"
 	@echo "... em80_autogen/mocs_compilation.i"
 	@echo "... em80_autogen/mocs_compilation.s"
+	@echo "... src/AddMachineDialog.o"
+	@echo "... src/AddMachineDialog.i"
+	@echo "... src/AddMachineDialog.s"
 	@echo "... src/EmulatorWindow.o"
 	@echo "... src/EmulatorWindow.i"
 	@echo "... src/EmulatorWindow.s"
@@ -445,9 +448,6 @@ help:
 	@echo "... src/MainWindow.o"
 	@echo "... src/MainWindow.i"
 	@echo "... src/MainWindow.s"
-	@echo "... src/NewMachineDialog.o"
-	@echo "... src/NewMachineDialog.i"
-	@echo "... src/NewMachineDialog.s"
 	@echo "... src/emulator/Disk.o"
 	@echo "... src/emulator/Disk.i"
 	@echo "... src/emulator/Disk.s"

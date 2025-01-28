@@ -1,34 +1,24 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <nlohmann/json.hpp>
+#include <QObject>
+#include <QVector>
+#include <QString>
 
-struct MachineProfile {
-    std::string name;
-    int cpuType;
-    bool hasGraphics;
+#include "MachineProfile.h"
 
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(MachineProfile, name, cpuType, hasGraphics);
-};
+class MachinesManager : public QObject {
+    Q_OBJECT
 
-class MachinesManager {
     public:
-        static MachinesManager& getInstance();
+        explicit MachinesManager(QObject* parent = nullptr);
 
-        void add(const MachineProfile& profile);
-        const std::vector<MachineProfile>& getAll() const;
-
-        MachinesManager(const MachinesManager&) = delete;
-        MachinesManager& operator=(const MachinesManager&) = delete;
-
-        void saveToFile();
-        void loadFromFile();
+        bool loadMachines();
+        bool saveMachines();
+        void removeMachine(const QString& machineName);
+        void addMachine(const MachineProfile& profile);
+        QVector<MachineProfile> getMachines() const;
 
     private:
-        MachinesManager();
-        std::vector<MachineProfile> profiles;
-        std::string configFile = "machines.json";
+        QVector<MachineProfile> machines;
+        QString filePath;
 };

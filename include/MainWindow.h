@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CPUType.h"
+#include "MachinesManager.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -25,11 +26,13 @@ class MainWindow : public QMainWindow {
         QPushButton* exitAppButton;
         QListWidget* machinesList;
         EmulatorWindow* emulatorWindow;
+        MachinesManager machinesManager;
 
     private slots:
         void createMachine();
         void startMachine();
         void updateButtons();
+        void removeMachine();
         void loadMachines();
         void onClosed();
 };

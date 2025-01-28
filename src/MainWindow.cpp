@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "EmulatorWindow.h"
-#include "NewMachineDialog.h"
+#include "AddMachineDialog.h"
 #include "MachinesManager.h"
 #include "CPUType.h"
 
@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     connect(createButton, &QPushButton::clicked, this, &MainWindow::createMachine);
     connect(startButton, &QPushButton::clicked, this, &MainWindow::startMachine);
     connect(machinesList, &QListWidget::itemSelectionChanged, this, &MainWindow::updateButtons);
+    connect(deleteButton, &QPushButton::clicked, this, &MainWindow::removeMachine);
+    connect(exitAppButton, &QPushButton::clicked, this, &MainWindow::close);
 
     loadMachines();
 }
@@ -46,26 +48,15 @@ CPUType MainWindow::getSelectedCPUType() {
 }
 
 void MainWindow::createMachine() {
-    NewMachineDialog dialog(this);
-
+    AddMachineDialog dialog(this);
     if(dialog.exec() == QDialog::Accepted) {
-        std::string machineName = dialog.getMachineName().toStdString();
-        
-        const auto& profiles = MachinesManager::getInstance().getAll();
-        for (const auto& profile : profiles) {
-            if (profile.name == machineName) {
-                QMessageBox::warning(this, "Warning", "Machine with this name already exists.");
-                return;
-            }
+        MachineProfile machine = dialog.getMachine();
+        machinesManager.addMachine(machine);
+        if(machinesManager.saveMachines()) {
+            loadMachines();
+        } else {
+            QMessageBox::warning(this, "Error", "Failed to save machines.");
         }
-
-        MachineProfile profile = {
-            machineName,
-            0,
-            false
-        };
-        MachinesManager::getInstance().add(profile);
-        machinesList->addItem(dialog.getMachineName());
     }
 }
 
@@ -87,13 +78,32 @@ void MainWindow::updateButtons()
 }
 
 void MainWindow::loadMachines() {
-    const auto& profiles = MachinesManager::getInstance().getAll();
-    for(const auto& profile : profiles) {
-        machinesList->addItem(QString::fromStdString(profile.name));
+    machinesList->clear();
+    for(const auto& machine : machinesManager.getMachines()) {
+        QListWidgetItem* item = new QListWidgetItem(machine.machineName);
+        item->setData(Qt::UserRole, machine.processorType);
+        machinesList->addItem(item);
     }
 }
 
 void MainWindow::onClosed() {
     delete emulatorWindow;
     emulatorWindow = nullptr;
+}
+
+void MainWindow::removeMachine() {
+    QListWidgetItem* item = machinesList->currentItem();
+    QString machineName = item->text();
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm", "Are you sure you want to delete this machine?", QMessageBox::Yes | QMessageBox::No);
+    if(reply == QMessageBox::Yes) {
+        machinesManager.removeMachine(machineName);
+
+        if(machinesManager.saveMachines()) {
+            loadMachines();
+        } else {
+            QMessageBox::warning(this, "Error", "Failed to save machines.");
+        }
+    }
 }

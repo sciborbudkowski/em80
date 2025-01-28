@@ -1,4 +1,4 @@
-#include "NewMachineDialog.h"
+#include "AddMachineDialog.h"
 #include "CPUBase.h"
 #include "CPUType.h"
 
@@ -8,9 +8,9 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QPushButton>
-
-NewMachineDialog::NewMachineDialog(QWidget* parent) : QDialog(parent) {
-    setWindowTitle("New Machine");
+#include <QMessageBox>
+AddMachineDialog::AddMachineDialog(QWidget* parent) : QDialog(parent) {
+    setWindowTitle("Add New Machine");
 
     auto* layout = new QVBoxLayout(this);
 
@@ -36,14 +36,23 @@ NewMachineDialog::NewMachineDialog(QWidget* parent) : QDialog(parent) {
     layout->addWidget(nameEdit);
     layout->addLayout(buttonsLayout);
 
-    connect(okButton, &QPushButton::clicked, this, &QDialog::accept);
+    connect(okButton, &QPushButton::clicked, this, &AddMachineDialog::onOkButtonClicked);
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 }
 
-QString NewMachineDialog::getMachineName() const {
-    return nameEdit->text();
+MachineProfile AddMachineDialog::getMachine() const {
+    return profile;
 }
 
-QString NewMachineDialog::getProcessorType() const {
-    return processorCombo->currentText();
+void AddMachineDialog::onOkButtonClicked() {
+    QString name = nameEdit->text().trimmed();
+    QString processor = processorCombo->currentText();
+
+    if (name.isEmpty() || processor.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Machine name can not be empty.");
+        return;
+    }
+
+    profile = MachineProfile(processor, name);
+    accept();
 }
