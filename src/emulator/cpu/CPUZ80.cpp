@@ -198,17 +198,19 @@ namespace CPU_Z80 {
         return value;
     }
 
-    bool CPU_Z80::CPUZ80::loadProgram(const std::string &filename, uint16_t startAddress)
+    bool CPUZ80::loadProgram(const std::string &filename, uint16_t startAddress)
     {
         return false;
     }
 
     void CPUZ80::consoleDump()
     {
+        std::cout << "Console dump not implemented" << std::endl;
     }
 
     void CPUZ80::testOpcodes()
     {
+        std::cout << "Test opcodes not implemented" << std::endl;
     }
 
 } // namespace CPU_Z80

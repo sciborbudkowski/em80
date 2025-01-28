@@ -47,7 +47,11 @@ void MachinesManager::loadFromFile() {
     if(!file) return;
 
     nlohmann::json data;
-    file >> data;
+    try {
+        file >> data;
+    } catch(const std::exception& e) {
+        return;
+    }
 
     for(const auto& entry : data) {
         MachineProfile profile = {

@@ -9,8 +9,6 @@
 
 namespace CPU_8080 {
 
-    CPU8080::CPU8080() : CPUBase() {}
-
     void CPU8080::reset() {
         regs.reset();
         memory.clear();

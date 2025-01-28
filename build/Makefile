@@ -51,19 +51,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/scibor/em80
+CMAKE_SOURCE_DIR = /Users/scibor/em80
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/scibor/em80/build
+CMAKE_BINARY_DIR = /Users/scibor/em80/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /home/scibor/em80/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -81,7 +81,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -90,17 +90,10 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles /home/scibor/em80/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles /Users/scibor/em80/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/scibor/em80/build/CMakeFiles 0
 .PHONY : all
-
-# The main codegen target
-codegen: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles /home/scibor/em80/build//CMakeFiles/progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 codegen
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/scibor/em80/build/CMakeFiles 0
-.PHONY : codegen
 
 # The main clean target
 clean:
@@ -139,53 +132,55 @@ em80/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/build
 .PHONY : em80/fast
 
-include/moc_MainWindow.o: include/moc_MainWindow.cpp.o
-.PHONY : include/moc_MainWindow.o
+#=============================================================================
+# Target rules for targets named em80_autogen_timestamp_deps
+
+# Build rule for target.
+em80_autogen_timestamp_deps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 em80_autogen_timestamp_deps
+.PHONY : em80_autogen_timestamp_deps
+
+# fast build rule for target.
+em80_autogen_timestamp_deps/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen_timestamp_deps.dir/build.make CMakeFiles/em80_autogen_timestamp_deps.dir/build
+.PHONY : em80_autogen_timestamp_deps/fast
+
+#=============================================================================
+# Target rules for targets named em80_autogen
+
+# Build rule for target.
+em80_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 em80_autogen
+.PHONY : em80_autogen
+
+# fast build rule for target.
+em80_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80_autogen.dir/build.make CMakeFiles/em80_autogen.dir/build
+.PHONY : em80_autogen/fast
+
+em80_autogen/mocs_compilation.o: em80_autogen/mocs_compilation.cpp.o
+.PHONY : em80_autogen/mocs_compilation.o
 
 # target to build an object file
-include/moc_MainWindow.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/include/moc_MainWindow.cpp.o
-.PHONY : include/moc_MainWindow.cpp.o
+em80_autogen/mocs_compilation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/em80_autogen/mocs_compilation.cpp.o
+.PHONY : em80_autogen/mocs_compilation.cpp.o
 
-include/moc_MainWindow.i: include/moc_MainWindow.cpp.i
-.PHONY : include/moc_MainWindow.i
-
-# target to preprocess a source file
-include/moc_MainWindow.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/include/moc_MainWindow.cpp.i
-.PHONY : include/moc_MainWindow.cpp.i
-
-include/moc_MainWindow.s: include/moc_MainWindow.cpp.s
-.PHONY : include/moc_MainWindow.s
-
-# target to generate assembly for a file
-include/moc_MainWindow.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/include/moc_MainWindow.cpp.s
-.PHONY : include/moc_MainWindow.cpp.s
-
-include/moc_NewMachineDialog.o: include/moc_NewMachineDialog.cpp.o
-.PHONY : include/moc_NewMachineDialog.o
-
-# target to build an object file
-include/moc_NewMachineDialog.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/include/moc_NewMachineDialog.cpp.o
-.PHONY : include/moc_NewMachineDialog.cpp.o
-
-include/moc_NewMachineDialog.i: include/moc_NewMachineDialog.cpp.i
-.PHONY : include/moc_NewMachineDialog.i
+em80_autogen/mocs_compilation.i: em80_autogen/mocs_compilation.cpp.i
+.PHONY : em80_autogen/mocs_compilation.i
 
 # target to preprocess a source file
-include/moc_NewMachineDialog.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/include/moc_NewMachineDialog.cpp.i
-.PHONY : include/moc_NewMachineDialog.cpp.i
+em80_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/em80_autogen/mocs_compilation.cpp.i
+.PHONY : em80_autogen/mocs_compilation.cpp.i
 
-include/moc_NewMachineDialog.s: include/moc_NewMachineDialog.cpp.s
-.PHONY : include/moc_NewMachineDialog.s
+em80_autogen/mocs_compilation.s: em80_autogen/mocs_compilation.cpp.s
+.PHONY : em80_autogen/mocs_compilation.s
 
 # target to generate assembly for a file
-include/moc_NewMachineDialog.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/include/moc_NewMachineDialog.cpp.s
-.PHONY : include/moc_NewMachineDialog.cpp.s
+em80_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/em80_autogen/mocs_compilation.cpp.s
+.PHONY : em80_autogen/mocs_compilation.cpp.s
 
 src/EmulatorWindow.o: src/EmulatorWindow.cpp.o
 .PHONY : src/EmulatorWindow.o
@@ -355,6 +350,54 @@ src/emulator/IO.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/IO.cpp.s
 .PHONY : src/emulator/IO.cpp.s
 
+src/emulator/cpu/CPU8080.o: src/emulator/cpu/CPU8080.cpp.o
+.PHONY : src/emulator/cpu/CPU8080.o
+
+# target to build an object file
+src/emulator/cpu/CPU8080.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/cpu/CPU8080.cpp.o
+.PHONY : src/emulator/cpu/CPU8080.cpp.o
+
+src/emulator/cpu/CPU8080.i: src/emulator/cpu/CPU8080.cpp.i
+.PHONY : src/emulator/cpu/CPU8080.i
+
+# target to preprocess a source file
+src/emulator/cpu/CPU8080.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/cpu/CPU8080.cpp.i
+.PHONY : src/emulator/cpu/CPU8080.cpp.i
+
+src/emulator/cpu/CPU8080.s: src/emulator/cpu/CPU8080.cpp.s
+.PHONY : src/emulator/cpu/CPU8080.s
+
+# target to generate assembly for a file
+src/emulator/cpu/CPU8080.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/cpu/CPU8080.cpp.s
+.PHONY : src/emulator/cpu/CPU8080.cpp.s
+
+src/emulator/cpu/CPUZ80.o: src/emulator/cpu/CPUZ80.cpp.o
+.PHONY : src/emulator/cpu/CPUZ80.o
+
+# target to build an object file
+src/emulator/cpu/CPUZ80.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/cpu/CPUZ80.cpp.o
+.PHONY : src/emulator/cpu/CPUZ80.cpp.o
+
+src/emulator/cpu/CPUZ80.i: src/emulator/cpu/CPUZ80.cpp.i
+.PHONY : src/emulator/cpu/CPUZ80.i
+
+# target to preprocess a source file
+src/emulator/cpu/CPUZ80.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/cpu/CPUZ80.cpp.i
+.PHONY : src/emulator/cpu/CPUZ80.cpp.i
+
+src/emulator/cpu/CPUZ80.s: src/emulator/cpu/CPUZ80.cpp.s
+.PHONY : src/emulator/cpu/CPUZ80.s
+
+# target to generate assembly for a file
+src/emulator/cpu/CPUZ80.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/em80.dir/build.make CMakeFiles/em80.dir/src/emulator/cpu/CPUZ80.cpp.s
+.PHONY : src/emulator/cpu/CPUZ80.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -385,16 +428,14 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... codegen"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... em80_autogen"
+	@echo "... em80_autogen_timestamp_deps"
 	@echo "... em80"
-	@echo "... include/moc_MainWindow.o"
-	@echo "... include/moc_MainWindow.i"
-	@echo "... include/moc_MainWindow.s"
-	@echo "... include/moc_NewMachineDialog.o"
-	@echo "... include/moc_NewMachineDialog.i"
-	@echo "... include/moc_NewMachineDialog.s"
+	@echo "... em80_autogen/mocs_compilation.o"
+	@echo "... em80_autogen/mocs_compilation.i"
+	@echo "... em80_autogen/mocs_compilation.s"
 	@echo "... src/EmulatorWindow.o"
 	@echo "... src/EmulatorWindow.i"
 	@echo "... src/EmulatorWindow.s"
@@ -416,6 +457,12 @@ help:
 	@echo "... src/emulator/IO.o"
 	@echo "... src/emulator/IO.i"
 	@echo "... src/emulator/IO.s"
+	@echo "... src/emulator/cpu/CPU8080.o"
+	@echo "... src/emulator/cpu/CPU8080.i"
+	@echo "... src/emulator/cpu/CPU8080.s"
+	@echo "... src/emulator/cpu/CPUZ80.o"
+	@echo "... src/emulator/cpu/CPUZ80.i"
+	@echo "... src/emulator/cpu/CPUZ80.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

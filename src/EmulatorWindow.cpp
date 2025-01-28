@@ -200,7 +200,7 @@ void EmulatorWindow::drawMemoryView(MemoryBase& memory, int startAddress) {
     // every single byte
     for(int i=0; i<=0xF; i++) {
         char colLabel[3];
-        sprintf(colLabel, "%02Xh", i);
+        snprintf(colLabel, sizeof(colLabel), "%02Xh", i);
         float posX = 100 + i*50;
         DrawTextEx(font, colLabel, Vector2{posX, posY + 10}, 18, 1, WHITE);
     }
@@ -208,7 +208,7 @@ void EmulatorWindow::drawMemoryView(MemoryBase& memory, int startAddress) {
     // every 16 bytes
     for(int i=0; i<=0xF; i++) {
         char rowLabel[5];
-        sprintf(rowLabel, "%04Xh", startAddress + i*16);
+        snprintf(rowLabel, sizeof(rowLabel), "%04Xh", startAddress + i*16);
         float posX = 30;
         float posY = buttonsY + 80 + i*20;
         DrawTextEx(font, rowLabel, Vector2{posX, posY}, 18, 1, WHITE);
@@ -224,7 +224,7 @@ void EmulatorWindow::drawMemoryView(MemoryBase& memory, int startAddress) {
             auto color = WHITE;
             if(j % 2 == 0) color = LIGHTGRAY;
             char memLabel[3];
-            sprintf(memLabel, "%02Xh", memory.read(startAddress + i*16 + j));
+            snprintf(memLabel, sizeof(memLabel), "%02Xh", memory.read(startAddress + i*16 + j));
             float posX = 100 + j*50;
             float posY = buttonsY + 80 + i*20;
             DrawTextEx(font, memLabel, Vector2{posX, posY}, 16, 1, color);

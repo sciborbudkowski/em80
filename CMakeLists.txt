@@ -1,30 +1,65 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.16)
 project(em80)
 
+# Set build type
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
+
+# Verbose output
+set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Enable verbose output" FORCE)
+set(CMAKE_COLOR_MAKEFILE ON CACHE BOOL "Enable color output" FORCE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+
+# Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 COMPONENTS Widgets REQUIRED)
-find_package(nlohmann_json REQUIRED)
-find_package(raylib REQUIRED)
+# Compiler flags
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmax-errors=5")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ferror-limit=5")
+endif()
 
-file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
+set(CMAKE_AUTOMOC ON)
+
+# Turn Vulkan off
+set(RALIB_MODULE_VULKAN OFF CACHE BOOL "Disable Vulkan support" FORCE)
+
+# Find dependencies
+find_package(Qt6 COMPONENTS Widgets Core Gui REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(RAYLIB REQUIRED raylib)
+
+# Find headers and sources
+file(GLOB_RECURSE SOURCE_FILES
+    src/*.cpp
+    src/emulator/cpu/*.cpp
+    src/emulator/memory/*.cpp
+    src/emulator/io/*.cpp
+)
 file(GLOB_RECURSE HEADER_FILES include/*.h)
 
-set(MOC_HEADERS "")
-foreach(_header ${HEADER_FILES})
-    file(READ ${_header} _content)
-    if("${_content}" MATCHES "Q_OBJECT")
-        list(APPEND MOC_HEADERS ${_header})
-    endif()
-endforeach(_header ${HEADER_FILES})
-qt6_wrap_cpp(MOC_SOURCES ${MOC_HEADERS})
+#set(MOC_HEADERS "")
+#foreach(_header ${HEADER_FILES})
+#    file(READ ${_header} _content)
+#    if("${_content}" MATCHES "Q_OBJECT")
+#        list(APPEND MOC_HEADERS ${_header})
+#    endif()
+#endforeach(_header ${HEADER_FILES})
+#qt6_wrap_cpp(MOC_SOURCES ${MOC_HEADERS})
 
 qt_add_executable(${PROJECT_NAME}
     ${SOURCE_FILES}
     ${HEADER_FILES}
     ${UI_HEADERS}
     ${MOC_SOURCES}
+)
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -Wno-deprecated-declarations
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -35,12 +70,27 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/include/emulator/memory
     ${CMAKE_SOURCE_DIR}/include/emulator/io
     ${CMAKE_SOURCE_DIR}/include/views
-    ${SDL2_INCLUDE_DIRS}
+    ${RAYLIB_INCLUDE_DIRS}
     ${Qt6_INCLUDE_DIRS}
+)
+
+target_link_directories(${PROJECT_NAME} PRIVATE
+    ${RAYLIB_LIBRARY_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Widgets
+    Qt6::Core
+    Qt6::Gui
     nlohmann_json::nlohmann_json
-    raylib
+    ${RAYLIB_LIBRARIES}
 )
+
+if(APPLE)
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework OpenGL"
+        "-framework Cocoa"
+        "-framework IOKit"
+        "-framework CoreFoundation"
+    )
+endif()

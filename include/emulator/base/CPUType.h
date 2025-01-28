@@ -11,7 +11,7 @@ enum CPUType {
     I8086
 };
 
-std::string getCPUName(CPUType type) {
+inline std::string getCPUName(CPUType type) {
     switch(type) {
         case CPUType::I8080: return "Intel 8080";
         case CPUType::I8085: return "Intel 8085";

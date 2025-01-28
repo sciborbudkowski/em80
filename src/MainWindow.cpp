@@ -35,12 +35,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     layout->addWidget(exitAppButton);
 
     connect(createButton, &QPushButton::clicked, this, &MainWindow::createMachine);
-    connect(startButton, &QPushButton::clicked, this, [this]() {
-        this->hide();
-        emulatorWindow = new EmulatorWindow(getSelectedCPUType());
-        emulatorWindow->start();
-        this->show();
-    });
+    connect(startButton, &QPushButton::clicked, this, &MainWindow::startMachine);
     connect(machinesList, &QListWidget::itemSelectionChanged, this, &MainWindow::updateButtons);
 
     loadMachines();
@@ -74,7 +69,16 @@ void MainWindow::createMachine() {
     }
 }
 
-void MainWindow::updateButtons() {
+void MainWindow::startMachine()
+{
+    this->hide();
+    emulatorWindow = new EmulatorWindow(getSelectedCPUType());
+    emulatorWindow->start();
+    this->show();
+}
+
+void MainWindow::updateButtons()
+{
     auto status = !machinesList->selectedItems().isEmpty();
 
     startButton->setEnabled(status);

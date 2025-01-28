@@ -5,6 +5,8 @@
 #include "MemoryZ80.h"
 #include "IOZ80.h"
 
+#include <map>
+
 namespace CPU_Z80 {
 
     class CPUZ80 : public CPUBase {
@@ -26,8 +28,8 @@ namespace CPU_Z80 {
             void execute(uint8_t opcode, uint8_t subOpcode) override;
             void run() override;
 
-            void pushStack(uint16_t value);
-            uint16_t popStack();
+            void pushStack(uint16_t value) override;
+            uint16_t popStack() override;
 
             bool loadProgram(const std::string& filename, uint16_t startAddress);
 
