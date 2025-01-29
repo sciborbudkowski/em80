@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QMessageBox>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     QWidget* centralWidget = new QWidget(this);
@@ -43,8 +44,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     loadMachines();
 }
 
-CPUType MainWindow::getSelectedCPUType() {
-    return CPUType::I8080;
+CPUType MainWindow::getSelectedCPUType(int index) {
+    QString processorType = machines[index].processorType;
+    if(processorType == "I8080") return CPUType::I8080;
+    if(processorType == "Z80") return CPUType::Z80;
+    if(processorType == "I8085") return CPUType::I8085;
+    if(processorType == "I8086") return CPUType::I8086;
+    if(processorType == "I8088") return CPUType::I8088;
+    
+    throw std::runtime_error("Unsupported CPU type!");
 }
 
 void MainWindow::createMachine() {
@@ -60,18 +68,16 @@ void MainWindow::createMachine() {
     }
 }
 
-void MainWindow::startMachine()
-{
+void MainWindow::startMachine() {
     this->hide();
-    CPUType cpuType = getSelectedCPUType();
-    std::cout << "CPU Type: " << cpuType << std::endl;
+    CPUType cpuType = getSelectedCPUType(machinesList->currentRow());
+    std::cout << "Starting machine with CPU " << cpuType << std::endl;
     emulatorWindow = new EmulatorWindow(cpuType);
     emulatorWindow->start();
     this->show();
 }
 
-void MainWindow::updateButtons()
-{
+void MainWindow::updateButtons() {
     auto status = !machinesList->selectedItems().isEmpty();
 
     startButton->setEnabled(status);

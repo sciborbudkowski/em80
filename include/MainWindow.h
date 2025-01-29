@@ -2,6 +2,7 @@
 
 #include "CPUType.h"
 #include "MachinesManager.h"
+#include "MachineProfile.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -16,7 +17,7 @@ class MainWindow : public QMainWindow {
         explicit MainWindow(QWidget* parent = nullptr);
         ~MainWindow() = default;
 
-        CPUType getSelectedCPUType();
+        CPUType getSelectedCPUType(int index);
 
     private:
         QPushButton* createButton;
@@ -27,6 +28,8 @@ class MainWindow : public QMainWindow {
         QListWidget* machinesList;
         EmulatorWindow* emulatorWindow;
         MachinesManager machinesManager;
+
+        std::vector<MachineProfile> machines;
 
     private slots:
         void createMachine();

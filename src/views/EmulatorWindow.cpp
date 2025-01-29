@@ -1,8 +1,11 @@
+// !Marked to remove!
+
 #include "EmulatorWindow.h"
 #include "CPUFactory.h"
 
 #include <QString>
 #include <QFileDialog>
+#include <iostream>
 
 #define RAYGUI_IMPLEMENTATION
 #include "raylib_wrapper.h"
@@ -12,11 +15,11 @@
 #define WINDOW_HEIGHT 490
 
 
-EmulatorWindow::EmulatorWindow(CPUType type) {
-    std::cout << "EmulatorWindow::EmulatorWindow(CPUType type) start" << std::endl;
-    cpu = createCPU(type);
-    std::cout << "EmulatorWindow::EmulatorWindow(CPUType type) end" << std::endl;
-}
+// EmulatorWindow::EmulatorWindow(CPUType type) {
+//     std::cout << "EmulatorWindow::EmulatorWindow(CPUType type) start" << std::endl;
+//     //cpu = createCPU(type);
+//     std::cout << "EmulatorWindow::EmulatorWindow(CPUType type) end" << std::endl;
+// }
 
 void EmulatorWindow::start() {
     cpu->reset();
@@ -156,82 +159,82 @@ void EmulatorWindow::start() {
     CloseWindow();
 }
 
-void EmulatorWindow::drawTerminal(const TerminalBase& terminal) {
-    int charWidth = MeasureTextEx(font, "A", 16, 1).x + 1;
-    int charHeight = 16;
-    int offsetX = 20, offsetY = 20;
+// void EmulatorWindow::drawTerminal(const TerminalBase& terminal) {
+//     int charWidth = MeasureTextEx(font, "A", 16, 1).x + 1;
+//     int charHeight = 16;
+//     int offsetX = 20, offsetY = 20;
 
-    DrawRectangle(offsetX, offsetY, charWidth * 80, charHeight * 25, DARKGRAY);
+//     DrawRectangle(offsetX, offsetY, charWidth * 80, charHeight * 25, DARKGRAY);
 
-    for(int y = 0; y < terminal.getBuffer().size(); y++) {
-        DrawTextEx(font, terminal.getBuffer()[y].c_str(), Vector2{(float)(offsetX), (float)(offsetY + y * charHeight)}, charHeight, 1, GREEN);
-    }
+//     for(int y = 0; y < terminal.getBuffer().size(); y++) {
+//         DrawTextEx(font, terminal.getBuffer()[y].c_str(), Vector2{(float)(offsetX), (float)(offsetY + y * charHeight)}, charHeight, 1, GREEN);
+//     }
 
-    DrawRectangle(terminal.getCursorPos().first * charWidth + offsetX, terminal.getCursorPos().second * charHeight + offsetY, charWidth, charHeight, GREEN);
-}
+//     DrawRectangle(terminal.getCursorPos().first * charWidth + offsetX, terminal.getCursorPos().second * charHeight + offsetY, charWidth, charHeight, GREEN);
+// }
 
-void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, Register8& reg, bool editable) {
-    int tempValue = static_cast<int>(reg.value);
-    char registerValue[4];
-    snprintf(registerValue, sizeof(registerValue), "%02Xh", tempValue);
-    GuiLabel(Rectangle{(float)x, (float)y, 20, 15}, label);
-    GuiTextBox(Rectangle{(float)x + 15, (float)y, 40, 15}, registerValue, sizeof(registerValue), editable);
-}
+// void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, Register8& reg, bool editable) {
+//     int tempValue = static_cast<int>(reg.value);
+//     char registerValue[4];
+//     snprintf(registerValue, sizeof(registerValue), "%02Xh", tempValue);
+//     GuiLabel(Rectangle{(float)x, (float)y, 20, 15}, label);
+//     GuiTextBox(Rectangle{(float)x + 15, (float)y, 40, 15}, registerValue, sizeof(registerValue), editable);
+// }
 
-void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, Register16& reg, bool editable) {
-    int tempValue = static_cast<int>(reg.value);
-    char registerValue[6];
-    snprintf(registerValue, sizeof(registerValue), "%04Xh", tempValue);
-    GuiLabel(Rectangle{(float)x, (float)y, 20, 15}, label);
-    GuiTextBox(Rectangle{(float)x + 20, (float)y, 40, 15}, registerValue, sizeof(registerValue), editable);
-}
+// void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, Register16& reg, bool editable) {
+//     int tempValue = static_cast<int>(reg.value);
+//     char registerValue[6];
+//     snprintf(registerValue, sizeof(registerValue), "%04Xh", tempValue);
+//     GuiLabel(Rectangle{(float)x, (float)y, 20, 15}, label);
+//     GuiTextBox(Rectangle{(float)x + 20, (float)y, 40, 15}, registerValue, sizeof(registerValue), editable);
+// }
 
-void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, bool& reg, bool editable) {
-    char tempValue[2];
-    snprintf(tempValue, sizeof(tempValue), "%d", reg);
-    GuiLabel(Rectangle{(float)x, (float)y, 20, 15}, label);
-    if(strlen(label) == 3) {
-        GuiTextBox(Rectangle{(float)x + 20, (float)y, 20, 15}, tempValue, 2, editable);
-    } else {
-        GuiTextBox(Rectangle{(float)x + 15, (float)y, 20, 15}, tempValue, 2, editable);
-    }
-}
+// void EmulatorWindow::GuiRegisterBox(int x, int y, const char* label, bool& reg, bool editable) {
+//     char tempValue[2];
+//     snprintf(tempValue, sizeof(tempValue), "%d", reg);
+//     GuiLabel(Rectangle{(float)x, (float)y, 20, 15}, label);
+//     if(strlen(label) == 3) {
+//         GuiTextBox(Rectangle{(float)x + 20, (float)y, 20, 15}, tempValue, 2, editable);
+//     } else {
+//         GuiTextBox(Rectangle{(float)x + 15, (float)y, 20, 15}, tempValue, 2, editable);
+//     }
+// }
 
-void EmulatorWindow::drawMemoryView(MemoryBase& memory, int startAddress) {
-    float posY = buttonsY + 40;
-    GuiGroupBox(Rectangle{20, posY, WINDOW_WIDTH - 40, 350}, "Memory Dump");
+// void EmulatorWindow::drawMemoryView(MemoryBase& memory, int startAddress) {
+//     float posY = buttonsY + 40;
+//     GuiGroupBox(Rectangle{20, posY, WINDOW_WIDTH - 40, 350}, "Memory Dump");
 
-    // every single byte
-    for(int i=0; i<=0xF; i++) {
-        char colLabel[3];
-        snprintf(colLabel, sizeof(colLabel), "%02Xh", i);
-        float posX = 100 + i*50;
-        DrawTextEx(font, colLabel, Vector2{posX, posY + 10}, 18, 1, WHITE);
-    }
+//     // every single byte
+//     for(int i=0; i<=0xF; i++) {
+//         char colLabel[3];
+//         snprintf(colLabel, sizeof(colLabel), "%02Xh", i);
+//         float posX = 100 + i*50;
+//         DrawTextEx(font, colLabel, Vector2{posX, posY + 10}, 18, 1, WHITE);
+//     }
 
-    // every 16 bytes
-    for(int i=0; i<=0xF; i++) {
-        char rowLabel[5];
-        snprintf(rowLabel, sizeof(rowLabel), "%04Xh", startAddress + i*16);
-        float posX = 30;
-        float posY = buttonsY + 80 + i*20;
-        DrawTextEx(font, rowLabel, Vector2{posX, posY}, 18, 1, WHITE);
-    }
+//     // every 16 bytes
+//     for(int i=0; i<=0xF; i++) {
+//         char rowLabel[5];
+//         snprintf(rowLabel, sizeof(rowLabel), "%04Xh", startAddress + i*16);
+//         float posX = 30;
+//         float posY = buttonsY + 80 + i*20;
+//         DrawTextEx(font, rowLabel, Vector2{posX, posY}, 18, 1, WHITE);
+//     }
 
-    // memory dump
-    for(int i=0; i<=0xF; i++) {
-        for(int j=0; j<=0xF; j++) {
-            uint16_t pc = startAddress + i*16 + j;
-            // if(pc == cpu.regs.PC) {
-            //     DrawRectangle(100 + j*50, buttonsY + 80 + i*20, 30, 15, RED);
-            // }
-            auto color = WHITE;
-            if(j % 2 == 0) color = LIGHTGRAY;
-            char memLabel[3];
-            snprintf(memLabel, sizeof(memLabel), "%02Xh", memory.read(startAddress + i*16 + j));
-            float posX = 100 + j*50;
-            float posY = buttonsY + 80 + i*20;
-            DrawTextEx(font, memLabel, Vector2{posX, posY}, 16, 1, color);
-        }
-    }
-}
+//     // memory dump
+//     for(int i=0; i<=0xF; i++) {
+//         for(int j=0; j<=0xF; j++) {
+//             uint16_t pc = startAddress + i*16 + j;
+//             // if(pc == cpu.regs.PC) {
+//             //     DrawRectangle(100 + j*50, buttonsY + 80 + i*20, 30, 15, RED);
+//             // }
+//             auto color = WHITE;
+//             if(j % 2 == 0) color = LIGHTGRAY;
+//             char memLabel[3];
+//             snprintf(memLabel, sizeof(memLabel), "%02Xh", memory.read(startAddress + i*16 + j));
+//             float posX = 100 + j*50;
+//             float posY = buttonsY + 80 + i*20;
+//             DrawTextEx(font, memLabel, Vector2{posX, posY}, 16, 1, color);
+//         }
+//     }
+// }

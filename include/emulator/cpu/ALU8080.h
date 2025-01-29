@@ -1,54 +1,131 @@
 #pragma once
 
-#include "Registers8080.h"
+#include "CPU8080.h"
+#include "CPUUtils.h"
 
 #include <cstdint>
 
-namespace CPU_8080 {
-
-    class ALU8080 {
-        public:
-            static uint8_t adc(uint8_t acc, uint8_t value, Registers8080& regs) {
-                uint16_t result = acc + value + (uint16_t)regs.CY;
-                regs.CY = (result > 0xFF);
-                uint8_t result8 = result & 0xFF;
-                setFlags(result8, regs);
-
-                return result8;
-            }
-
-            static uint8_t sbb(uint8_t acc, uint8_t value, uint8_t borrow, Registers8080& regs) {
-                int result = acc - value - borrow;
-                regs.CY = (result < 0);
-                uint8_t result8 = result & 0xFF;
-                setFlags(result8, regs);
-                regs.AC = ((acc & 0xF) < ((value & 0xF) + borrow));
-
-                return result8;
-            }
-
-            static void cmp(uint8_t acc, uint8_t value, Registers8080& regs) {
-                int result = acc - value;
-                regs.CY = (result < 0);
-                uint8_t result8 = result & 0xFF;
-                setFlags(result8, regs);
-                regs.AC = ((acc & 0xF) < (value & 0xF));
-            }
-
-            static void setFlags(uint8_t result, Registers8080& regs) {
-                regs.Z = (result == 0);             // Zero flag
-                regs.S = (result & 0x80);           // Sign flag
-                regs.P = calculateParity(result);   // Parity flag
-            }
-
-            static bool calculateParity(uint8_t value) {
-                int parity = 0;
-                for(int i=0; i<8; i++) {
-                    parity ^= (value >> 1) & 1;
-                }
-
-                return (parity == 0);
-            }
+struct ALU8080 {
+    enum Flag {
+        CARRY     = (1 << 0),
+        PARITY    = (1 << 2),
+        AUX_CARRY = (1 << 4),
+        ZERO      = (1 << 6),
+        SIGN      = (1 << 7)
     };
 
-} // namespace CPU_8080
+    static uint8_t add(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint16_t result = acc + value;
+        flags = 0;
+
+        if(result & 0x100) flags |= CARRY;
+        if((result & 0xFF) == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(((acc ^ value) & 0x10)) flags |= AUX_CARRY;
+        if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
+
+        return result & 0xFF;
+    }
+
+    static uint8_t adc(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint8_t carry = flags & CARRY ? 1 : 0;
+        uint16_t result = acc + value + carry;
+        flags = 0;
+
+        if(result & 0x100) flags |= CARRY;
+        if((result & 0xFF) == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(((acc ^ value ^ result) & 0x10)) flags |= AUX_CARRY;
+        if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
+
+        return result & 0xFF;
+    }
+
+    static uint8_t sub(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint16_t result = acc - value;
+        flags = 0;
+
+        if(result & 0x100) flags |= CARRY;
+        if((result & 0xFF) == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(((acc ^ value ^ result) & 0x10)) flags |= AUX_CARRY;
+        if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
+
+        return result & 0xFF;
+    }
+
+    static uint8_t sbb(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint8_t carry = flags & CARRY ? 1 : 0;
+        uint16_t result = acc - value - carry;
+        flags = 0;
+
+        if(result & 0x100) flags |= CARRY;
+        if((result & 0xFF) == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(((acc ^ value ^ result) & 0x10)) flags |= AUX_CARRY;
+        if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
+
+        return result & 0xFF;
+    }
+
+    static uint8_t cmp(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint8_t result = sub(acc, value, flags);
+        return result;
+    }
+
+    static uint8_t and_op(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint8_t result = acc & value;
+        flags = 0;
+
+        if(result == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(CPUUtils::calculateParity(result)) flags |= PARITY;
+        flags |= AUX_CARRY;
+
+        return result;
+    }
+
+    static uint8_t xor_op(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint8_t result = acc ^ value;
+        flags = 0;
+
+        if(result == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(CPUUtils::calculateParity(result)) flags |= PARITY;
+
+        return result;
+    }
+
+    static uint8_t or_op(uint8_t acc, uint8_t value, uint8_t& flags) {
+        uint8_t result = acc | value;
+        flags = 0;
+
+        if(result == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(CPUUtils::calculateParity(result)) flags |= PARITY;
+
+        return result;
+    }
+
+    static uint8_t inc(uint8_t acc, uint8_t& flags) {
+        uint16_t result = acc + 1;
+
+        if((result & 0xFF) == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
+        if((acc & 0x0F) == 0x0F) flags |= AUX_CARRY;
+
+        return result & 0xFF;
+    }
+
+    static uint8_t dec(uint8_t acc, uint8_t& flags) {
+        uint16_t result = acc - 1;
+
+        if((result & 0xFF) == 0) flags |= ZERO;
+        if(result & 0x80) flags |= SIGN;
+        if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
+        if((acc & 0x0F) == 0x00) flags |= AUX_CARRY;
+
+        return result & 0xFF;
+    }
+};

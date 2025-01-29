@@ -15,7 +15,7 @@ function compile {
 		echo "CXX $source_file"
 	fi
 
-	$REAL_CLANG "$@"
+	$REAL_CXX "$@"
 }
 
 compile "$@"
