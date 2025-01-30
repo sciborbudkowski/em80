@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CPUBase.h"
+#include "Terminal8080.h"
+#include "DiskController.h"
 
 #include <vector>
 
@@ -51,7 +53,9 @@ struct Registers8080 {
 };
 
 struct Memory8080 {
-    std::vector<uint8_t> ram = std::vector<uint8_t>(64 * 1024);
+    static constexpr size_t RAM_SIZE = 0x10000;
+
+    std::vector<uint8_t> ram = std::vector<uint8_t>(RAM_SIZE);
     IO8080& io;
 
     Memory8080(IO8080& io) : io(io) {}
@@ -89,20 +93,43 @@ struct Memory8080 {
 
 struct IO8080 {
     std::vector<uint8_t> ports = std::vector<uint8_t>(256);
+    Terminal8080& terminal;
+    DiskController& disk;
+    bool diskEnabled = false;
+    Memory8080& memory;
+
+    IO8080(Terminal8080& terminal, Memory8080& memory, DiskController& disk)
+        : terminal(terminal), memory(memory), diskEnabled(false), disk(disk) {}
 
     uint8_t in(uint16_t port) const {
         if(port >= ports.size()) return 0xFF;
+
+        switch(port) {
+            case 0x02: return terminal.getLastChar(); break;
+            case 0x10: return diskEnabled ? 0x00 : 0xFF; break;
+            case 0x13: return diskEnabled ? disk.read() : 0xFF; break;
+        }
+
         return ports[port];
     }
 
     void out(uint16_t port, uint8_t value) {
         if(port >= ports.size()) return;
+
+        switch(port) {
+            case 0x01: terminal.printChar(value); break;
+            case 0x11: /* TODO: drive selection*/ break;
+            case 0x12: disk.setSector(value); break;
+        }
+
         ports[port] = value;
     }
 };
 
 class CPU8080 : public CPUBase<CPU8080> {
     public:
+        std::vector<std::string> lastInstructions;
+
         void reset();
         void step();
         void decodeAndExecute(uint8_t opcode);
@@ -112,8 +139,10 @@ class CPU8080 : public CPUBase<CPU8080> {
         uint16_t popStack();
 
         const Registers8080& getRegisters() const { return regs; }
-        const Memory8080& getMemory() { return memory; }
-        const IO8080& getIO() { return io; }
+        const Memory8080& getMemory() const { return memory; }
+        const Terminal8080& getTerminal() const { return terminal; }
+
+        IO8080& getIO() { return io; }
 
         bool isRunning() const { return running; }
         void setRunning(bool value) { running = value; }
@@ -128,6 +157,7 @@ class CPU8080 : public CPUBase<CPU8080> {
         Registers8080 regs;
         Memory8080& memory;
         IO8080& io;
+        Terminal8080& terminal;
 
         bool running = false;
         bool turboMode = false;
@@ -157,72 +187,3 @@ class CPU8080 : public CPUBase<CPU8080> {
             4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  7
         };
 };
-
-/*
-#include "Registers8080.h"
-#include "Memory8080.h"
-#include "IO8080.h"
-
-#include <vector>
-
-namespace CPU_8080 {
-
-    class CPU8080 : public CPUBase {
-        public:
-            Registers8080 regs;
-            Memory8080 memory;
-            IO8080 io;
-            bool interruptEnabled;
-
-            CPU8080() = default;
-            CPU8080(const CPU8080&) = delete;
-            CPU8080& operator=(const CPU8080&) = delete;
-            CPU8080(CPU8080&&) = delete;
-            CPU8080& operator=(CPU8080&&) = delete;
-
-            void reset() override;
-            void step() override;
-            void execute(uint8_t opcode) override;
-            void execute(uint8_t opcode, uint8_t subOpcode) override;
-            void run() override;
-            void switchTurbo();
-            void pushStack(uint16_t value) override;
-            uint16_t popStack() override;
-
-            bool loadProgram(const std::string& filename, uint16_t startAddress);
-
-            void consoleDump();
-            void testOpcodes() override;
-
-        private:
-            std::deque<std::string> lastInstructions;
-
-            bool turboMode = false;
-            const double clockSpeed = 20000000.0;
-            uint64_t lastCycleTime = 0;
-
-            std::vector<int> instructionCycles = {
-                4, 10,  7,  6,  4,  4,  7,  4,  4, 11,  7,  6,  4,  4,  7,  4,
-                4, 10,  7,  6,  4,  4,  7,  4,  4, 11,  7,  6,  4,  4,  7,  4,
-                4, 10,  7,  6,  4,  4,  7,  4,  4, 11,  7,  6,  4,  4,  7,  4,
-                4, 10, 16,  6,  4,  4,  7,  4,  4, 11, 16,  6,  4,  4,  7,  4,
-                4, 10, 16,  6,  4,  4,  7,  4,  4, 11, 16,  6,  4,  4,  7,  4,
-                4, 10, 13,  6, 11, 11, 10,  4,  4, 11, 13,  6,  4,  4,  7,  4,
-                4, 10, 13,  6, 11, 11, 10,  4,  4, 11, 13,  6,  4,  4,  7,  4,
-                5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-                5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-                5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-                5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  7,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-                4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  7
-            };
-    };
-
-} // namespace CPU_8080
-*/

@@ -46,9 +46,20 @@ pkg_check_modules(RAYLIB REQUIRED raylib)
 file(GLOB_RECURSE SOURCE_FILES
     src/*.cpp
     src/emulator/cpu/*.cpp
-    src/emulator/memory/*.cpp
-    src/emulator/io/*.cpp
+    src/views/*.cpp
+    src/views/emulators/*.cpp
 )
+#file(GLOB_RECURSE HEADER_FILES
+#    include/*.h
+#    include/emulator/*.h
+#    include/emulator/base/*.h
+#    include/emulator/cpu/*.h
+#    include/emulator/terminal/*.h
+#    include/helpers/*.h
+#    include/helpers/extensions/*.h
+#    include/views/*.h
+#    include/views/emulators/*.h
+#)
 file(GLOB_RECURSE HEADER_FILES include/*.h)
 
 qt_add_executable(${PROJECT_NAME}
@@ -64,12 +75,12 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/include/emulator
-    ${CMAKE_SOURCE_DIR}/include/emulator/base
-    ${CMAKE_SOURCE_DIR}/include/emulator/cpu
-    ${CMAKE_SOURCE_DIR}/include/emulator/memory
-    ${CMAKE_SOURCE_DIR}/include/emulator/io
-    ${CMAKE_SOURCE_DIR}/include/views
+#    ${CMAKE_SOURCE_DIR}/include/emulator
+#    ${CMAKE_SOURCE_DIR}/include/emulator/base
+#    ${CMAKE_SOURCE_DIR}/include/emulator/cpu
+#    ${CMAKE_SOURCE_DIR}/include/emulator/memory
+#    ${CMAKE_SOURCE_DIR}/include/emulator/io
+#    ${CMAKE_SOURCE_DIR}/include/views
     ${RAYLIB_INCLUDE_DIRS}
     ${Qt6_INCLUDE_DIRS}
 )

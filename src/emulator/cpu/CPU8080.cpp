@@ -434,6 +434,8 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- IN port ---
         case 0xDB:
             port = memory.read(regs.PC++);
+            value = io.in(port);
+            regs.A = value;
             asmInstr = "IN " + CPUUtils::hex8(port);
             break;
 

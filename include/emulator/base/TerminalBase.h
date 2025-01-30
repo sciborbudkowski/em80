@@ -1,133 +1,142 @@
-// #pragma once
+#pragma once
 
-// #include <string>
-// #include <vector>
-// #include <cstdint>
-// #include <cstdarg>
-// #include <sstream>
-// #include <iostream>
-// #include <termios.h>
+#include <raylib.h>
+#include <string>
+#include <vector>
+#include <cstdint>
+#include <iostream>
+#include <sstream>
 
-// class TerminalBase {
-//     public:
-//         TerminalBase(int width = 80, int height = 25) : width(width), height(height) {
-//             buffer.resize(height, std::string(width, ' '));
-//         }
+template <typename Derived, typename CPU>
+class TerminalBase {
+    public:
+        TerminalBase(CPU& cpu, int widthChars, int heightChars, int widthPixels, int heightPixels)
+            : cpu(cpu), widthChars(widthChars), heightChars(heightChars), widthPixels(widthPixels), heightPixels(heightPixels),
+              cursorX(0), cursorY(0) {
+            buffer.resize(heightChars, std::string(widthChars, ' '));
+        }
 
-//         void printChar(uint8_t ch) {
-//             if(ch == '\n') {
-//                 cursorX = 0;
-//                 cursorY++;
-//             } else {
-//                 buffer[cursorY][cursorX] = ch;
-//                 cursorX++;
+        ~TerminalBase() { if(font) UnloadFont(font); }
 
-//                 if(cursorX >= width) {
-//                     cursorX = 0;
-//                     cursorY++;
-//                 }
-//             }
+        void handleInput(const std::string& command) { static_cast<Derived*>(this)->handleInput(command); }
 
-//             if(cursorY >= height) {
-//                 buffer.erase(buffer.begin());
-//                 buffer.push_back(std::string(width, ' '));
-//                 cursorY = height - 1;
-//             }
+        void initialize() {
+            font = AssetsLoader::loadFont("assets/fonts/DejaVuSansMono.ttf");
+            updateScaling();
+        }
 
-//             lastCommand += ch;
-//             lastChar = ch;
-//         }
+        void updateScaling() {
+            fontSize = widthPixels / static_cast<float>(widthChars);
+            cellWidth = fontSize;
+            cellHeight = heightPixels / static_cast<float>(heightChars);
+        }
 
-//         void printString(const char *format, ...) {
-//             constexpr size_t bufferSize = 1024;
-//             char buffer[bufferSize];
+        void render() {
+            for(int y=0; y<heightChars; y++) {
+                for(int x=0; x<widthChars; x++) {
+                    char ch = buffer[y][x];
+                    if(ch != ' ') {
+                        Vector2 position = {x*cellWidth, y*cellHeight};
+                        DrawTextEx(font, std::string(1, ch).c_str(), position, fontSize, 2, WHITE);
+                    }
+                }
+            }
+        }
 
-//             va_list args;
-//             va_start(args, format);
-//             vsnprintf(buffer, bufferSize, format, args);
-//             va_end(args);
+        void printChar(uint8_t ch) {
+            if(ch == '\n') {
+                cursorX = 0;
+                cursorY++;
+                lastCommand.clear();
+            } else {
+                buffer[cursorY][cursorX] = ch;
+                cursorX++;
 
-//             std::string str(buffer);
-//             for(char ch : str) {
-//                 printChar(ch);
-//             }
-//         }
+                if(cursorX >= widthChars) {
+                    cursorX = 0;
+                    cursorY++;
+                }
 
-//         void clear() {
-//             buffer.clear();
-//             buffer.resize(height, std::string(width, ' '));
-//             cursorX = 0;
-//             cursorY = 0;
-//         }
+                lastCommand += ch;
+            }
 
-//         void setCursorPos(int newX, int newY) {
-//             cursorX = newX;
-//             cursorY = newY;
-//         }
+            if(cursorY >= heightChars) {
+                buffer.erase(buffer.begin());
+                buffer.push_back(std::string(widthChars, ' '));
+                cursorY = heightChars - 1;
+            }
+        }
 
-//         void removeLastChar() {
-//             if(cursorX > 0) {
-//                 cursorX--;
-//                 buffer[cursorY][cursorX] = ' ';
-//             }
-//         }
+        std::string getLastCommand() const { return lastCommand; }
+        void setLastCommand(const std::string& command) { lastCommand = command; }
 
-//         const std::vector<std::string>& getBuffer() const { return buffer; }
+        std::vector<std::string>& getBuffer() { return buffer; }
 
-//         std::pair<int, int> getCursorPos() const { return {cursorX, cursorY}; }
+        void printString(const char* format, ...) {
+            va_list args;
+            va_start(args, format);
 
-//         void processCommand(const std::string& command) {
-//             std::istringstream iss(command);
-//             std::string cmd;
-//             uint16_t startAddress, size;
+            int size = std::vsnprintf(nullptr, 0, format, args);
+            va_end(args);
 
-//             iss >> cmd >> std::hex >> startAddress >> size;
+            if(size < 0) return;
 
-//             // if(cmd == "m") {
-//             //     displayMemory(cpu.memory.ram, startAddress, size);
-//             // } else {
-//             //     printString("\nUnknown command: %s", cmd.c_str());
-//             // }
-//         }
+            std::vector<char> buffer(size);
+            va_start(args, format);
+            std::vsnprintf(buffer.data(), size, format, args);
+            va_end(args);
 
-//         std::string getLastCommand() { return lastCommand; }
+            for(char ch : buffer) {
+                if(ch == '\0') break;
+                printChar(ch);
+            }
+        }
 
-//         void setLastCommand(const std::string& command) {
-//             if(!command.empty()) {
-//                 lastCommand += command;
-//             }
-//         }
+        void clear() {
+            buffer.clear();
+            buffer.resize(heightChars, std::string(widthChars, ' '));
+            cursorX = 0;
+            cursorY = 0;
+        }
 
-//         uint8_t getChar() { return lastChar; }
+        void setCursorPos(int newX, int newY) {
+            cursorX = newX;
+            cursorY = newY;
+        }
 
-//     private:
-//         int width, height;
-//         int cursorX, cursorY;
-//         std::vector<std::string> buffer;
-//         std::string lastCommand;
-//         uint8_t lastChar;
+        void removeLastChar() {
+            if(cursorX > 0) {
+                cursorX--;
+                buffer[cursorY][cursorX] = ' ';
+            }
+        }
 
-//         void displayMemory(const std::vector<uint8_t>& memory, uint16_t startAddress, uint16_t size) {
-//             constexpr int bytesPerLine = 16;
-//             uint16_t endAddress = startAddress + size;
+        void removeLastChar() {
+            if(cursorX > 0) {
+                cursorX--;
+                buffer[cursorY][cursorX] = ' ';
+            } else if(cursorY > 0) {
+                cursorY--;
+                cursorX = widthChars - 1;
+                buffer[cursorY][cursorX] = ' ';
+            }
+        }
 
-//             printString("Address");
-//             for(int i=0; i<bytesPerLine; i++) {
-//                 printString(" %02X", startAddress + i);
-//             }
-//             printString("\n");
+        std::pair<int, int> getCursorPos() const { return {cursorX, cursorY}; }
 
-//             for(uint16_t addr=startAddress; addr<endAddress; addr+=bytesPerLine) {
-//                 printString("%04Xh", addr);
-//                 for(int i=0; i<bytesPerLine; i++) {
-//                     uint16_t currentAddr = addr + i;
-//                     if(currentAddr < endAddress) {
-//                         printString(" %02X", memory[currentAddr]);
-//                     } else {
-//                         printString("   ");
-//                     }
-//                 }
-//                 printString("\n");
-//             }
-//         }
-// };
+        char getLastChar() const { return lastChar; }
+
+    protected:
+        CPU& cpu;
+
+        int widthChars, heightChars;
+        int widthPixels, heightPixels;
+        float fontSize;
+        float cellWidth, cellHeight;
+        int cursorX, cursorY;
+        char lastChar;
+
+        Font font;
+        std::vector<std::string> buffer;
+        std::string lastCommand;
+};

@@ -101,7 +101,8 @@ class CPUZ80 : public CPUBase<CPUZ80> {
         const RegistersZ80& getRegisters() const { return regs; }
         const MemoryZ80& getMemory() { return memory; }
         const IOZ80& getIO() { return io; }
-
+        const std::vector<std::string>& getLastInstructions() const { return lastInstructions; }
+        
         bool isRunning() const { return running; }
         void setRunning(bool value) { running = value; }
         bool isTurboMode() const { return turboMode; }
@@ -121,6 +122,7 @@ class CPUZ80 : public CPUBase<CPUZ80> {
         const double clockSpeed = 40000000.0;
         uint64_t lastCycleTime = 0;
         bool interruptsEnabled = false;
+        std::vector<std::string> lastInstructions;
         enum OpcodePrefix {
             BASE = 0,
             CB   = 1,
