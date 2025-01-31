@@ -1,6 +1,6 @@
 #pragma once
 
-#define RAYGUI_IMPLEMENTATION
+// #define RAYGUI_IMPLEMENTATION
 #include "raylib_wrapper.h"
 #include "raygui.h"
 

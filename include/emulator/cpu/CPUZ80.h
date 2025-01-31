@@ -1,95 +1,25 @@
 #pragma once
 
 #include "CPUBase.h"
+#include "RegistersZ80.h"
 
 #include <vector>
 #include <cstdint>
 #include <iostream>
 #include <array>
+#include <memory>
 
-struct RegistersZ80 {
-    uint8_t A, B, C, D, E, H, L;
-    uint8_t A_, B_, C_, D_, E_, H_, L_;
-    uint16_t IX, IY, PC, SP, WZ;
-    uint8_t Flags, Flags_;
-
-    enum Flag {
-        CARRY      = (1 << 0),
-        SUBTRACT   = (1 << 1),
-        PARITY     = (1 << 2),
-        HALF_CARRY = (1 << 4),
-        ZERO       = (1 << 6),
-        SIGN       = (1 << 7)
-    };
-
-    bool getFlag(Flag flag) const { return Flags & flag; }
-
-    void setFlag(Flag flag, bool value) {
-        if(value) { Flags |= flag; }
-        else { Flags &= ~flag; }
-    }
-
-    RegistersZ80() { reset(); }
-
-    void reset() {
-        A = B = C = D = E = H = L = 0;
-        A_ = B_ = C_ = D_ = E_ = H_ = L_ = 0;
-        IX = IY = PC = SP = WZ = 0;
-    }
-
-    uint16_t AF() const { return (A << 8) | Flags; }
-    uint16_t BC() const { return (B << 8) | C; }
-    uint16_t DE() const { return (D << 8) | E; }
-    uint16_t HL() const { return (H << 8) | L; }
-
-    void AF(uint16_t value) { A = (value >> 8) & 0xFF; Flags = value & 0xFF; }
-    void BC(uint16_t value) { B = (value >> 8) & 0xFF; C = value & 0xFF; }
-    void DE(uint16_t value) { D = (value >> 8) & 0xFF; E = value & 0xFF; }
-    void HL(uint16_t value) { H = (value >> 8) & 0xFF; L = value & 0xFF; }
-};
-
-struct MemoryZ80 {
-    std::vector<uint8_t> ram = std::vector<uint8_t>(64 * 1024);
-    
-    uint8_t read(uint16_t address) const {
-        if(address >= ram.size()) {
-            return 0xFF;
-        }
-        return ram[address];
-    }
-
-    void write(uint16_t address, uint8_t value) {
-        if(address >= ram.size()) {
-            return;
-        }
-        ram[address] = value;
-    }
-
-    void clear() {
-        std::fill(ram.begin(), ram.end(), 0);
-    }
-
-    bool loadProgram(uint16_t startAddress, const std::vector<uint8_t>& program) {
-        if(startAddress + program.size() > ram.size()) {
-            std::cerr << "Program too large to fit in memory" << std::endl;
-            return false;
-        }
-        std::copy(program.begin(), program.end(), ram.begin() + startAddress);
-        return true;
-    }
-};
-
-struct IOZ80 {
-    std::vector<uint8_t> ports = std::vector<uint8_t>(0xFF, 0xFF);
-
-    uint8_t in(uint8_t port) const { return ports[port]; }
-
-    void out(uint8_t port, uint8_t value) { ports[port] = value; }
-};
-
+class MemoryZ80;
+class IOZ80;
 
 class CPUZ80 : public CPUBase<CPUZ80> {
     public:
+        CPUZ80(
+            std::shared_ptr<MemoryZ80> memoryPtr,
+            std::shared_ptr<IOZ80> ioPtr
+        ) : memory(memoryPtr), io(ioPtr) {}
+        ~CPUZ80() = default;
+
         void reset();
         void step();
         void decodeAndExecute(uint8_t opcode, uint8_t subOpcode = 0x00);
@@ -99,8 +29,8 @@ class CPUZ80 : public CPUBase<CPUZ80> {
         uint16_t popStack();
 
         const RegistersZ80& getRegisters() const { return regs; }
-        const MemoryZ80& getMemory() { return memory; }
-        const IOZ80& getIO() { return io; }
+        const MemoryZ80& getMemory() { return *memory; }
+        const IOZ80& getIO() { return *io; }
         const std::vector<std::string>& getLastInstructions() const { return lastInstructions; }
         
         bool isRunning() const { return running; }
@@ -114,8 +44,8 @@ class CPUZ80 : public CPUBase<CPUZ80> {
 
     private:
         RegistersZ80 regs;
-        MemoryZ80 memory;
-        IOZ80 io;
+        std::shared_ptr<MemoryZ80> memory;
+        std::shared_ptr<IOZ80> io;
 
         bool running = false;
         bool turboMode = false;

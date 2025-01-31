@@ -1,17 +1,22 @@
+#pragma once
+
 #include "CPU8080.h"
 #include "EmulatorWindowBase.h"
 #include "Terminal8080.h"
 
+#include <memory>
+
 class EmulatorWindow8080 : public EmulatorWindowBase<EmulatorWindow8080, CPU8080> {
     public:
-        EmulatorWindow8080(CPU8080& cpu)
-            : EmulatorWindowBase<EmulatorWindow8080, CPU8080>(cpu) {}
+        EmulatorWindow8080(std::shared_ptr<CPU8080> cpu)
+            : EmulatorWindowBase<EmulatorWindow8080, CPU8080>(*cpu) {}
         ~EmulatorWindow8080();
 
         void start();
-        void update();
 
     private:
+        std::shared_ptr<CPU8080> cpu;
+
         bool memoryViewVisible = false;
         int memoryViewStartAddress = 0x0000;
         float buttonsY = 16 * 25 + 2 * 20;

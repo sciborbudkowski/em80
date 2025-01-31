@@ -1,44 +1,24 @@
-// #pragma once
+#pragma once
 
-// #include "MemoryBase.h"
+#include <cstdint>
+#include <vector>
+#include <memory>
 
-// #include <QMessageBox>
-// #include <QString>
-// #include <fstream>
+struct IO8080;
 
-// class Memory8080 : public MemoryBase {
-//     public:
-//         static constexpr size_t RAM_SIZE = 0x10000;
+struct Memory8080 {
+    static constexpr size_t RAM_SIZE = 0x10000;
 
-//         Memory8080() : ram(RAM_SIZE, 0) {}
+    std::vector<uint8_t> ram = std::vector<uint8_t>(RAM_SIZE);
+    std::shared_ptr<IO8080> io;
 
-//         uint8_t read(uint16_t address) const override { return ram[address]; }
-//         void write(uint16_t address, uint8_t value) override { ram[address] = value; }
+    Memory8080();
 
-//         void clear() override { std::fill(ram.begin(), ram.end(), 0); }
+    void setIO(std::shared_ptr<IO8080> ioPtr);
 
-//         bool loadProgram(const std::string& filename, uint16_t startAddress) {
-//             std::ifstream file(filename, std::ios::in | std::ios::binary);
-//             if(!file) {
-//                 QMessageBox::critical(nullptr, "Load Error", QString("Can not load program from file %1").arg(QString::fromStdString(filename)));
-//                 return false;
-//             }
+    uint8_t read(uint16_t address) const;
+    void write(uint16_t address, uint8_t value);
+    void clear();
 
-//             file.seekg(0, std::ios::end);
-//             size_t fileSize = file.tellg();
-//             file.seekg(0, std::ios::beg);
-
-//             if(fileSize > RAM_SIZE - startAddress) {
-//                 QMessageBox::critical(nullptr, "Load Error", QString("Program is too large to fit in memory"));
-//                 return false;
-//             }
-
-//             file.read(reinterpret_cast<char*>(ram.data() + startAddress), fileSize);
-//             file.close();
-
-//             return true;
-//         }
-
-//     private:
-//         std::vector<uint8_t> ram;
-// };
+    bool loadProgram(uint16_t startAddress, const std::vector<uint8_t>& program);
+};

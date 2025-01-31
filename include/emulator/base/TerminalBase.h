@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AssetsLoader.h"
+
 #include <raylib.h>
 #include <string>
 #include <vector>
@@ -7,16 +9,16 @@
 #include <iostream>
 #include <sstream>
 
-template <typename Derived, typename CPU>
+template <typename Derived>
 class TerminalBase {
     public:
-        TerminalBase(CPU& cpu, int widthChars, int heightChars, int widthPixels, int heightPixels)
-            : cpu(cpu), widthChars(widthChars), heightChars(heightChars), widthPixels(widthPixels), heightPixels(heightPixels),
+        TerminalBase(int widthChars, int heightChars, int widthPixels, int heightPixels)
+            : widthChars(widthChars), heightChars(heightChars), widthPixels(widthPixels), heightPixels(heightPixels),
               cursorX(0), cursorY(0) {
             buffer.resize(heightChars, std::string(widthChars, ' '));
         }
 
-        ~TerminalBase() { if(font) UnloadFont(font); }
+        ~TerminalBase() { UnloadFont(font); }
 
         void handleInput(const std::string& command) { static_cast<Derived*>(this)->handleInput(command); }
 
@@ -108,13 +110,6 @@ class TerminalBase {
             if(cursorX > 0) {
                 cursorX--;
                 buffer[cursorY][cursorX] = ' ';
-            }
-        }
-
-        void removeLastChar() {
-            if(cursorX > 0) {
-                cursorX--;
-                buffer[cursorY][cursorX] = ' ';
             } else if(cursorY > 0) {
                 cursorY--;
                 cursorX = widthChars - 1;
@@ -127,8 +122,6 @@ class TerminalBase {
         char getLastChar() const { return lastChar; }
 
     protected:
-        CPU& cpu;
-
         int widthChars, heightChars;
         int widthPixels, heightPixels;
         float fontSize;

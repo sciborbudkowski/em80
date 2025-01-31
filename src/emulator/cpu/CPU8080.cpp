@@ -1,5 +1,8 @@
 #include "CPU8080.h"
 #include "ALU8080.h"
+#include "Memory8080.h"
+#include "IO8080.h"
+#include "Terminal8080.h"
 #include "CPUUtils.h"
 
 #include <chrono>
@@ -10,24 +13,25 @@
 #include <iostream>
 
 void CPU8080::reset() {
+    const char* welcomeText = "Intel 8080 Emulator.";
+
     regs.reset();
-    memory.clear();
+    memory->clear();
     setRunning(true);
     turboMode = false;
     interruptsEnabled = false;
-    // io.getTerminal().clear();
-    // const char* welcomeText = "Intel 8080 Emulator.";
-    // io.getTerminal().printString(welcomeText);
-    // io.getTerminal().setCursorPos(0, 2);
+    io->terminal->clear();
+    io->terminal->printString(welcomeText);
+    io->terminal->setCursorPos(0, 2);
 }
 
 void CPU8080::pushStack(uint16_t value) {
-    memory.write(--regs.SP, (value >> 8) & 0xFF);
-    memory.write(--regs.SP, value & 0xFF);
+    memory->write(--regs.SP, (value >> 8) & 0xFF);
+    memory->write(--regs.SP, value & 0xFF);
 }
 
 uint16_t CPU8080::popStack() {
-    uint16_t value = memory.read(regs.SP) << 8 | memory.read(regs.SP + 1);
+    uint16_t value = memory->read(regs.SP) << 8 | memory->read(regs.SP + 1);
     regs.SP += 2;
     return value;
 }
@@ -35,7 +39,7 @@ uint16_t CPU8080::popStack() {
 void CPU8080::step() {
     if (!isRunning()) return;
 
-    uint8_t opcode = memory.read(regs.PC++);
+    uint8_t opcode = memory->read(regs.PC++);
     decodeAndExecute(opcode);
 }
 
@@ -66,7 +70,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x7D: regs.A = regs.L; asmInstr = "MOV A, L"; break;
 
         case 0x7E:
-            addr = memory.read((regs.H << 8) | regs.L);
+            addr = memory->read((regs.H << 8) | regs.L);
             regs.A = addr;
             asmInstr = "MOV A, [" + CPUUtils::hex16(addr) +"]";
             break;
@@ -82,7 +86,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x43: regs.B = regs.E; asmInstr = "MOV B, E"; break;
         case 0x44: regs.B = regs.H; asmInstr = "MOV B, H"; break;
         case 0x45: regs.B = regs.L; asmInstr = "MOV B, L"; break;
-        case 0x46: regs.B = memory.read((regs.H << 8) | regs.L); asmInstr = "MOV B, M"; break;
+        case 0x46: regs.B = memory->read((regs.H << 8) | regs.L); asmInstr = "MOV B, M"; break;
         case 0x47: regs.B = regs.A; asmInstr = "MOV B, A"; break;
 
         case 0x48: regs.C = regs.B; asmInstr = "MOV C, B"; break;
@@ -91,17 +95,17 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x4B: regs.C = regs.E; asmInstr = "MOV C, E"; break;
         case 0x4C: regs.C = regs.H; asmInstr = "MOV C, H"; break;
         case 0x4D: regs.C = regs.L; asmInstr = "MOV C, L"; break;
-        case 0x4E: regs.C = memory.read((regs.H << 8) | regs.L); asmInstr = "MOV C, M"; break;
+        case 0x4E: regs.C = memory->read((regs.H << 8) | regs.L); asmInstr = "MOV C, M"; break;
         case 0x4F: regs.C = regs.A; asmInstr = "MOV C, A"; break;
 
         // --- MVI r, data ---
-        case 0x06: regs.B = memory.read(regs.PC++); asmInstr = "MVI B, " + CPUUtils::hex8(regs.B); break;
-        case 0x0E: regs.C = memory.read(regs.PC++); asmInstr = "MVI C, " + CPUUtils::hex8(regs.C); break;
-        case 0x16: regs.D = memory.read(regs.PC++); asmInstr = "MVI D, " + CPUUtils::hex8(regs.D); break;
-        case 0x1E: regs.E = memory.read(regs.PC++); asmInstr = "MVI E, " + CPUUtils::hex8(regs.E); break;
-        case 0x26: regs.H = memory.read(regs.PC++); asmInstr = "MVI H, " + CPUUtils::hex8(regs.H); break;
-        case 0x2E: regs.L = memory.read(regs.PC++); asmInstr = "MVI L, " + CPUUtils::hex8(regs.L); break;
-        case 0x3E: regs.A = memory.read(regs.PC++); asmInstr = "MVI A, " + CPUUtils::hex8(regs.A); break;
+        case 0x06: regs.B = memory->read(regs.PC++); asmInstr = "MVI B, " + CPUUtils::hex8(regs.B); break;
+        case 0x0E: regs.C = memory->read(regs.PC++); asmInstr = "MVI C, " + CPUUtils::hex8(regs.C); break;
+        case 0x16: regs.D = memory->read(regs.PC++); asmInstr = "MVI D, " + CPUUtils::hex8(regs.D); break;
+        case 0x1E: regs.E = memory->read(regs.PC++); asmInstr = "MVI E, " + CPUUtils::hex8(regs.E); break;
+        case 0x26: regs.H = memory->read(regs.PC++); asmInstr = "MVI H, " + CPUUtils::hex8(regs.H); break;
+        case 0x2E: regs.L = memory->read(regs.PC++); asmInstr = "MVI L, " + CPUUtils::hex8(regs.L); break;
+        case 0x3E: regs.A = memory->read(regs.PC++); asmInstr = "MVI A, " + CPUUtils::hex8(regs.A); break;
 
         // --- ADD A, r ---
         case 0x80: ALU8080::add(regs.A, regs.B, regs.Flags); asmInstr = "ADD B"; break;
@@ -110,7 +114,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x83: ALU8080::add(regs.A, regs.E, regs.Flags); asmInstr = "ADD E"; break;
         case 0x84: ALU8080::add(regs.A, regs.H, regs.Flags); asmInstr = "ADD H"; break;
         case 0x85: ALU8080::add(regs.A, regs.L, regs.Flags); asmInstr = "ADD L"; break;
-        case 0x86: ALU8080::add(regs.A, memory.read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ADD M"; break;
+        case 0x86: ALU8080::add(regs.A, memory->read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ADD M"; break;
         case 0x87: ALU8080::add(regs.A, regs.A, regs.Flags); asmInstr = "ADD A"; break;
 
         // --- SUB A, r ---
@@ -120,7 +124,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x93: ALU8080::sub(regs.A, regs.E, regs.Flags); asmInstr = "SUB E"; break;
         case 0x94: ALU8080::sub(regs.A, regs.H, regs.Flags); asmInstr = "SUB H"; break;
         case 0x95: ALU8080::sub(regs.A, regs.L, regs.Flags); asmInstr = "SUB L"; break;
-        case 0x96: ALU8080::sub(regs.A, memory.read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "SUB M"; break;
+        case 0x96: ALU8080::sub(regs.A, memory->read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "SUB M"; break;
         case 0x97: ALU8080::sub(regs.A, regs.A, regs.Flags); asmInstr = "SUB A"; break;
 
         // --- INR r ---
@@ -134,7 +138,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- JMP addr ---
         case 0xC3: 
-            regs.PC = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            regs.PC = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             asmInstr = "JMP " + CPUUtils::hex16(regs.PC);
             break;
 
@@ -189,7 +193,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- CALL addr ---
         case 0xCD:
             {
-                uint16_t addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+                uint16_t addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
                 regs.PC += 2;
                 pushStack(regs.PC);
                 regs.PC = addr;
@@ -202,7 +206,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- conditional jumps ---
         case 0xCA: // JZ addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             regs.PC += 2;
             if(regs.getFlag(Registers8080::ZERO)) {
                 regs.PC = addr;
@@ -211,7 +215,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xC2: // JNZ addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::ZERO)) {
                 regs.PC = addr;
             } else {
@@ -221,7 +225,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xD2: // JNC addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::CARRY)) {
                 regs.PC = addr;
             } else {
@@ -231,7 +235,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xDA: // JC addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::CARRY)) {
                 regs.PC = addr;
             } else {
@@ -241,7 +245,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xE2: // JPO addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::PARITY)) {
                 regs.PC = addr;
             } else {
@@ -251,7 +255,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xEA: // JPE addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::PARITY)) {
                 regs.PC = addr;
             } else {
@@ -261,7 +265,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xFA: // JM addr
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::SIGN)) {
                 regs.PC = addr;
             } else {
@@ -272,7 +276,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // ---conditional calls ---
         case 0xCC: // CZ
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::ZERO)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -284,7 +288,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xC4: // CNZ
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::ZERO)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -296,7 +300,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xDC: // CC
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::CARRY)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -308,7 +312,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xD4: // CNC
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::CARRY)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -320,7 +324,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xEC: // CPE
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::PARITY)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -332,7 +336,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xE4: // CPO
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::PARITY)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -344,7 +348,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xF4: // CP
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(!regs.getFlag(Registers8080::SIGN)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -356,7 +360,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         case 0xFC: // CM
-            addr = memory.read(regs.PC) | (memory.read(regs.PC+1) << 8);
+            addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
             if(regs.getFlag(Registers8080::SIGN)) {
                 regs.PC += 2;
                 pushStack(regs.PC);
@@ -374,12 +378,12 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0xA3: regs.E = ALU8080::and_op(regs.A, regs.E, regs.Flags); asmInstr = "ANA E"; break;
         case 0xA4: regs.H = ALU8080::and_op(regs.A, regs.H, regs.Flags); asmInstr = "ANA H"; break;
         case 0xA5: regs.L = ALU8080::and_op(regs.A, regs.L, regs.Flags); asmInstr = "ANA L"; break;
-        case 0xA6: regs.A = ALU8080::and_op(regs.A, memory.read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ANA M"; break;
+        case 0xA6: regs.A = ALU8080::and_op(regs.A, memory->read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ANA M"; break;
         case 0xA7: regs.A = ALU8080::and_op(regs.A, regs.A, regs.Flags); asmInstr = "ANA A"; break;
 
         // -- AND immediate (ANI) ---
         case 0xE6:
-            value = memory.read(regs.PC++);
+            value = memory->read(regs.PC++);
             regs.A &= value;
             ALU8080::and_op(regs.A, value, regs.Flags);
             asmInstr = "ANI " + CPUUtils::hex8(value);
@@ -392,12 +396,12 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0xAB: regs.E = ALU8080::xor_op(regs.A, regs.E, regs.Flags); asmInstr = "XRA E"; break;
         case 0xAC: regs.H = ALU8080::xor_op(regs.A, regs.H, regs.Flags); asmInstr = "XRA H"; break;
         case 0xAD: regs.L = ALU8080::xor_op(regs.A, regs.L, regs.Flags); asmInstr = "XRA L"; break;
-        case 0xAE: regs.A = ALU8080::xor_op(regs.A, memory.read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "XRA M"; break;
+        case 0xAE: regs.A = ALU8080::xor_op(regs.A, memory->read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "XRA M"; break;
         case 0xAF: regs.A = ALU8080::xor_op(regs.A, regs.A, regs.Flags); asmInstr = "XRA A"; break;
 
         // --- XOR immediate (XRI) ---
         case 0xEE:
-            value = memory.read(regs.PC++);
+            value = memory->read(regs.PC++);
             regs.A ^= value;
             ALU8080::xor_op(regs.A, value, regs.Flags);
             asmInstr = "XRI " + CPUUtils::hex8(value);
@@ -410,12 +414,12 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0xB3: regs.E = ALU8080::or_op(regs.A, regs.E, regs.Flags); asmInstr = "ORA E"; break;
         case 0xB4: regs.H = ALU8080::or_op(regs.A, regs.H, regs.Flags); asmInstr = "ORA H"; break;
         case 0xB5: regs.L = ALU8080::or_op(regs.A, regs.L, regs.Flags); asmInstr = "ORA L"; break;
-        case 0xB6: regs.A = ALU8080::or_op(regs.A, memory.read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ORA M"; break;
+        case 0xB6: regs.A = ALU8080::or_op(regs.A, memory->read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ORA M"; break;
         case 0xB7: regs.A = ALU8080::or_op(regs.A, regs.A, regs.Flags); asmInstr = "ORA A"; break;
 
         // --- OR immediate (ORI) ---
         case 0xF6:
-            value = memory.read(regs.PC++);
+            value = memory->read(regs.PC++);
             regs.A |= value;
             ALU8080::or_op(regs.A, value, regs.Flags);
             asmInstr = "ORI " + CPUUtils::hex8(value);
@@ -423,7 +427,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- CPI (Compare A with immediate) ---
         case 0xFE: {
-            uint8_t data = memory.read(regs.PC++);
+            uint8_t data = memory->read(regs.PC++);
             uint8_t flags = regs.Flags;
             ALU8080::cmp(regs.A, data, flags);
             regs.Flags = flags;
@@ -433,16 +437,16 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- IN port ---
         case 0xDB:
-            port = memory.read(regs.PC++);
-            value = io.in(port);
+            port = memory->read(regs.PC++);
+            value = io->in(port);
             regs.A = value;
             asmInstr = "IN " + CPUUtils::hex8(port);
             break;
 
         // --- OUT port ---
         case 0xD3:
-            port = memory.read(regs.PC++);
-            io.out(port, regs.A);
+            port = memory->read(regs.PC++);
+            io->out(port, regs.A);
             asmInstr = "OUT " + CPUUtils::hex8(port);
             break;
 
@@ -451,13 +455,13 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- LXI B, d16 ---
         case 0x01:
-            regs.C = memory.read(regs.PC++);
-            regs.B = memory.read(regs.PC++);
+            regs.C = memory->read(regs.PC++);
+            regs.B = memory->read(regs.PC++);
             asmInstr = "LXI B, " + CPUUtils::hex16((regs.B << 8) | regs.C);
             break;
 
         // --- STAX B ---
-        case 0x02: memory.write((regs.B << 8) | regs.C, regs.A); asmInstr = "STAX B"; break;
+        case 0x02: memory->write((regs.B << 8) | regs.C, regs.A); asmInstr = "STAX B"; break;
 
         // --- INX B ---
         case 0x03:
@@ -488,7 +492,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         // --- LDAX B ---
-        case 0x0A: regs.A = memory.read((regs.B << 8) | regs.C); asmInstr = "LDAX B"; break;
+        case 0x0A: regs.A = memory->read((regs.B << 8) | regs.C); asmInstr = "LDAX B"; break;
 
         // --- DCX B ---
         case 0x0B:
@@ -514,13 +518,13 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- LXI D, d16 ---
         case 0x11:
-            regs.E = memory.read(regs.PC++);
-            regs.D = memory.read(regs.PC++);
+            regs.E = memory->read(regs.PC++);
+            regs.D = memory->read(regs.PC++);
             asmInstr = "LXI D, " + CPUUtils::hex16((regs.D << 8) | regs.E);
             break;
 
         // --- STAX D ---
-        case 0x12: memory.write((regs.D << 8) | regs.E, regs.A); asmInstr = "STAX D"; break;
+        case 0x12: memory->write((regs.D << 8) | regs.E, regs.A); asmInstr = "STAX D"; break;
 
         // --- INX D ---
         case 0x13:
@@ -558,7 +562,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             break;
 
         // --- LDAX D ---
-        case 0x1A: regs.A = memory.read((regs.D << 8) | regs.E); asmInstr = "LDAX D"; break;
+        case 0x1A: regs.A = memory->read((regs.D << 8) | regs.E); asmInstr = "LDAX D"; break;
 
         // --- DCX D ---
         case 0x1B:
@@ -586,8 +590,8 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- LXI H, d16 ---
         case 0x21:
-            regs.L = memory.read(regs.PC);
-            regs.H = memory.read(regs.PC+1);
+            regs.L = memory->read(regs.PC);
+            regs.H = memory->read(regs.PC+1);
             regs.PC += 2;
             asmInstr = "LXI H, " + CPUUtils::hex16((regs.H << 8) | regs.L);
             break;
@@ -595,11 +599,11 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- SHLD addr ---
         case 0x22:
             {
-                uint8_t low = memory.read(regs.PC++);
-                uint8_t high = memory.read(regs.PC++);
+                uint8_t low = memory->read(regs.PC++);
+                uint8_t high = memory->read(regs.PC++);
                 uint16_t addr = (high << 8) | low;
-                memory.write(addr, regs.L);
-                memory.write(addr+1, regs.H);
+                memory->write(addr, regs.L);
+                memory->write(addr+1, regs.H);
                 asmInstr = "SHLD " + CPUUtils::hex16(addr);
             }
             break;
@@ -639,7 +643,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x53: regs.D = regs.E; asmInstr = "MOV D, E"; break;
         case 0x54: regs.D = regs.H; asmInstr = "MOV D, H"; break;
         case 0x55: regs.D = regs.L; asmInstr = "MOV D, L"; break;
-        case 0x56: regs.D = memory.read((regs.H << 8) | regs.L); asmInstr = "MOV D, M"; break;
+        case 0x56: regs.D = memory->read((regs.H << 8) | regs.L); asmInstr = "MOV D, M"; break;
         case 0x57: regs.D = regs.A; asmInstr = "MOV D, A"; break;
 
         case 0x58: regs.E = regs.B; asmInstr = "MOV E, B"; break;
@@ -648,7 +652,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x5B: regs.E = regs.E; asmInstr = "MOV E, E"; break;
         case 0x5C: regs.E = regs.H; asmInstr = "MOV E, H"; break;
         case 0x5D: regs.E = regs.L; asmInstr = "MOV E, L"; break;
-        case 0x5E: regs.E = memory.read((regs.H << 8) | regs.L); asmInstr = "MOV E, M"; break;
+        case 0x5E: regs.E = memory->read((regs.H << 8) | regs.L); asmInstr = "MOV E, M"; break;
         case 0x5F: regs.E = regs.A; asmInstr = "MOV E, A"; break;
 
         case 0x60: regs.H = regs.B; asmInstr = "MOV H, B"; break;
@@ -657,7 +661,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x63: regs.H = regs.E; asmInstr = "MOV H, E"; break;
         case 0x64: regs.H = regs.H; asmInstr = "MOV H, H"; break;
         case 0x65: regs.H = regs.L; asmInstr = "MOV H, L"; break;
-        case 0x66: regs.H = memory.read((regs.H << 8) | regs.L); asmInstr = "MOV H, M"; break;
+        case 0x66: regs.H = memory->read((regs.H << 8) | regs.L); asmInstr = "MOV H, M"; break;
         case 0x67: regs.H = regs.A; asmInstr = "MOV H, A"; break;
 
         case 0x68: regs.L = regs.B; asmInstr = "MOV L, B"; break;
@@ -666,15 +670,15 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x6B: regs.L = regs.E; asmInstr = "MOV L, E"; break;
         case 0x6C: regs.L = regs.H; asmInstr = "MOV L, H"; break;
         case 0x6D: regs.L = regs.L; asmInstr = "MOV L, L"; break;
-        case 0x6E: regs.L = memory.read((regs.H << 8) | regs.L); asmInstr = "MOV L, M"; break;
+        case 0x6E: regs.L = memory->read((regs.H << 8) | regs.L); asmInstr = "MOV L, M"; break;
         case 0x6F: regs.L = regs.A; asmInstr = "MOV L, A"; break;
 
-        case 0x70: memory.write((regs.H << 8) | regs.L, regs.B); asmInstr = "MOV M, B"; break;
-        case 0x71: memory.write((regs.H << 8) | regs.L, regs.C); asmInstr = "MOV M, C"; break;
-        case 0x72: memory.write((regs.H << 8) | regs.L, regs.D); asmInstr = "MOV M, D"; break;
-        case 0x73: memory.write((regs.H << 8) | regs.L, regs.E); asmInstr = "MOV M, E"; break;
-        case 0x74: memory.write((regs.H << 8) | regs.L, regs.H); asmInstr = "MOV M, H"; break;
-        case 0x75: memory.write((regs.H << 8) | regs.L, regs.L); asmInstr = "MOV M, L"; break;
+        case 0x70: memory->write((regs.H << 8) | regs.L, regs.B); asmInstr = "MOV M, B"; break;
+        case 0x71: memory->write((regs.H << 8) | regs.L, regs.C); asmInstr = "MOV M, C"; break;
+        case 0x72: memory->write((regs.H << 8) | regs.L, regs.D); asmInstr = "MOV M, D"; break;
+        case 0x73: memory->write((regs.H << 8) | regs.L, regs.E); asmInstr = "MOV M, E"; break;
+        case 0x74: memory->write((regs.H << 8) | regs.L, regs.H); asmInstr = "MOV M, H"; break;
+        case 0x75: memory->write((regs.H << 8) | regs.L, regs.L); asmInstr = "MOV M, L"; break;
 
         case 0x28: asmInstr = "NOP (reserved)"; break;
         case 0x30: asmInstr = "NOP (reserved)"; break;
@@ -698,11 +702,11 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- LHLD addr ---
         case 0x2a:
             {
-                uint8_t low = memory.read(regs.PC++);
-                uint8_t high = memory.read(regs.PC++);
+                uint8_t low = memory->read(regs.PC++);
+                uint8_t high = memory->read(regs.PC++);
                 uint16_t addr =  (high << 8) | low;
-                regs.L = memory.read(addr);
-                regs.H = memory.read(addr+1);
+                regs.L = memory->read(addr);
+                regs.H = memory->read(addr+1);
                 asmInstr = "LHLD " + CPUUtils::hex16(addr);
             }
             break;
@@ -727,8 +731,8 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- LXI SP, d16 ---
         case 0x31:
             {
-                uint8_t low = memory.read(regs.PC++);
-                uint8_t high = memory.read(regs.PC++);
+                uint8_t low = memory->read(regs.PC++);
+                uint8_t high = memory->read(regs.PC++);
                 regs.SP = (high << 8) | low;
                 asmInstr = "LXI SP, " + CPUUtils::hex16(regs.SP);
             }
@@ -737,10 +741,10 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- STA addr ---
         case 0x32:
             {
-                uint8_t low = memory.read(regs.PC++);
-                uint8_t high = memory.read(regs.PC++);
+                uint8_t low = memory->read(regs.PC++);
+                uint8_t high = memory->read(regs.PC++);
                 uint16_t addr =  (high << 8) | low;
-                memory.write(addr, regs.A);
+                memory->write(addr, regs.A);
                 asmInstr = "STA " + CPUUtils::hex16(addr);
             }
             break;
@@ -751,9 +755,9 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- INR M ---
         case 0x34: {
                 uint16_t addr = regs.HL();
-                uint8_t value = memory.read(addr);
+                uint8_t value = memory->read(addr);
                 value = ALU8080::inc(value, regs.Flags);
-                memory.write(addr, value);
+                memory->write(addr, value);
                 asmInstr = "INR M";
             }
             break;
@@ -762,8 +766,8 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x35:
             {
                 uint16_t addr = regs.HL();
-                uint8_t value = memory.read(addr);
-                memory.write(addr, value--);
+                uint8_t value = memory->read(addr);
+                memory->write(addr, value--);
                 ALU8080::dec(value, regs.Flags);
                 asmInstr = "DCR M";
             }
@@ -772,8 +776,8 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- MVI M, d8 ---
         case 0x36:
             {
-                uint8_t value = memory.read(regs.PC++);
-                memory.write(regs.HL(), value);
+                uint8_t value = memory->read(regs.PC++);
+                memory->write(regs.HL(), value);
                 asmInstr = "MVI M, " + CPUUtils::hex8(value);
             }
             break;
@@ -795,10 +799,10 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- LDA addr ---
         case 0x3a:
             {
-                uint8_t low = memory.read(regs.PC++);
-                uint8_t high = memory.read(regs.PC++);
+                uint8_t low = memory->read(regs.PC++);
+                uint8_t high = memory->read(regs.PC++);
                 uint16_t addr =  (high << 8) | low;
-                regs.A = memory.read(addr);
+                regs.A = memory->read(addr);
                 asmInstr = "LDA " + CPUUtils::hex16(addr);
             }
             break;
@@ -813,7 +817,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x3f: regs.setFlag(Registers8080::CARRY, !regs.getFlag(Registers8080::CARRY)); asmInstr = "CMC"; break;
 
         // --- MOV M, A ---
-        case 0x77: memory.write((regs.H << 8) | regs.L, regs.A); asmInstr = "MOV M, A"; break;
+        case 0x77: memory->write((regs.H << 8) | regs.L, regs.A); asmInstr = "MOV M, A"; break;
 
         // --- ADC reg ---
         case 0x88: regs.A = ALU8080::adc(regs.A, regs.B, regs.Flags); asmInstr = "ADC B"; break;
@@ -822,7 +826,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x8b: regs.A = ALU8080::adc(regs.A, regs.E, regs.Flags); asmInstr = "ADC E"; break;
         case 0x8c: regs.A = ALU8080::adc(regs.A, regs.H, regs.Flags); asmInstr = "ADC H"; break;
         case 0x8d: regs.A = ALU8080::adc(regs.A, regs.L, regs.Flags); asmInstr = "ADC L"; break;
-        case 0x8e: regs.A = ALU8080::adc(regs.A, memory.read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ADC M"; break;
+        case 0x8e: regs.A = ALU8080::adc(regs.A, memory->read((regs.H << 8) | regs.L), regs.Flags); asmInstr = "ADC M"; break;
         case 0x8f: regs.A = ALU8080::adc(regs.A, regs.A, regs.Flags); asmInstr = "ADC A"; break;
 
         // --- SBB reg ---
@@ -832,7 +836,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0x9b: regs.A = ALU8080::sbb(regs.A, regs.E, regs.Flags); asmInstr = "SBB E"; break;
         case 0x9c: regs.A = ALU8080::sbb(regs.A, regs.H, regs.Flags); asmInstr = "SBB H"; break;
         case 0x9d: regs.A = ALU8080::sbb(regs.A, regs.L, regs.Flags); asmInstr = "SBB L"; break;
-        case 0x9e: regs.A = ALU8080::sbb(regs.A, memory.read(regs.HL()), regs.Flags); asmInstr = "SBB M"; break;
+        case 0x9e: regs.A = ALU8080::sbb(regs.A, memory->read(regs.HL()), regs.Flags); asmInstr = "SBB M"; break;
         case 0x9f: regs.A = ALU8080::sbb(regs.A, regs.A, regs.Flags); asmInstr = "SBB A"; break;
 
         // --- CMP reg ---
@@ -842,7 +846,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0xBB: ALU8080::cmp(regs.A, regs.E, regs.Flags); asmInstr = "CMP E"; break;
         case 0xBC: ALU8080::cmp(regs.A, regs.H, regs.Flags); asmInstr = "CMP H"; break;
         case 0xBD: ALU8080::cmp(regs.A, regs.L, regs.Flags); asmInstr = "CMP L"; break;
-        case 0xBE: ALU8080::cmp(regs.A, memory.read(regs.HL()), regs.Flags); asmInstr = "CMP M"; break;
+        case 0xBE: ALU8080::cmp(regs.A, memory->read(regs.HL()), regs.Flags); asmInstr = "CMP M"; break;
         case 0xBF: ALU8080::cmp(regs.A, regs.A, regs.Flags); asmInstr = "CMP A"; break;
 
         // --- RNZ ---
@@ -856,7 +860,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- ADI d8 ---
         case 0xC6:
             {
-                uint8_t data = memory.read(regs.PC++);
+                uint8_t data = memory->read(regs.PC++);
                 uint8_t flags = regs.Flags;
                 regs.A = ALU8080::add(regs.A, data, flags);
                 regs.Flags = flags;
@@ -881,7 +885,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- ACI d8 ---
         case 0xCE: {
-                uint8_t data = memory.read(regs.PC++);
+                uint8_t data = memory->read(regs.PC++);
                 uint8_t flags = regs.Flags;
                 uint8_t carry = (flags & Registers8080::CARRY) ? 1: 0;
                 regs.A = ALU8080::add(regs.A, data + carry, flags);
@@ -892,7 +896,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
         // --- SUI d8 ---
         case 0xD6: {
-                uint8_t data = memory.read(regs.PC++);
+                uint8_t data = memory->read(regs.PC++);
                 uint8_t flags = regs.Flags;
                 regs.A = ALU8080::sub(regs.A, data, flags);
                 regs.Flags = flags;
@@ -908,7 +912,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- SBI d8 ---
         case 0xDE:
             {
-                uint8_t data = memory.read(regs.PC++);
+                uint8_t data = memory->read(regs.PC++);
                 uint8_t flags = regs.Flags;
                 uint8_t carry = (flags & Registers8080::CARRY) ? 1: 0;
                 regs.A = ALU8080::sub(regs.A, data + carry, flags);
@@ -924,10 +928,10 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         case 0xE3:
             {
                 uint16_t temp = regs.HL();
-                regs.H = memory.read(regs.SP + 1);
-                regs.L = memory.read(regs.SP);
-                memory.write(regs.SP, (temp >> 8) & 0xFF);
-                memory.write(regs.SP, temp & 0xFF);
+                regs.H = memory->read(regs.SP + 1);
+                regs.L = memory->read(regs.SP);
+                memory->write(regs.SP, (temp >> 8) & 0xFF);
+                memory->write(regs.SP, temp & 0xFF);
                 asmInstr = "XTHL";
             }
             break;
@@ -957,7 +961,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         // --- JP addr ---
         case 0xF2:
             {
-                uint16_t addr = memory.read(regs.PC++) | (memory.read(regs.PC++) << 8);
+                uint16_t addr = memory->read(regs.PC++) | (memory->read(regs.PC++) << 8);
                 if(!regs.getFlag(Registers8080::SIGN)) regs.PC = addr;
                 asmInstr = "JP " + CPUUtils::hex16(addr);
             }
@@ -999,7 +1003,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 }
 
 bool CPU8080::loadProgram(uint16_t startAddress, std::vector<uint8_t>& program) {
-    bool loaded = memory.loadProgram(startAddress, program);
+    bool loaded = memory->loadProgram(startAddress, program);
     if(loaded) {
         regs.PC = startAddress;
     }
@@ -1033,9 +1037,9 @@ void CPU8080::testOpcodes() {
     for(uint16_t opcode=0; opcode<=0xFF; opcode++) {
         regs.reset();
         setRunning(true);
-        memory.write(0x1000, opcode);
-        memory.write(0x1001, 0x00);
-        memory.write(0x1002, 0x00);
+        memory->write(0x1000, opcode);
+        memory->write(0x1001, 0x00);
+        memory->write(0x1002, 0x00);
         regs.PC = 0x1000;
 
         std::cout << "TEST> opcode 0x" << std::hex << opcode << " -> ";

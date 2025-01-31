@@ -43,24 +43,19 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(RAYLIB REQUIRED raylib)
 
 # Find headers and sources
-file(GLOB_RECURSE SOURCE_FILES
-    src/*.cpp
-    src/emulator/cpu/*.cpp
-    src/views/*.cpp
-    src/views/emulators/*.cpp
-)
-#file(GLOB_RECURSE HEADER_FILES
-#    include/*.h
-#    include/emulator/*.h
-#    include/emulator/base/*.h
-#    include/emulator/cpu/*.h
-#    include/emulator/terminal/*.h
-#    include/helpers/*.h
-#    include/helpers/extensions/*.h
-#    include/views/*.h
-#    include/views/emulators/*.h
-#)
+file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 file(GLOB_RECURSE HEADER_FILES include/*.h)
+
+set(INCLUDE_DIRS "")
+foreach(header_file ${HEADER_FILES})
+    get_filename_component(dir ${header_file} DIRECTORY)
+    list(APPEND INCLUDE_DIRS ${dir})
+endforeach()
+list(REMOVE_DUPLICATES INCLUDE_DIRS)
+
+message(STATUS "Znalezione pliki źródłowe: ${SOURCE_FILES}")
+message(STATUS "Znalezione pliki nagłówkowe: ${HEADER_FILES}")
+message(STATUS "Znalezione katalogi include: ${INCLUDE_DIRS}")
 
 qt_add_executable(${PROJECT_NAME}
     ${SOURCE_FILES}
@@ -74,13 +69,8 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}/include
-#    ${CMAKE_SOURCE_DIR}/include/emulator
-#    ${CMAKE_SOURCE_DIR}/include/emulator/base
-#    ${CMAKE_SOURCE_DIR}/include/emulator/cpu
-#    ${CMAKE_SOURCE_DIR}/include/emulator/memory
-#    ${CMAKE_SOURCE_DIR}/include/emulator/io
-#    ${CMAKE_SOURCE_DIR}/include/views
+#    ${CMAKE_SOURCE_DIR}/include
+    ${INCLUDE_DIRS}
     ${RAYLIB_INCLUDE_DIRS}
     ${Qt6_INCLUDE_DIRS}
 )

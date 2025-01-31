@@ -1,5 +1,6 @@
 #include "MainWindow.h"
-#include "EmulatorWindow.h"
+#include "EmulatorWindow8080.h"
+#include "CPU8080.h"
 #include "AddMachineDialog.h"
 #include "MachinesManager.h"
 #include "CPUType.h"
@@ -45,7 +46,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 }
 
 CPUType MainWindow::getSelectedCPUType(int index) {
-    QString processorType = machines[index].processorType;
+    // QString processorType = machinesList->currentItem()->data(Qt::UserRole).toString();
+    std::cout << "trying to iterate machines" << std::endl;
+    for(const auto& machine : machines) {
+        std::cout << "mmmm" << std::endl;
+        std::cout << machine.machineName.toStdString() << " " << machine.processorType.toStdString() << std::endl;
+    }
+    QString processorType = "I8080"; // machines[index].processorType;
+    std::cout << "Selected CPU type: " << processorType.toStdString() << std::endl;
     if(processorType == "I8080") return CPUType::I8080;
     if(processorType == "Z80") return CPUType::Z80;
     if(processorType == "I8085") return CPUType::I8085;
@@ -70,10 +78,29 @@ void MainWindow::createMachine() {
 
 void MainWindow::startMachine() {
     this->hide();
+
     CPUType cpuType = getSelectedCPUType(machinesList->currentRow());
     std::cout << "Starting machine with CPU " << cpuType << std::endl;
-    emulatorWindow = new EmulatorWindow(cpuType);
-    emulatorWindow->start();
+
+    switch(cpuType) {
+        case CPUType::I8080: {
+            auto cpu8080 = emulatorManager.getCPU8080();
+            auto window8080 = emulatorManager.getEmulatorWindow8080();
+            window8080->start();
+            break;
+        }
+        case CPUType::Z80: {
+            auto cpuZ80 = emulatorManager.getCPUZ80();
+            auto windowZ80 = emulatorManager.getEmulatorWindowZ80();
+            windowZ80->start();
+            break;
+        }
+        // case CPUType::I8085: emulatorWindow = new EmulatorWindow(cpuType); break;
+        // case CPUType::I8086: emulatorWindow = new EmulatorWindow(cpuType); break;
+        // case CPUType::I8088: emulatorWindow = new EmulatorWindow(cpuType); break;
+        default: throw std::runtime_error("Unsupported CPU type!");
+    }
+
     this->show();
 }
 
@@ -92,11 +119,6 @@ void MainWindow::loadMachines() {
         item->setData(Qt::UserRole, machine.processorType);
         machinesList->addItem(item);
     }
-}
-
-void MainWindow::onClosed() {
-    delete emulatorWindow;
-    emulatorWindow = nullptr;
 }
 
 void MainWindow::removeMachine() {

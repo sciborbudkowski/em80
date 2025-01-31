@@ -1,6 +1,12 @@
 #include "EmulatorWindow8080.h"
 #include "AssetsLoader.h"
 #include "CPU8080.h"
+#include "Memory8080.h"
+#include "IO8080.h"
+
+#define RAYGUI_IMPLEMENTATION
+#include "raylib_wrapper.h"
+#include "raygui.h"
 
 #include <iostream>
 #include <QMessageBox>
@@ -12,12 +18,8 @@ EmulatorWindow8080::~EmulatorWindow8080() {
     if(font.texture.id != 0) UnloadFont(font);
 }
 
-void EmulatorWindow8080::start() { cpu.reset(); }
-
-void EmulatorWindow8080::update() { cpu.step(); }
-
 void EmulatorWindow8080::start() {
-    cpu.reset();
+    cpu->reset();
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Emulator | Intel 8080");
     SetTargetFPS(60);
@@ -34,34 +36,34 @@ void EmulatorWindow8080::start() {
         return;
     }
 
-    cpu.setRunning(true);
+    cpu->setRunning(true);
     char prgPath[512] = "\0";
 
     while(!WindowShouldClose()) {
         if(IsKeyPressed(KEY_BACKSPACE)) {
-            cpu.getIO().terminal.removeLastChar();
+            cpu->getIO().terminal->removeLastChar();
         } else if(IsKeyPressed(KEY_ENTER)) {
-            cpu.getIO().terminal.processCommand(cpu.getIO().terminal.getLastCommand());
+            cpu->getIO().terminal->processCommand(cpu->getIO().terminal->getLastCommand());
         } else if(IsKeyPressed(KEY_SPACE)) {
-            cpu.getIO().terminal.printChar(' ');
+            cpu->getIO().terminal->printChar(' ');
         } else {
             std::string ch = "";
             for(int key=KEY_A; key<=KEY_Z; key++) {
                 if(IsKeyPressed(key)) {
                     char chKey = (char)(key - KEY_A + 'a');
-                    cpu.getIO().terminal.printChar(chKey);
+                    cpu->getIO().terminal->printChar(chKey);
                     ch = chKey;
                 }
             }
             for(int key=KEY_ZERO; key<=KEY_NINE; key++) {
                 if(IsKeyPressed(key)) {
                     char chKey = (char)(key - KEY_ZERO + '0');
-                    cpu.getIO().terminal.printChar(chKey);
+                    cpu->getIO().terminal->printChar(chKey);
                     ch = chKey;
                 }
             }
 
-            cpu.getIO().terminal.setLastCommand(cpu.getIO().terminal.getLastCommand() + ch);
+            cpu->getIO().terminal->setLastCommand(cpu->getIO().terminal->getLastCommand() + ch);
         }
 
         BeginDrawing();
@@ -79,14 +81,14 @@ void EmulatorWindow8080::start() {
         renderDisassemblyBox();
         renderAndHandleButtons();
 
-        if(cpu.isRunning()) {
-            cpu.step();
+        if(cpu->isRunning()) {
+            cpu->step();
         }
 
         EndDrawing();
     }
 
-    cpu.setRunning(false);
+    cpu->setRunning(false);
     UnloadFont(font);
     CloseWindow();
 }
@@ -98,33 +100,33 @@ void EmulatorWindow8080::renderTerminal() {
 
     DrawRectangle(offsetX, offsetY, charWidth * 80, charHeight * 25, DARKGRAY);
 
-    for(int y=0; y<cpu.getIO().terminal.getBuffer().size(); y++) {
-        DrawTextEx(font, cpu.getIO().terminal.getBuffer()[y].c_str(), Vector2{(float)(offsetX), (float)(offsetY + y * charHeight)}, charHeight, 1, GREEN);
+    for(int y=0; y<cpu->getIO().terminal->getBuffer().size(); y++) {
+        DrawTextEx(font, cpu->getIO().terminal->getBuffer()[y].c_str(), Vector2{(float)(offsetX), (float)(offsetY + y * charHeight)}, charHeight, 1, GREEN);
     }
 
-    DrawRectangle(cpu.getIO().terminal.getCursorPos().first * charWidth + offsetX, cpu.getIO().terminal.getCursorPos().second * charHeight + offsetY, charWidth, charHeight, GREEN);
+    DrawRectangle(cpu->getIO().terminal->getCursorPos().first * charWidth + offsetX, cpu->getIO().terminal->getCursorPos().second * charHeight + offsetY, charWidth, charHeight, GREEN);
 }
 
 void EmulatorWindow8080::renderRegistersBox() {
     GuiGroupBox(Rectangle{termX - 10, 20, panelWidth, 135}, "REGISTERS");
-    guiRegisterBox(termX, 30.0f, "A:", cpu.getRegisters().A);
-    guiRegisterBox(termX, 55.0f, "B:", cpu.getRegisters().B);
-    guiRegisterBox(pX + 5, 55.0f, "C:", cpu.getRegisters().C);
-    guiRegisterBox(termX, 80.0f, "D:", cpu.getRegisters().D);
-    guiRegisterBox(pX + 5, 80.0f, "E:", cpu.getRegisters().E);
-    guiRegisterBox(termX, 105.0f, "H:", cpu.getRegisters().H);
-    guiRegisterBox(pX + 5, 105.0f, "L:", cpu.getRegisters().L);
-    guiRegisterBox(termX - 5, 130.0f, "PC:", cpu.getRegisters().PC);
-    guiRegisterBox(pX, 130.0f, "SP:", cpu.getRegisters().SP);
+    guiRegisterBox(termX, 30.0f, "A:", cpu->getRegisters().A);
+    guiRegisterBox(termX, 55.0f, "B:", cpu->getRegisters().B);
+    guiRegisterBox(pX + 5, 55.0f, "C:", cpu->getRegisters().C);
+    guiRegisterBox(termX, 80.0f, "D:", cpu->getRegisters().D);
+    guiRegisterBox(pX + 5, 80.0f, "E:", cpu->getRegisters().E);
+    guiRegisterBox(termX, 105.0f, "H:", cpu->getRegisters().H);
+    guiRegisterBox(pX + 5, 105.0f, "L:", cpu->getRegisters().L);
+    guiRegisterBox(termX - 5, 130.0f, "PC:", cpu->getRegisters().PC);
+    guiRegisterBox(pX, 130.0f, "SP:", cpu->getRegisters().SP);
 }
 
 void EmulatorWindow8080::renderFlagsBox() {
     GuiGroupBox(Rectangle{termX - 10, 165, panelWidth, 60}, "FLAGS");
-    guiFlagBox(termX, 175, "Z:", cpu.getRegisters().getFlag(Registers8080::Flag::ZERO));
-    guiFlagBox(termX + 45, 175, "S:", cpu.getRegisters().getFlag(Registers8080::Flag::SIGN));
-    guiFlagBox(termX + 90, 175, "P:", cpu.getRegisters().getFlag(Registers8080::Flag::PARITY));
-    guiFlagBox(termX - 5, 200, "C:", cpu.getRegisters().getFlag(Registers8080::Flag::CARRY));
-    guiFlagBox(termX + 40, 200, "AC:", cpu.getRegisters().getFlag(Registers8080::Flag::AUX_CARRY));
+    guiFlagBox(termX, 175, "Z:", cpu->getRegisters().getFlag(Registers8080::Flag::ZERO));
+    guiFlagBox(termX + 45, 175, "S:", cpu->getRegisters().getFlag(Registers8080::Flag::SIGN));
+    guiFlagBox(termX + 90, 175, "P:", cpu->getRegisters().getFlag(Registers8080::Flag::PARITY));
+    guiFlagBox(termX - 5, 200, "C:", cpu->getRegisters().getFlag(Registers8080::Flag::CARRY));
+    guiFlagBox(termX + 40, 200, "AC:", cpu->getRegisters().getFlag(Registers8080::Flag::AUX_CARRY));
 }
 
 void EmulatorWindow8080::renderDisassemblyBox() {
@@ -134,7 +136,7 @@ void EmulatorWindow8080::renderDisassemblyBox() {
                 DrawRectangleRec(Rectangle{termX, 245 + i*15 + 5, panelWidth - 20, 10}, DARKGREEN);
             }
             std::string label = " ";
-            if(cpu.lastInstructions.size() > i) label = cpu.lastInstructions[i];
+            if(cpu->lastInstructions.size() > i) label = cpu->lastInstructions[i];
             GuiLabel(Rectangle{termX + 15, 245 + i*15, panelWidth - 30, 20}, label.c_str());
         }
 }
@@ -187,13 +189,13 @@ void EmulatorWindow8080::renderMemoryBox(uint16_t startAddress) {
     for(int i=0; i<=0xF; i++) {
         for(int j=0; j<=0xF; j++) {
             uint16_t pc = startAddress + i*16 + j;
-            if(pc == cpu.getRegisters().PC) {
+            if(pc == cpu->getRegisters().PC) {
                 DrawRectangle(100 + j*50, buttonsY + 80 + i*20, 30, 15, RED);
             }
             auto color = WHITE;
             if(j % 2 == 0) color = LIGHTGRAY;
             char memLabel[3];
-            snprintf(memLabel, sizeof(memLabel), "%02Xh", cpu.getMemory().read(startAddress + i*16 + j));
+            snprintf(memLabel, sizeof(memLabel), "%02Xh", cpu->getMemory().read(startAddress + i*16 + j));
             float posX = 100 + j*50;
             float posY = buttonsY + 80 + i*20;
             DrawTextEx(font, memLabel, Vector2{posX, posY}, 16, 1, color);
@@ -202,8 +204,8 @@ void EmulatorWindow8080::renderMemoryBox(uint16_t startAddress) {
 }
 
 void EmulatorWindow8080::renderAndHandleButtons() {
-        if(GuiButton(Rectangle{20, buttonsY, 100, 30}, cpu.isRunning() ? "Stop" : "Start")) {
-            cpu.setRunning(!cpu.isRunning());
+        if(GuiButton(Rectangle{20, buttonsY, 100, 30}, cpu->isRunning() ? "Stop" : "Start")) {
+            cpu->setRunning(!cpu->isRunning());
         }
         if(GuiButton(Rectangle{130, buttonsY, 100, 30}, "Load PRG")) {
             QString fileName = QFileDialog::getOpenFileName(nullptr, "Load Program", ".", "Binary files (*.bin)");
@@ -225,8 +227,8 @@ void EmulatorWindow8080::renderAndHandleButtons() {
 
                 std::vector<uint8_t> buffer(fileSize);
                 file.read(reinterpret_cast<char*>(buffer.data()), fileSize);
-                if(cpu.loadProgram(0x0100, buffer)) {
-                    cpu.getIO().terminal.printString("Loaded program from %s to address: %04Xh\n", fileName.toStdString().c_str(), cpu.getRegisters().PC);
+                if(cpu->loadProgram(0x0100, buffer)) {
+                    cpu->getIO().terminal->printString("Loaded program from %s to address: %04Xh\n", fileName.toStdString().c_str(), cpu->getRegisters().PC);
                 } else {
                     QMessageBox::critical(nullptr, "Load Error", QString("Can not load program from file %1").arg(QString::fromStdString(fileName.toStdString())));
                 }
@@ -240,13 +242,13 @@ void EmulatorWindow8080::renderAndHandleButtons() {
             // }
         }
         if(GuiButton(Rectangle{350, buttonsY, 100, 30}, "Step >")) {
-            cpu.step();
+            cpu->step();
         }
         if(GuiButton(Rectangle{460, buttonsY, 100, 30}, "Reset")) {
-            cpu.reset();
+            cpu->reset();
         }
         if(GuiButton(Rectangle{570, buttonsY, 100, 30}, "Dump CPU")) {
-            cpu.consoleDump();
+            cpu->consoleDump();
         }
         if(GuiButton(Rectangle{680, buttonsY, 100, 30}, "Dump MEM")) {
             memoryViewVisible = !memoryViewVisible;
@@ -259,6 +261,6 @@ void EmulatorWindow8080::renderAndHandleButtons() {
         }
         if(GuiButton(Rectangle{790, buttonsY, 100, 30}, "Test Opcodes")) {
             std::cout << "EmulatorWindow::start() Test Opcodes" << std::endl;
-            cpu.testOpcodes();
+            cpu->testOpcodes();
         }
 }

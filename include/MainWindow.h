@@ -3,6 +3,7 @@
 #include "CPUType.h"
 #include "MachinesManager.h"
 #include "MachineProfile.h"
+#include "EmulatorManager.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -26,9 +27,9 @@ class MainWindow : public QMainWindow {
         QPushButton* deleteButton;
         QPushButton* exitAppButton;
         QListWidget* machinesList;
-        EmulatorWindow* emulatorWindow;
         MachinesManager machinesManager;
-
+        EmulatorManager emulatorManager;
+        
         std::vector<MachineProfile> machines;
 
     private slots:
@@ -37,5 +38,4 @@ class MainWindow : public QMainWindow {
         void updateButtons();
         void removeMachine();
         void loadMachines();
-        void onClosed();
 };

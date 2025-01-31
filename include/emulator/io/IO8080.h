@@ -1,13 +1,23 @@
-// #pragma once
+#pragma once
 
-// #include "IOBase.h"
+#include <cstdint>
+#include <vector>
+#include <memory>
 
-// class IO8080 : public IOBase {
-//     public:
-//         IO8080() {
-//             registerInputDevice(0x00, [this]() { return terminal.getChar(); });
-//             registerOutputDevice(0x01, [this](uint8_t value) { terminal.printChar(value); });
-//         }
+struct DiskController;
+struct Terminal8080;
 
-//         TerminalBase& getTerminal() { return terminal; }
-// };
+struct IO8080 {
+    std::vector<uint8_t> ports = std::vector<uint8_t>(256);
+    std::shared_ptr<Terminal8080> terminal;
+    std::shared_ptr<DiskController> disk;
+    bool diskEnabled = false;
+
+    IO8080();
+
+    void setTerminal(std::shared_ptr<Terminal8080> termPtr);
+    void setDisk(std::shared_ptr<DiskController> diskPtr);
+
+    uint8_t in(uint16_t port) const;
+    void out(uint16_t port, uint8_t value);
+};
