@@ -18,7 +18,7 @@ class TerminalBase {
             buffer.resize(heightChars, std::string(widthChars, ' '));
         }
 
-        ~TerminalBase() { UnloadFont(font); }
+        ~TerminalBase() = default;
 
         void handleInput(const std::string& command) { static_cast<Derived*>(this)->handleInput(command); }
 
@@ -58,8 +58,6 @@ class TerminalBase {
                     cursorX = 0;
                     cursorY++;
                 }
-
-                lastCommand += ch;
             }
 
             if(cursorY >= heightChars) {
@@ -69,7 +67,13 @@ class TerminalBase {
             }
         }
 
+        void printNewLine() {
+            cursorX = 0;
+            cursorY++;
+        }
+
         std::string getLastCommand() const { return lastCommand; }
+
         void setLastCommand(const std::string& command) { lastCommand = command; }
 
         std::vector<std::string>& getBuffer() { return buffer; }

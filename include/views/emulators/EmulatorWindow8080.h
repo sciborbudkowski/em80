@@ -9,8 +9,8 @@
 class EmulatorWindow8080 : public EmulatorWindowBase<EmulatorWindow8080, CPU8080> {
     public:
         EmulatorWindow8080(std::shared_ptr<CPU8080> cpu)
-            : EmulatorWindowBase<EmulatorWindow8080, CPU8080>(*cpu) {}
-        ~EmulatorWindow8080();
+            : EmulatorWindowBase<EmulatorWindow8080, CPU8080>(*cpu), cpu(cpu) {}
+        ~EmulatorWindow8080() = default;
 
         void start();
 

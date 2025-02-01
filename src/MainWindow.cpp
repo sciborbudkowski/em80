@@ -84,13 +84,11 @@ void MainWindow::startMachine() {
 
     switch(cpuType) {
         case CPUType::I8080: {
-            auto cpu8080 = emulatorManager.getCPU8080();
             auto window8080 = emulatorManager.getEmulatorWindow8080();
             window8080->start();
             break;
         }
         case CPUType::Z80: {
-            auto cpuZ80 = emulatorManager.getCPUZ80();
             auto windowZ80 = emulatorManager.getEmulatorWindowZ80();
             windowZ80->start();
             break;
@@ -98,7 +96,9 @@ void MainWindow::startMachine() {
         // case CPUType::I8085: emulatorWindow = new EmulatorWindow(cpuType); break;
         // case CPUType::I8086: emulatorWindow = new EmulatorWindow(cpuType); break;
         // case CPUType::I8088: emulatorWindow = new EmulatorWindow(cpuType); break;
-        default: throw std::runtime_error("Unsupported CPU type!");
+        default:
+            QMessageBox::critical(this, "Error", "Unsupported CPU type or CPU not set.");
+            break;
     }
 
     this->show();

@@ -8,7 +8,8 @@ enum CPUType {
     I8085,
     Z80,
     I8088,
-    I8086
+    I8086,
+    NOT_SET
 };
 
 inline std::string getCPUName(CPUType type) {
@@ -20,5 +21,5 @@ inline std::string getCPUName(CPUType type) {
         case CPUType::I8086: return "Intel 8086";
     }
 
-    throw std::runtime_error("Invalid CPU type");
+    throw std::runtime_error("CPU type not set. Call EmulatorManager::setCPU(ICPU*) first.");
 }

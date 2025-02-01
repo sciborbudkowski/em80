@@ -2,6 +2,7 @@
 
 #include "CPUBase.h"
 #include "RegistersZ80.h"
+#include "CPUUtils.h"
 
 #include <vector>
 #include <cstdint>
@@ -17,7 +18,10 @@ class CPUZ80 : public CPUBase<CPUZ80> {
         CPUZ80(
             std::shared_ptr<MemoryZ80> memoryPtr,
             std::shared_ptr<IOZ80> ioPtr
-        ) : memory(memoryPtr), io(ioPtr) {}
+        ) : memory(memoryPtr), io(ioPtr) {
+            utils = CPUUtils();
+        }
+
         ~CPUZ80() = default;
 
         void reset();
@@ -43,6 +47,7 @@ class CPUZ80 : public CPUBase<CPUZ80> {
         void testOpcodes();
 
     private:
+        CPUUtils utils;
         RegistersZ80 regs;
         std::shared_ptr<MemoryZ80> memory;
         std::shared_ptr<IOZ80> io;

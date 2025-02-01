@@ -14,10 +14,6 @@
 #include <QString>
 #include <fstream>
 
-EmulatorWindow8080::~EmulatorWindow8080() {
-    if(font.texture.id != 0) UnloadFont(font);
-}
-
 void EmulatorWindow8080::start() {
     cpu->reset();
 
@@ -36,16 +32,18 @@ void EmulatorWindow8080::start() {
         return;
     }
 
-    cpu->setRunning(true);
+    cpu->setRunning(false);
     char prgPath[512] = "\0";
 
     while(!WindowShouldClose()) {
         if(IsKeyPressed(KEY_BACKSPACE)) {
             cpu->getIO().terminal->removeLastChar();
+            cpu->getIO().terminal->setLastCommand(cpu->getIO().terminal->getLastCommand().substr(0, cpu->getIO().terminal->getLastCommand().size() - 1));
         } else if(IsKeyPressed(KEY_ENTER)) {
-            cpu->getIO().terminal->processCommand(cpu->getIO().terminal->getLastCommand());
-        } else if(IsKeyPressed(KEY_SPACE)) {
-            cpu->getIO().terminal->printChar(' ');
+            cpu->getIO().terminal->printNewLine();
+            cpu->getIO().terminal->handleInput(cpu->getIO().terminal->getLastCommand());
+            cpu->getIO().terminal->printNewLine();
+            cpu->getIO().terminal->setLastCommand("");
         } else {
             std::string ch = "";
             for(int key=KEY_A; key<=KEY_Z; key++) {
@@ -62,8 +60,14 @@ void EmulatorWindow8080::start() {
                     ch = chKey;
                 }
             }
+            if(IsKeyPressed(KEY_SPACE)) {
+                cpu->getIO().terminal->printChar(' ');
+                ch = ' ';
+            }
 
-            cpu->getIO().terminal->setLastCommand(cpu->getIO().terminal->getLastCommand() + ch);
+            if(!ch.empty()) {
+                cpu->getIO().terminal->setLastCommand(cpu->getIO().terminal->getLastCommand() + ch);
+            }
         }
 
         BeginDrawing();
@@ -228,7 +232,8 @@ void EmulatorWindow8080::renderAndHandleButtons() {
                 std::vector<uint8_t> buffer(fileSize);
                 file.read(reinterpret_cast<char*>(buffer.data()), fileSize);
                 if(cpu->loadProgram(0x0100, buffer)) {
-                    cpu->getIO().terminal->printString("Loaded program from %s to address: %04Xh\n", fileName.toStdString().c_str(), cpu->getRegisters().PC);
+                    cpu->getIO().terminal->printString("Loaded program from %s to address: %04Xh", fileName.toStdString().c_str(), cpu->getRegisters().PC);
+                    cpu->getIO().terminal->printNewLine();
                 } else {
                     QMessageBox::critical(nullptr, "Load Error", QString("Can not load program from file %1").arg(QString::fromStdString(fileName.toStdString())));
                 }

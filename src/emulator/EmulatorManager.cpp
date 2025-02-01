@@ -12,7 +12,7 @@ EmulatorManager::EmulatorManager() {
     io8080->setDisk(disk8080);
     memory8080->setIO(io8080);
 
-    cpu8080 = std::make_shared<CPU8080>(terminal8080,memory8080, io8080);
+    cpu8080 = std::make_shared<CPU8080>(terminal8080, memory8080, io8080);
     emulatorWindow8080 = std::make_shared<EmulatorWindow8080>(cpu8080);
 
     // --- Z80 create

@@ -53,9 +53,9 @@ foreach(header_file ${HEADER_FILES})
 endforeach()
 list(REMOVE_DUPLICATES INCLUDE_DIRS)
 
-message(STATUS "Znalezione pliki źródłowe: ${SOURCE_FILES}")
-message(STATUS "Znalezione pliki nagłówkowe: ${HEADER_FILES}")
-message(STATUS "Znalezione katalogi include: ${INCLUDE_DIRS}")
+#message(STATUS "Znalezione pliki źródłowe: ${SOURCE_FILES}")
+#message(STATUS "Znalezione pliki nagłówkowe: ${HEADER_FILES}")
+#message(STATUS "Znalezione katalogi include: ${INCLUDE_DIRS}")
 
 qt_add_executable(${PROJECT_NAME}
     ${SOURCE_FILES}

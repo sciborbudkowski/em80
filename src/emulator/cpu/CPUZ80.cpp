@@ -98,19 +98,19 @@ void CPUZ80::decodeAndExecute(uint8_t opcode, uint8_t subOpcode) {
         case 0x7D: regs.A = regs.L; asmInstr = "LD A, L"; regs.PC++; break;
         case 0x7E: regs.A = memory->read(regs.HL()); asmInstr = "LD A, (HL)"; regs.PC++; break;
         case 0x7F: regs.A = regs.A; asmInstr = "LD A, A"; regs.PC++; break;
-        case 0x06: regs.B = memory->read(regs.PC++); asmInstr = "LD B, #" + CPUUtils::hex8(regs.B); regs.PC++; break;
-        case 0x0E: regs.C = memory->read(regs.PC++); asmInstr = "LD C, #" + CPUUtils::hex8(regs.C); regs.PC++; break;
-        case 0x16: regs.D = memory->read(regs.PC++); asmInstr = "LD D, #" + CPUUtils::hex8(regs.D); regs.PC++; break;
-        case 0x1E: regs.E = memory->read(regs.PC++); asmInstr = "LD E, #" + CPUUtils::hex8(regs.E); regs.PC++; break;
-        case 0x26: regs.H = memory->read(regs.PC++); asmInstr = "LD H, #" + CPUUtils::hex8(regs.H); regs.PC++; break;
-        case 0x2E: regs.L = memory->read(regs.PC++); asmInstr = "LD L, #" + CPUUtils::hex8(regs.L); regs.PC++; break;
-        case 0x3E: regs.A = memory->read(regs.PC++); asmInstr = "LD A, #" + CPUUtils::hex8(regs.A); regs.PC++; break;
+        case 0x06: regs.B = memory->read(regs.PC++); asmInstr = "LD B, #" + utils.hex8_t[regs.B]; regs.PC++; break;
+        case 0x0E: regs.C = memory->read(regs.PC++); asmInstr = "LD C, #" + utils.hex8_t[regs.C]; regs.PC++; break;
+        case 0x16: regs.D = memory->read(regs.PC++); asmInstr = "LD D, #" + utils.hex8_t[regs.D]; regs.PC++; break;
+        case 0x1E: regs.E = memory->read(regs.PC++); asmInstr = "LD E, #" + utils.hex8_t[regs.E]; regs.PC++; break;
+        case 0x26: regs.H = memory->read(regs.PC++); asmInstr = "LD H, #" + utils.hex8_t[regs.H]; regs.PC++; break;
+        case 0x2E: regs.L = memory->read(regs.PC++); asmInstr = "LD L, #" + utils.hex8_t[regs.L]; regs.PC++; break;
+        case 0x3E: regs.A = memory->read(regs.PC++); asmInstr = "LD A, #" + utils.hex8_t[regs.A]; regs.PC++; break;
         case 0x0A: regs.A = memory->read(regs.BC()); asmInstr = "LD A, (BC)"; regs.PC++; break;
         case 0x1A: regs.A = memory->read(regs.DE()); asmInstr = "LD A, (DE)"; regs.PC++; break;
         case 0x3A: {
             uint16_t addr = ALUZ80::calculateAddress(memory->read(regs.PC++), memory->read(regs.PC++));
             regs.A = memory->read(addr);
-            asmInstr = "LD A, (" + CPUUtils::hex16(addr) + ")";
+            asmInstr = "LD A, (" + utils.hex16_t[addr] + ")";
             regs.PC++;
             break;
         }
@@ -129,21 +129,21 @@ void CPUZ80::decodeAndExecute(uint8_t opcode, uint8_t subOpcode) {
         case 0x32: {
             uint16_t addr = ALUZ80::calculateAddress(memory->read(regs.PC++), memory->read(regs.PC++));
             memory->write(addr, regs.A);
-            asmInstr = "LD (" + CPUUtils::hex16(addr) + "), A";
+            asmInstr = "LD (" + utils.hex16_t[addr] + "), A";
             regs.PC++;
             break;
         }
         case 0x22: {
             uint16_t addr = ALUZ80::calculateAddress(memory->read(regs.PC++), memory->read(regs.PC++));
             memory->write(addr, regs.HL());
-            asmInstr = "LD (" + CPUUtils::hex16(addr) + "), HL";
+            asmInstr = "LD (" + utils.hex16_t[addr] + "), HL";
             regs.PC++;
             break;
         }
         case 0x2A: {
             uint16_t addr = regs.HL();
             regs.HL(memory->read(addr));
-            asmInstr = "LD HL, (" + CPUUtils::hex16(addr) + ")";
+            asmInstr = "LD HL, (" + utils.hex16_t[addr] + ")";
             regs.PC++;
             break;
         }
@@ -176,7 +176,7 @@ void CPUZ80::decodeAndExecute(uint8_t opcode, uint8_t subOpcode) {
             uint16_t addr = regs.HL();
             uint8_t value = memory->read(regs.PC++);
             memory->write(addr, value);
-            asmInstr = "LD (HL), #" + CPUUtils::hex8(value);
+            asmInstr = "LD (HL), #" + utils.hex8_t[value];
             break;
         }
     }
@@ -213,15 +213,15 @@ void CPUZ80::consoleDump()
 std::cout << "CPU: (8080)" << std::endl;
 std::cout << "----------------------------------------" << std::endl;
 std::cout << "Registers: (Z80)" << std::endl;
-std::cout << "A:   " << CPUUtils::hex8(regs.A) << std::endl;
-std::cout << "B:   " << CPUUtils::hex8(regs.B) << std::endl;
-std::cout << "C:   " << CPUUtils::hex8(regs.C) << std::endl;
-std::cout << "D:   " << CPUUtils::hex8(regs.D) << std::endl;
-std::cout << "E:   " << CPUUtils::hex8(regs.E) << std::endl;
-std::cout << "H:   " << CPUUtils::hex8(regs.H) << std::endl;
-std::cout << "L:   " << CPUUtils::hex8(regs.L) << std::endl;
-std::cout << "PC:  " << CPUUtils::hex16(regs.PC) << std::endl;
-std::cout << "SP:  " << CPUUtils::hex16(regs.SP) << std::endl;
+std::cout << "A:   " << utils.hex8_t[regs.A] << std::endl;
+std::cout << "B:   " << utils.hex8_t[regs.B] << std::endl;
+std::cout << "C:   " << utils.hex8_t[regs.C] << std::endl;
+std::cout << "D:   " << utils.hex8_t[regs.D] << std::endl;
+std::cout << "E:   " << utils.hex8_t[regs.E] << std::endl;
+std::cout << "H:   " << utils.hex8_t[regs.H] << std::endl;
+std::cout << "L:   " << utils.hex8_t[regs.L] << std::endl;
+std::cout << "PC:  " << utils.hex16_t[regs.PC] << std::endl;
+std::cout << "SP:  " << utils.hex16_t[regs.SP] << std::endl;
 std::cout << "----------------------------------------" << std::endl;
 std::cout << "Flags: " << std::endl;
 std::cout << "C:   " << regs.getFlag(RegistersZ80::CARRY) << std::endl;

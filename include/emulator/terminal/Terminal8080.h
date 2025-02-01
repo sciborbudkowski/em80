@@ -13,7 +13,7 @@ class Terminal8080 : public TerminalBase<Terminal8080> {
     public:
         Terminal8080(int widthChars = 80, int heightChars = 25, int widthPixels = 800, int heightPixels = 600);
 
-        void processCommand(const std::string& command);
+        void handleInput(const std::string& command);
 
         void setMemory(std::shared_ptr<Memory8080> memPtr);
 

@@ -7,10 +7,12 @@
 Terminal8080::Terminal8080(int widthChars, int heightChars, int widthPixels, int heightPixels)
     : TerminalBase<Terminal8080>(widthChars, heightChars, widthPixels, heightPixels) {}
 
-void Terminal8080::processCommand(const std::string& command) {
+void Terminal8080::handleInput(const std::string& command) {
     std::istringstream iss(command);
     std::string cmd;
     uint16_t startAddress = 0, size = 0;
+
+    if(command.empty()) return;
 
     if(!(iss >> cmd)) {
         printString("Unknown command.");

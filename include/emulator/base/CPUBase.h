@@ -21,6 +21,7 @@ class CPUBase : public ICPU {
         void addLastInstruction(const std::string& instruction) override {
             if(lastInstructions.size() >= 64) lastInstructions.pop_front();
             lastInstructions.push_back(instruction);
+            executedInstructions++;
         }
 
         void dumpLastInstructions(int num = 8) const override {
@@ -32,4 +33,11 @@ class CPUBase : public ICPU {
                 if(counter >= num) break;
             }
         }
+
+        unsigned int getExecutedInstructions() const { return executedInstructions; }
+
+    protected:
+        unsigned int executedInstructions = 0;
+        int currentTimer = 0;
+        int totalSpeeding = 0;
 };

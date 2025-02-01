@@ -110,6 +110,8 @@ struct ALU8080 {
     static uint8_t inc(uint8_t acc, uint8_t& flags) {
         uint16_t result = acc + 1;
 
+        flags &= ~(ZERO | SIGN | PARITY | AUX_CARRY);
+
         if((result & 0xFF) == 0) flags |= ZERO;
         if(result & 0x80) flags |= SIGN;
         if(CPUUtils::calculateParity(result & 0xFF)) flags |= PARITY;
@@ -120,6 +122,8 @@ struct ALU8080 {
 
     static uint8_t dec(uint8_t acc, uint8_t& flags) {
         uint16_t result = acc - 1;
+
+        flags &= ~(ZERO | SIGN | PARITY | AUX_CARRY);
 
         if((result & 0xFF) == 0) flags |= ZERO;
         if(result & 0x80) flags |= SIGN;
