@@ -37,6 +37,8 @@ class CPUBase : public ICPU {
         unsigned int getExecutedInstructions() const { return executedInstructions; }
 
     protected:
+        //std::shared_ptr
+
         unsigned int executedInstructions = 0;
         int currentTimer = 0;
         int totalSpeeding = 0;

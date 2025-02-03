@@ -3,6 +3,7 @@
 #include "CPU8080.h"
 #include "Memory8080.h"
 #include "IO8080.h"
+#include "StartAddressDialog.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include "raylib_wrapper.h"
@@ -220,6 +221,11 @@ void EmulatorWindow8080::renderAndHandleButtons() {
                     return;
                 }
 
+                StartAddressDialog dialog(nullptr, 0x0100);
+                if(dialog.exec() == QDialog::Accepted) {
+                    startAddressForLoadedProgram = dialog.getStartAddress();
+                }
+
                 file.seekg(0, std::ios::end);
                 size_t fileSize = file.tellg();
                 file.seekg(0, std::ios::beg);
@@ -231,8 +237,8 @@ void EmulatorWindow8080::renderAndHandleButtons() {
 
                 std::vector<uint8_t> buffer(fileSize);
                 file.read(reinterpret_cast<char*>(buffer.data()), fileSize);
-                if(cpu->loadProgram(0x0100, buffer)) {
-                    cpu->getIO().terminal->printString("Loaded program from %s to address: %04Xh", fileName.toStdString().c_str(), cpu->getRegisters().PC);
+                if(cpu->loadProgram(startAddressForLoadedProgram, buffer)) {
+                    cpu->getIO().terminal->printString("Loaded program from %s to address: %04Xh", fileName.toStdString().c_str(), startAddressForLoadedProgram);
                     cpu->getIO().terminal->printNewLine();
                 } else {
                     QMessageBox::critical(nullptr, "Load Error", QString("Can not load program from file %1").arg(QString::fromStdString(fileName.toStdString())));
@@ -241,10 +247,11 @@ void EmulatorWindow8080::renderAndHandleButtons() {
         }
         if(GuiButton(Rectangle{240, buttonsY, 100, 30}, "Load DSK")) {
             QString fileName = QFileDialog::getOpenFileName(nullptr, "Load Disk", ".", "Disk files (*.dsk)");
-            // if(!fileName.isEmpty()) {
-            //     cpu.disk.loadDiskFromFile(fileName.toStdString(), cpu.memory, 0x0100);
-            //     cpu.io.getTerminal().printString("Loaded disk from %s\n", fileName.toStdString().c_str());
-            // }
+            if(!fileName.isEmpty()) {
+                //cpu.disk.loadDiskFromFile(fileName.toStdString(), cpu.memory, 0x0100);
+                //cpu->get
+                cpu->getIO().terminal->printString("Loaded disk from %s\n", fileName.toStdString().c_str());
+            }
         }
         if(GuiButton(Rectangle{350, buttonsY, 100, 30}, "Step >")) {
             cpu->step();

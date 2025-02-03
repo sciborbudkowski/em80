@@ -1,10 +1,12 @@
 #pragma once
 
+#include "MemoryBase.h"
+
 #include <cstdint>
 #include <vector>
 #include <iostream>
 
-struct MemoryZ80 {
+struct MemoryZ80 : public MemoryBase<MemoryZ80> {
     std::vector<uint8_t> ram = std::vector<uint8_t>(64 * 1024);
     
     uint8_t read(uint16_t address) const {

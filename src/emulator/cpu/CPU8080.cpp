@@ -1023,7 +1023,6 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
     addLastInstruction(asmInstr);
 
-    /*
     std::cout 
         << "|" << executedInstructions << "| "
         << "[" 
@@ -1033,26 +1032,25 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
         << static_cast<int>(opcode) 
         << " ] " 
         << asmInstr 
-        << " (cycles: " 
-        << std::dec
-        << instructionCycles[opcode] 
-        << ") realtime: " 
-        << lastCycleTime 
-        << "us, expected: " 
-        << cycleDuration 
-        << "us" 
-        << (notifyCycleTooLong ? " \033[31m(CYCLE TOO LONG!)\033[0m" : "")
-        << (notifyCycleTooShort ? " \033[33m(CYCLE TOO SHORT!)\033[0m" : "")
-        << (notifyCycleEqual ? " \033[32m(CYCLE OK)\033[0m" : "")
-        << " TIMER: " << currentTimer << "us"
+        // << " (cycles: " 
+        // << std::dec
+        // << instructionCycles[opcode] 
+        // << ") realtime: " 
+        // << lastCycleTime 
+        // << "us, expected: " 
+        // << cycleDuration 
+        // << "us" 
+        // << (notifyCycleTooLong ? " \033[31m(CYCLE TOO LONG!)\033[0m" : "")
+        // << (notifyCycleTooShort ? " \033[33m(CYCLE TOO SHORT!)\033[0m" : "")
+        // << (notifyCycleEqual ? " \033[32m(CYCLE OK)\033[0m" : "")
+        // << " TIMER: " << currentTimer << "us"
         << std::endl;
-    */
 }
 
 bool CPU8080::loadProgram(uint16_t startAddress, std::vector<uint8_t>& program) {
     bool loaded = memory->loadProgram(startAddress, program);
     if(loaded) {
-        regs.PC = startAddress - 1;
+        regs.PC = startAddress;
     }
     return loaded;
 }

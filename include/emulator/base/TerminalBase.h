@@ -46,6 +46,7 @@ class TerminalBase {
         }
 
         void printChar(uint8_t ch) {
+            status = false;
             if(ch == '\n') {
                 cursorX = 0;
                 cursorY++;
@@ -65,6 +66,7 @@ class TerminalBase {
                 buffer.push_back(std::string(widthChars, ' '));
                 cursorY = heightChars - 1;
             }
+            status = true;
         }
 
         void printNewLine() {
@@ -79,6 +81,7 @@ class TerminalBase {
         std::vector<std::string>& getBuffer() { return buffer; }
 
         void printString(const char* format, ...) {
+            status = false;
             va_list args;
             va_start(args, format);
 
@@ -96,21 +99,27 @@ class TerminalBase {
                 if(ch == '\0') break;
                 printChar(ch);
             }
+            status = true;
         }
 
         void clear() {
+            status = false;
             buffer.clear();
             buffer.resize(heightChars, std::string(widthChars, ' '));
             cursorX = 0;
             cursorY = 0;
+            status = true;
         }
 
         void setCursorPos(int newX, int newY) {
+            status = false;
             cursorX = newX;
             cursorY = newY;
+            status = true;
         }
 
         void removeLastChar() {
+            status = false;
             if(cursorX > 0) {
                 cursorX--;
                 buffer[cursorY][cursorX] = ' ';
@@ -119,11 +128,14 @@ class TerminalBase {
                 cursorX = widthChars - 1;
                 buffer[cursorY][cursorX] = ' ';
             }
+            status = true;
         }
 
         std::pair<int, int> getCursorPos() const { return {cursorX, cursorY}; }
 
         char getLastChar() const { return lastChar; }
+
+        bool getStatus() const { return status; }
 
     protected:
         int widthChars, heightChars;
@@ -132,6 +144,7 @@ class TerminalBase {
         float cellWidth, cellHeight;
         int cursorX, cursorY;
         char lastChar;
+        bool status = true;
 
         Font font;
         std::vector<std::string> buffer;

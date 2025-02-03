@@ -3,6 +3,8 @@
 #include "CPUBase.h"
 #include "Registers8080.h"
 #include "CPUUtils.h"
+#include "CPMBIOS.h"
+
 #include <vector>
 #include <memory>
 #include <stdexcept>
@@ -35,6 +37,7 @@ class CPU8080 : public CPUBase<CPU8080> {
         uint16_t popStack();
 
         const Registers8080& getRegisters() const { return regs; }
+        Registers8080& getRegisters() { return regs; }
         const Memory8080& getMemory() const { return *memory; }
         const Terminal8080& getTerminal() const { return *terminal; }
         IO8080& getIO() { return *io; }
@@ -53,6 +56,7 @@ class CPU8080 : public CPUBase<CPU8080> {
         std::shared_ptr<Memory8080> memory;
         std::shared_ptr<IO8080> io;
         std::shared_ptr<Terminal8080> terminal;
+        std::shared_ptr<CPMBIOS> cpmbios;
         CPUUtils utils;
 
         bool running = false;

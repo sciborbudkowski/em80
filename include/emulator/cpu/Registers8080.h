@@ -1,8 +1,10 @@
 #pragma once
 
+#include "RegistersBase.h"
+
 #include <cstdint>
 
-struct Registers8080 {
+struct Registers8080 : public RegistersBase<Registers8080> {
     uint8_t A, B, C, D, E, H, L;
     uint16_t SP, PC;
     uint8_t Flags;

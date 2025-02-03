@@ -1,23 +1,9 @@
-// #pragma once
+#pragma once
 
-// #include <cstdint>
-// #include <variant>
+#include <cstdint>
 
-// #include "RegisterX.h"
-
-// class RegistersBase {
-//     public:
-//         virtual ~RegistersBase() = default;
-
-//         virtual void reset() = 0;
-//         virtual uint16_t getProgramCounter() const = 0;
-//         virtual void setProgramCounter(uint16_t value) = 0;
-
-//         virtual uint16_t getStackPointer() const = 0;
-//         virtual void setStackPointer(uint16_t value) = 0;
-
-//         virtual uint16_t getRegisterPair(int pair) const = 0;
-//         virtual void setRegisterPair(int pair, uint16_t value) = 0;
-
-//         virtual void dumpRegisters() const = 0;
-// };
+template <typename Derived>
+class RegistersBase {
+    public:
+        void reset() { static_cast<Derived*>(this)->reset(); }
+};

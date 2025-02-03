@@ -1,12 +1,14 @@
 #pragma once
 
+#include "MemoryBase.h"
+
 #include <cstdint>
 #include <vector>
 #include <memory>
 
 struct IO8080;
 
-struct Memory8080 {
+struct Memory8080 : public MemoryBase<Memory8080> {
     static constexpr size_t RAM_SIZE = 0x10000;
 
     std::vector<uint8_t> ram = std::vector<uint8_t>(RAM_SIZE);
