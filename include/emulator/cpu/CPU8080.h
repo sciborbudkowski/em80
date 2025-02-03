@@ -3,7 +3,7 @@
 #include "CPUBase.h"
 #include "Registers8080.h"
 #include "CPUUtils.h"
-#include "CPMBIOS.h"
+#include "CPMBIOS8080.h"
 
 #include <vector>
 #include <memory>
@@ -18,8 +18,9 @@ class CPU8080 : public CPUBase<CPU8080> {
         CPU8080(
             std::shared_ptr<Terminal8080> terminalPtr,
             std::shared_ptr<Memory8080> memoryPtr,
-            std::shared_ptr<IO8080> ioPtr
-        ) : terminal(terminalPtr), memory(memoryPtr), io(ioPtr) {
+            std::shared_ptr<IO8080> ioPtr,
+            std::shared_ptr<CPMBIOS8080> cpmbiosPtr
+        ) : terminal(terminalPtr), memory(memoryPtr), io(ioPtr), cpmbios(cpmbiosPtr) {
             utils = CPUUtils();
         }
 
@@ -36,11 +37,18 @@ class CPU8080 : public CPUBase<CPU8080> {
         void pushStack(uint16_t value);
         uint16_t popStack();
 
-        const Registers8080& getRegisters() const { return regs; }
         Registers8080& getRegisters() { return regs; }
+        const Registers8080& getRegisters() const { return regs; }
+
         const Memory8080& getMemory() const { return *memory; }
+
         const Terminal8080& getTerminal() const { return *terminal; }
+
         IO8080& getIO() { return *io; }
+        const IO8080& getIO() const { return *io; }
+        
+        CPMBIOS8080& getCPMBIOS() { return *cpmbios; }
+        const CPMBIOS8080& getCPMBIOS() const { return *cpmbios; }
 
         bool isRunning() const { return running; }
         void setRunning(bool value) { running = value; }
@@ -56,7 +64,7 @@ class CPU8080 : public CPUBase<CPU8080> {
         std::shared_ptr<Memory8080> memory;
         std::shared_ptr<IO8080> io;
         std::shared_ptr<Terminal8080> terminal;
-        std::shared_ptr<CPMBIOS> cpmbios;
+        std::shared_ptr<CPMBIOS8080> cpmbios;
         CPUUtils utils;
 
         bool running = false;

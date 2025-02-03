@@ -202,9 +202,19 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
             {
                 uint16_t addr = memory->read(regs.PC) | (memory->read(regs.PC+1) << 8);
                 regs.PC += 2;
-                pushStack(regs.PC);
-                regs.PC = addr;
-                asmInstr = "CALL " + utils.hex16_t[addr];
+
+                if(addr == CBIOS) {
+                    if(cpmbios) {
+                    cpmbios->call(regs.C);
+                    } else {
+                        throw std::runtime_error("CPM BIOS not initialized!");
+                    }
+                    asmInstr = "CALL BIOS " + utils.hex8_t[regs.C];
+                } else {
+                    pushStack(regs.PC);
+                    regs.PC = addr;
+                    asmInstr = "CALL " + utils.hex16_t[addr];
+                }
             }
             break;
 

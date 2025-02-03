@@ -3,21 +3,20 @@
 #include "CPU8080.h"
 #include "EmulatorWindowBase.h"
 #include "Terminal8080.h"
-#include "CPMBIOS.h"
+#include "CPMBIOS8080.h"
 
 #include <memory>
 
-class EmulatorWindow8080 : public EmulatorWindowBase<EmulatorWindow8080, CPU8080, CPMBIOS<Memory8080, CPU8080, Terminal8080, DiskController8080>> {
+class EmulatorWindow8080 : public EmulatorWindowBase<EmulatorWindow8080, CPU8080, CPMBIOS8080> {
     public:
-        // EmulatorWindow8080(std::shared_ptr<CPU8080> cpu) : EmulatorWindowBase<EmulatorWindow8080, CPU8080>(*cpu), cpu(cpu) {}
-        EmulatorWindow8080(std::shared_ptr<CPU8080> cpu, std::shared_ptr<CPMBIOS<Memory8080, CPU8080, Terminal8080, DiskController8080>> cpmBios)
-            : EmulatorWindowBase<EmulatorWindow8080, CPU8080, CPMBIOS<Memory8080, CPU8080, Terminal8080, DiskController8080>>(*cpu, cpmBios) {}
+        EmulatorWindow8080(std::shared_ptr<CPU8080> cpuPtr, std::shared_ptr<CPMBIOS8080> cpmbiosPtr);
         ~EmulatorWindow8080() = default;
 
         void start();
 
     private:
         std::shared_ptr<CPU8080> cpu;
+        std::shared_ptr<CPMBIOS8080> cpmbios;
 
         bool memoryViewVisible = false;
         int memoryViewStartAddress = 0x0000;

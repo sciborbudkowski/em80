@@ -15,6 +15,11 @@
 #include <QString>
 #include <fstream>
 
+EmulatorWindow8080::EmulatorWindow8080(std::shared_ptr<CPU8080> cpuPtr, std::shared_ptr<CPMBIOS8080> cpmbiosPtr)
+    : EmulatorWindowBase<EmulatorWindow8080, CPU8080, CPMBIOS8080>(*cpuPtr), cpu(cpuPtr), cpmbios(cpmbiosPtr) {
+    cpmbios->setResetCPUCallback([this]() { cpu->reset(); });
+}
+
 void EmulatorWindow8080::start() {
     cpu->reset();
 

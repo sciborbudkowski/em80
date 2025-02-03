@@ -15,6 +15,32 @@
 #define HDDISKS     2
 #define STACK       0xEF00
 
+enum class BIOSCALL : uint16_t {
+    BOOT       = 0x00,
+    WBOOT      = 0x01,
+    CONSTAT    = 0x02,
+    CONSIN     = 0x03,
+    CONSOUT    = 0x04,
+    LIST       = 0x05,
+    PUNCH      = 0x06,
+    READER     = 0x07,
+    HOME       = 0x08,
+    SELDISC    = 0x09,
+    SETTRACK   = 0x0A,
+    SETSECTOR  = 0x0B,
+    SETDMA     = 0x0C,
+    RDSECTOR   = 0x0D,
+    WRSECTOR   = 0x0E,
+    LISTSTAT   = 0x0F,
+    SECTTRAN   = 0x10,
+    OPENUNIX   = 0x11,
+    CREATEUNIX = 0x12,
+    RDWUNIX    = 0x13,
+    WRUNIX     = 0x14,
+    CLOSEUNIX  = 0x15,
+    FINISH     = 0x16,
+    DOTIME     = 0x17
+};
 
 template <typename RegistersType, typename MemoryType, typename TerminalType, typename DiskControllerType>
 class CPMBIOS {
@@ -23,38 +49,8 @@ class CPMBIOS {
             : registers(registers), memory(memory), terminal(terminal), diskController(diskController) {}
 
         void call(uint16_t callNumber) { static_cast<Derived*>(this)->call(callNumber); }
-        //     switch(callNumber) {
-        //         case 0x00:      // CONIN
-        //             registers->A = static_cast<uint8_t>(terminal->getLastChar());
-        //             break;
-        //         case 0x01:      // CONOUT
-        //             terminal->printChar(static_cast<char>(registers->A));
-        //             break;
-        //         case 0x02:      // LISTOUT
-        //             char ch = static_cast<char>(registers->A);
-        //             terminal->printChar(ch);
-        //             break;
-        //         case 0x03:      // LISTSTR
-        //             uint16_t addr = registers->HL();
-        //             std::string str;
-        //             char c = static_cast<char>(memory->read(addr));
-        //             while(c != '$') {
-        //                 str.push_back(c);
-        //                 addr++;
-        //                 c = static_cast<char>(memory->read(addr));
-        //             }
-        //             terminal->printString(str);
-        //             break;
-        //         case 0x04:      // CONSTAT
-        //             bool status = terminal->getStatus();
-        //             registers->A = (status ? 0xFF : 0x00);
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // }
 
-    private:
+    protected:
         RegistersType* registers;
         MemoryType* memory;
         TerminalType* terminal;
