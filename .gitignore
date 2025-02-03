@@ -31,5 +31,12 @@
 *.out
 *.app
 
-# build Directory
+# Build Directory
 build/
+
+# Other files
+*.tgz
+*.zip
+*.rar
+*.tar.gz
+*.7z
