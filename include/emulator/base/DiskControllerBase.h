@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdint>
 #include <stdexcept>
+#include <optional>
 
 template <typename Derived>
 class DiskControllerBase {
@@ -30,16 +31,24 @@ class DiskControllerBase {
             currentSector = 0;
         }
 
-        void setDiskGeometry(size_t sectorSize, size_t numberOfSides, size_t numberOfTracks) {
+        void setDiskGeometry(size_t driveNumber, size_t sectorSize, size_t numberOfSides, size_t numberOfTracks) {
+            this->currentDrive = driveNumber;
             this->sectorSize = sectorSize;
             this->numberOfSides = numberOfSides;
             this->numberOfTracks = numberOfTracks;
         }
 
+        void setCurrentDrive(size_t driveNumber) { this->currentDrive = driveNumber; }
+        void setCurrentTrack(size_t trackNumber) { this->currentTrack = trackNumber; }
+        void setCurrentSector(size_t sectorNumber) { this->currentSector = sectorNumber; }
+
+        void determineDiskFormat() {}
+
     protected:
         std::vector<uint8_t> data;
         size_t sectorSize = 128, numberOfSides = 2, numberOfTracks = 26;
+        size_t currentSector = 0, currentSide = 0, currentTrack = 0, currentDrive = 0;
         size_t totalSectors = 0;
-        size_t currentSector = 0;
         size_t sectorOffset = 0;
+        std::optional<uint16_t> dphAddress;
 };

@@ -15,17 +15,17 @@
 #define HDDISKS     2
 #define STACK       0xEF00
 
-enum class BIOSCALL : uint16_t {
+enum BIOSCALL : uint16_t {
     BOOT       = 0x00,
     WBOOT      = 0x01,
-    CONSTAT    = 0x02,
-    CONSIN     = 0x03,
-    CONSOUT    = 0x04,
+    CONST      = 0x02,
+    CONIN      = 0x03,
+    CONOUT     = 0x04,
     LIST       = 0x05,
     PUNCH      = 0x06,
     READER     = 0x07,
     HOME       = 0x08,
-    SELDISC    = 0x09,
+    SELDSK     = 0x09,
     SETTRACK   = 0x0A,
     SETSECTOR  = 0x0B,
     SETDMA     = 0x0C,
@@ -48,7 +48,7 @@ class CPMBIOS {
         CPMBIOS(RegistersType* registers, MemoryType* memory, TerminalType* terminal, DiskControllerType* diskController)
             : registers(registers), memory(memory), terminal(terminal), diskController(diskController) {}
 
-        void call(uint16_t callNumber) { static_cast<Derived*>(this)->call(callNumber); }
+        void call(BIOSCALL callNumber) { static_cast<Derived*>(this)->call(callNumber); }
 
     protected:
         RegistersType* registers;

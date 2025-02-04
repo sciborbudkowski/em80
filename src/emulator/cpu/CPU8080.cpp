@@ -205,7 +205,7 @@ void CPU8080::decodeAndExecute(uint8_t opcode) {
 
                 if(addr == CBIOS) {
                     if(cpmbios) {
-                    cpmbios->call(regs.C);
+                    cpmbios->call(static_cast<BIOSCALL>(regs.C));
                     } else {
                         throw std::runtime_error("CPM BIOS not initialized!");
                     }

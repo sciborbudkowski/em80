@@ -17,17 +17,43 @@ class CPMBIOS8080 : public CPMBIOS<Registers8080, Memory8080, Terminal8080, Disk
 
         void setResetCPUCallback(std::function<void()> callback) { resetCPUCallback = callback; }
 
-        void call(uint16_t callNumber) {
+        void call(BIOSCALL callNumber) {
             switch(callNumber) {
-                // BOOT
-                case 0x00:
+                case BIOSCALL::BOOT:
                     if(resetCPUCallback) {
                         resetCPUCallback();
                     }
                     break;
-                // WBOOT
-                case 0x01:
-
+                case BIOSCALL::WBOOT:
+                    break;
+                case BIOSCALL::CONST:
+                    registers->A = terminal->getStatus() ? 1 : 0;
+                    break;
+                case BIOSCALL::CONIN:
+                    registers->A = terminal->getLastChar();
+                    break;
+                case BIOSCALL::CONOUT:
+                    terminal->printChar(registers->C);
+                    break;
+                case BIOSCALL::LIST:
+                    terminal->printChar(registers->C);
+                    break;
+                case BIOSCALL::PUNCH:
+                    terminal->printChar(registers->C);
+                    break;
+                case BIOSCALL::READER:
+                    registers->A = 26; // ^Z character, device not present
+                    break;
+                case BIOSCALL::HOME:
+                    diskController->setCurrentDrive(0);
+                    diskController->setCurrentSector(1);
+                    break;
+                case BIOSCALL::SELDSK:
+                    diskController->setCurrentDrive(registers->C);
+                    if(registers->C < HDDISKS) {
+                        //registers->HL()
+                    }
+                    break;
                 default:
                     break;
             }        
