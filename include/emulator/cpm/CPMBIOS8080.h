@@ -14,5 +14,5 @@
 class CPMBIOS8080 : public CPMBIOS<Registers8080, Memory8080, Terminal8080, DiskController8080> {
     public:
         CPMBIOS8080(Registers8080* registers, Memory8080* memory, Terminal8080* terminal, DiskController8080* diskController)
-            : CPMBIOS(registers, memory, terminal, diskController) {}
+            : CPMBIOS<Registers8080, Memory8080, Terminal8080, DiskController8080>(registers, memory, terminal, diskController) {}
 };

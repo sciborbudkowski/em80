@@ -1,15 +1,19 @@
 #pragma once
 
 #include "RegistersBase.h"
+#include "BIOSBase.h"
 #include "MemoryBase.h"
 #include "TerminalBase.h"
 #include "DiskControllerBase.h"
+#include "CPMDeviceTable.h"
+#include "BitOps.h"
 
 #include <cstdint>
 #include <vector>
 #include <memory>
 #include <type_traits>
 #include <utility>
+#include <functional>
 
 #define CCP         0xD400
 #define BDOS        0xDC00
@@ -104,17 +108,13 @@ HAS_BIOS_FUNCTION(RESERV1, ())
 HAS_BIOS_FUNCTION(RESERV2, ())
 
 #define BIOS_CALL_FUNCTION(functionName) \
-    if constexpr(has_##functionName##_available<Derived>::value) { \
-        static_cast<Derived*>(this)->functionName(); \
-    } else { \
-        functionName(); \
-    }
+    static_cast<std::decay_t<decltype(*this)>*>(this)->functionName();
 
 template <typename RegistersType, typename MemoryType, typename TerminalType, typename DiskControllerType>
-class CPMBIOS : public BIOSBase<CPMBIOS<RegistersType, MemoryType, TerminalType, DiskControllerType>> {
+class CPMBIOS : public BIOSBase<RegistersType> {
     public:
-        CPMBIOS(RegistersType* registers, MemoryType* memory, TerminalType* terminal, DiskControllerType* diskController, CPMVersion version = CPMVersion::UNKNOWN)
-            : registers(registers), memory(memory), terminal(terminal), diskController(diskController), version(version) {}
+        CPMBIOS(RegistersType* registers, MemoryType* memory, TerminalType* terminal, DiskControllerType* diskController)
+            : BIOSBase<RegistersType>(registers), memory(memory), terminal(terminal), diskController(diskController) {}
 
         void call(BIOSCALL callNumber) {
             switch(callNumber) {
@@ -163,12 +163,14 @@ class CPMBIOS : public BIOSBase<CPMBIOS<RegistersType, MemoryType, TerminalType,
         void BOOT() {
             if(hasResetCPUCallback()) {
                 resetCPUCallback();
+                deviceTable->createDeviceTable();
             }
         }
 
         void WBOOT() {
             if(hasResetCPUCallback()) {
                 resetCPUCallback();
+                deviceTable->createDeviceTable();
             }
         }
         
@@ -276,7 +278,58 @@ class CPMBIOS : public BIOSBase<CPMBIOS<RegistersType, MemoryType, TerminalType,
             registers->A = 0xFF;
         }
 
-        void AUXOST() {}
+        void AUXOST() {
+            registers->A = 0xFF;
+        }
+
+        void DEVTBL() {
+            registers->A = 0xFF;
+        }
+
+        void DEVINI() {
+            registers->A = 0xFF;
+        }
+
+        void DRVTBL() {
+            registers->A = 0xFF;
+        }
+
+        void MULTIO() {
+            registers->A = 0xFF;
+        }
+
+        void MOVE() {
+            registers->A = 0xFF;
+        }
+
+        void TIME() {
+            registers->A = 0xFF;
+        }
+
+        void SELMEM() {
+            registers->A = 0xFF;
+        }
+
+        void SETBNK() {
+            registers->A = 0xFF;
+        }
+
+        void XMOVE() {
+            registers->A = 0xFF;
+        }
+
+        void USERF() {
+            registers->A = 0xFF;
+        }
+
+        void RESERV1() {
+            registers->A = 0xFF;
+        }
+
+        void RESERV2() {
+            registers->A = 0xFF;
+        }
+        
     protected:
         RegistersType* registers;
         MemoryType* memory;
@@ -284,9 +337,10 @@ class CPMBIOS : public BIOSBase<CPMBIOS<RegistersType, MemoryType, TerminalType,
         DiskControllerType* diskController;
         CPMVersion version;
         uint16_t dmaAddress;
+        std::shared_ptr<CPMDeviceTable<MemoryType>> deviceTable;
 
-        const uint8_t sectorTranslation[] = {
-            1, 7, 13, 19, 25, 5, 11, 17, 23, 3, 9, 15, 21, 
+        std::array<uint8_t, 26> sectorTranslation = {
+            1, 7, 13, 19, 25, 5, 11, 17, 23, 3,  9, 15, 21, 
             2, 8, 14, 20, 26, 6, 12, 18, 24, 4, 10, 16, 22
         };
 

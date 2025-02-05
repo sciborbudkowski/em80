@@ -4,17 +4,33 @@
 #include <cstddef>
 #include <vector>
 
-template <typename Derived>
-struct MemoryBase {
-    size_t RAM_SIZE;
+class MemoryInterface {
+    public:
+        virtual ~MemoryInterface() = default;
 
-    MemoryBase() = default;
-    virtual ~MemoryBase() = default;
+        virtual uint8_t read(uint16_t address) const = 0;
+        virtual uint8_t read(uint16_t address, IOInterface& io) const = 0;
 
-    uint8_t read(uint16_t address) const { return static_cast<Derived*>(this)->read(address); }
-    void write(uint16_t address, uint8_t value) { static_cast<Derived*>(this)->write(address, value); }
+        virtual void write(uint16_t address, uint8_t value) = 0;
+        virtual void write(uint16_t address, uint8_t value, IOInterface& io) = 0;
 
-    void clear() { static_cast<Derived*>(this)->clear(); }
+        virtual void clear() = 0;
+        virtual bool loadProgram(uint16_t startAddress, const std::vector<uint8_t>& program) = 0;
+};
 
-    bool loadProgram(uint16_t startAddress, const std::vector<uint8_t>& program) { return static_cast<Derived*>(this)->loadProgram(startAddress, program); }
+class MemoryBase : public MemoryInterface {
+    public:
+        MemoryBase(size_t size) : RAM_SIZE(size) {}
+
+        virtual uint8_t read(uint16_t address) const = 0;
+        virtual uint8_t read(uint16_t address, IOInterface& io) const = 0;
+
+        virtual void write(uint16_t address, uint8_t value) = 0;
+        virtual void write(uint16_t address, uint8_t value, IOInterface& io) = 0;
+        
+        virtual void clear() = 0;
+        virtual bool loadProgram(uint16_t startAddress, const std::vector<uint8_t>& program) = 0;
+
+    protected:
+        size_t RAM_SIZE;
 };

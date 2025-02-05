@@ -2,8 +2,14 @@
 
 #include <cstdint>
 
-template <typename Derived>
+template <typename RegistersType>
 class RegistersBase {
     public:
-        void reset() { static_cast<Derived*>(this)->reset(); }
+        RegistersBase(RegistersType* registers) : registers(registers) {}
+        virtual ~RegistersBase() = default;
+
+        virtual void reset() = 0;
+
+    protected:
+        RegistersType registers;
 };

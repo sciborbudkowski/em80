@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MemoryBase.h"
+
 #include <vector>
 #include <cstdint>
 #include <stdexcept>
@@ -33,47 +35,68 @@ struct DiskGeometry {
     }
 };
 
-template <typename Derived>
-class DiskControllerBase {
+class DiskControllerInterface {
+    public:
+        virtual ~DiskControllerInterface() = default;
+
+        virtual void setData(const std::vector<uint8_t>& ptrData) = 0;
+
+        virtual void setSector(size_t sectorNumber) = 0;
+
+        virtual uint8_t read() = 0;
+        virtual void write(uint8_t value) = 0;
+
+        virtual std::vector<uint8_t> readSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber) = 0;
+        virtual std::vector<uint8_t> readSector() = 0;
+
+        virtual bool writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& data) = 0;
+        virtual bool writeSector(const std::vector<uint8_t>& data) = 0;
+
+        virtual void reset() = 0;
+
+        virtual void setDiskGeometry(const DiskGeometry& geometry) = 0;
+
+        virtual void setCurrentDrive(size_t driveNumber) = 0;
+        virtual void setCurrentSide(size_t sideNumber) = 0;
+        virtual void setCurrentTrack(size_t trackNumber) = 0;
+        virtual void setCurrentSector(size_t sectorNumber) = 0;
+
+        virtual void determineDiskFormat() = 0;
+};
+
+class DiskControllerBase : public DiskControllerInterface {
     public:
         DiskControllerBase() : data() {};
-        ~DiskControllerBase() = default;
+        
 
-        void setData(const std::vector<uint8_t>& ptrData) { static_cast<Derived*>(this)->setData(ptrData); }
+        void setData(const std::vector<uint8_t>& ptrData) override { data = ptrData; }
 
-        void setSector(size_t sectorNumber) { static_cast<Derived*>(this)->setSector(sectorNumber); }
+        virtual void setSector(size_t sectorNumber) = 0;
 
-        uint8_t read() { static_cast<Derived*>(this)->read(); }
-        void write(uint8_t value) { static_cast<Derived*>(this)->write(value); }
+        virtual uint8_t read() = 0;
+        virtual void write(uint8_t value) = 0;
 
-        std::vector<uint8_t> readSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber) {
-            return static_cast<Derived*>(this)->readSector(sectorNumber, trackNumber, sideNumber);
-        }
-        std::vector<uint8_t> readSector() { static_cast<Derived*>(this)->readSector(); }
+        virtual std::vector<uint8_t> readSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber) = 0;
+        virtual std::vector<uint8_t> readSector() = 0;
 
-        bool writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& data) {
-            return static_cast<Derived*>(this)->writeSector(sectorNumber, trackNumber, sideNumber, data);
-        }
-        bool writeSector(const std::vector<uint8_t>& data) { return static_cast<Derived*>(this)->writeSector(data); }
+        virtual bool writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& data) = 0;
+        virtual bool writeSector(const std::vector<uint8_t>& data) = 0;
 
-        void reset() { 
-            sectorOffset = 0;
-            currentSector = 0;
-        }
+        virtual void reset() = 0;
 
-        void setDiskGeometry(const DiskGeometry& geometry) { this->geometry = geometry; }
+        virtual void setDiskGeometry(const DiskGeometry& geometry) = 0;
 
-        void setCurrentDrive(size_t driveNumber) { this->currentDrive = driveNumber; }
-        void setCurrentSide(size_t sideNumber) { this->currentSide = sideNumber; }
-        void setCurrentTrack(size_t trackNumber) { this->currentTrack = trackNumber; }
-        void setCurrentSector(size_t sectorNumber) { this->currentSector = sectorNumber; }
+        virtual void setCurrentDrive(size_t driveNumber) = 0;
+        virtual void setCurrentSide(size_t sideNumber) = 0;
+        virtual void setCurrentTrack(size_t trackNumber) = 0;
+        virtual void setCurrentSector(size_t sectorNumber) = 0;
 
-        void determineDiskFormat() {}
+        virtual void determineDiskFormat() = 0;
 
     protected:
         std::vector<uint8_t> data;
 
-        DiskGeometry geometry;
+        std::optional<DiskGeometry> geometry;
         size_t currentSector = 0, currentSide = 0, currentTrack = 0, currentDrive = 0;
         std::optional<uint16_t> dphAddress;
 

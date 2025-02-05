@@ -1,3 +1,5 @@
+#pragma once
+
 #include "DiskControllerBase.h"
 
 class DiskControllerZ80 : public DiskControllerBase<DiskControllerZ80> {
@@ -8,29 +10,35 @@ class DiskControllerZ80 : public DiskControllerBase<DiskControllerZ80> {
         void setData(const std::vector<uint8_t>& ptrData) {
             data = ptrData;
             if(ptrData.empty()) {
-                totalSectors = 0;
+                if(geometry.has_value()) {
+                    geometry->totalSectors = 0;
+                }
                 return;
             }
-            totalSectors = data.size() / sectorSize;
+            if(geometry.has_value()) {
+                geometry->totalSectors = data.size() / geometry->sectorSize;
+            }
         }
 
         void setSector(size_t sectorNumber) {
-            if(sectorNumber >= totalSectors) {
+            if(geometry.has_value() && sectorNumber >= geometry->totalSectors) {
                 throw std::out_of_range("Sector number out of range");
             }
 
             currentSector = sectorNumber;
-            sectorOffset = 0;
+            if(geometry.has_value()) {
+                geometry->sectorOffset = 0;
+            }
         }
 
         uint8_t read() {
-            if(sectorOffset >= sectorSize) return 0xFF;
-            return data[currentSector*sectorSize + sectorOffset++];
+            if(geometry.has_value() && geometry->sectorOffset >= geometry->sectorSize) return 0xFF;
+            return data[currentSector*geometry->sectorSize + geometry->sectorOffset++];
         }
 
         void write(uint8_t value) {
-            if(sectorOffset >= sectorSize) return;
-            data[currentSector*sectorSize + sectorOffset++] = value;
+            if(geometry.has_value() && geometry->sectorOffset >= geometry->sectorSize) return;
+            data[currentSector*geometry->sectorSize + geometry->sectorOffset++] = value;
         }
 
         std::vector<uint8_t> readSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber) {
@@ -38,17 +46,20 @@ class DiskControllerZ80 : public DiskControllerBase<DiskControllerZ80> {
                 throw std::invalid_argument("Sector number must be greater than 0");
             }
 
-            size_t absSector = trackNumber * (numberOfTracks * numberOfTracks) + sideNumber * numberOfTracks + (sectorNumber - 1);
-            if(absSector >= totalSectors) {
-                throw std::out_of_range("Sector number out of range");
+            size_t absSector, offset;
+            if(geometry.has_value()) {
+                absSector = trackNumber * (geometry->tracksPerDisk * geometry->tracksPerDisk) + sideNumber * geometry->tracksPerDisk + (sectorNumber - 1);
+                if(absSector >= geometry->totalSectors) {
+                    throw std::out_of_range("Sector number out of range");
+                }
+
+                offset = absSector * geometry->sectorSize;
+                if(offset + geometry->sectorSize > data.size()) {
+                    throw std::out_of_range("Sector out of range");
+                }
             }
 
-            size_t offset = absSector * sectorSize;
-            if(offset + sectorSize > data.size()) {
-                throw std::out_of_range("Sector out of range");
-            }
-
-            return std::vector<uint8_t>(data.begin() + offset, data.begin() + offset + sectorSize);
+            return std::vector<uint8_t>(data.begin() + offset, data.begin() + offset + geometry->sectorSize);
         }
 
         void writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& sectorData) {
@@ -56,16 +67,19 @@ class DiskControllerZ80 : public DiskControllerBase<DiskControllerZ80> {
                 throw std::invalid_argument("Sector number must be greater than 0");
             }
 
-            size_t absSector = trackNumber * (numberOfTracks * numberOfTracks) + sideNumber * numberOfTracks + (sectorNumber - 1);
-            if(absSector >= totalSectors) {
-                throw std::out_of_range("Sector number out of range");
-            }
+            size_t absSector, offset;
+            if(geometry.has_value()) {
+                absSector = trackNumber * (geometry->tracksPerDisk * geometry->tracksPerDisk) + sideNumber * geometry->tracksPerDisk + (sectorNumber - 1);
+                if(absSector >= geometry->totalSectors) {
+                    throw std::out_of_range("Sector number out of range");
+                }
 
-            size_t offset = absSector * sectorSize;
-            if(offset + sectorSize > data.size()) {
-                throw std::out_of_range("Sector out of range");
-            }
+                offset = absSector * geometry->sectorSize;
+                if(offset + geometry->sectorSize > data.size()) {
+                    throw std::out_of_range("Sector out of range");
+                }
 
-            std::copy(sectorData.begin(), sectorData.begin() + sectorSize, data.begin() + offset);
+                std::copy(sectorData.begin(), sectorData.begin() + geometry->sectorSize, data.begin() + offset);
+            }
         }
 };

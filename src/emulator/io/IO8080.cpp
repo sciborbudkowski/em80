@@ -2,12 +2,6 @@
 #include "Terminal8080.h"
 #include "DiskController8080.h"
 
-IO8080::IO8080()
-    : terminal(nullptr), disk(nullptr), diskEnabled(false) {}
-
-void IO8080::setTerminal(std::shared_ptr<Terminal8080> termPtr) { terminal = termPtr; }
-void IO8080::setDisk(std::shared_ptr<DiskController8080> diskPtr) { disk = diskPtr; }
-
 uint8_t IO8080::in(uint16_t port) const {
     if(port >= ports.size()) return 0xFF;
 

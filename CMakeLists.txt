@@ -30,6 +30,7 @@ endif()
 # These options should be used for release builds
 # add_compile_options(-O2 -Wall -Wextra -Wpedantic)
 add_compile_options(-O2)
+add_compile_options(-Wfatal-errors)
 
 set(CMAKE_AUTOMOC ON)
 

@@ -1,6 +1,8 @@
+#pragma once
+
 #include "DiskControllerBase.h"
 
-class DiskController8080 final : public DiskControllerBase<DiskController8080> {
+class DiskController8080 final : public DiskControllerBase {
     public:
         DiskController8080() = default;
         ~DiskController8080() = default;
@@ -8,22 +10,22 @@ class DiskController8080 final : public DiskControllerBase<DiskController8080> {
         void setData(const std::vector<uint8_t>& data) { this->data = data; }
 
         void setSector(size_t sectorNumber) {
-            if(sectorNumber >= geometry.totalSectors) {
+            if (!geometry.has_value() || sectorNumber >= geometry->totalSectors) {
                 throw std::out_of_range("Sector number out of range");
             }
 
             currentSector = sectorNumber;
-            geometry.sectorOffset = 0;
+            geometry->sectorOffset = 0;
         }
 
         uint8_t read() {
-            if(geometry.sectorOffset >= geometry.sectorSize) return 0xFF;
-            return data[currentSector*geometry.sectorSize + geometry.sectorOffset++];
+            if (!geometry.has_value() || geometry->sectorOffset >= geometry->sectorSize) return 0xFF;
+            return data[currentSector * geometry->sectorSize + geometry->sectorOffset++];
         }
 
         void write(uint8_t value) {
-            if(geometry.sectorOffset >= geometry.sectorSize) return;
-            data[currentSector*geometry.sectorSize + geometry.sectorOffset++] = value;
+            if(geometry->sectorOffset >= geometry->sectorSize) return;
+            data[currentSector * geometry->sectorSize + geometry->sectorOffset++] = value;
         }
 
         std::vector<uint8_t> readSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber) {
@@ -31,17 +33,17 @@ class DiskController8080 final : public DiskControllerBase<DiskController8080> {
                 throw std::invalid_argument("Sector number must be greater than 0");
             }
 
-            size_t absSector = trackNumber * (geometry.tracksPerDisk * geometry.tracksPerDisk) + sideNumber * geometry.tracksPerDisk + (sectorNumber - 1);
-            if(absSector >= geometry.totalSectors) {
+            size_t absSector = trackNumber * (geometry->tracksPerDisk * geometry->tracksPerDisk) + sideNumber * geometry->tracksPerDisk + (sectorNumber - 1);
+            if(absSector >= geometry->totalSectors) {
                 throw std::out_of_range("Sector number out of range");
             }
 
-            size_t offset = absSector * geometry.sectorSize;
-            if(offset + geometry.sectorSize > data.size()) {
+            size_t offset = absSector * geometry->sectorSize;
+            if(offset + geometry->sectorSize > data.size()) {
                 throw std::out_of_range("Sector out of range");
             }
 
-            return std::vector<uint8_t>(data.begin() + offset, data.begin() + offset + geometry.sectorSize);
+            return std::vector<uint8_t>(data.begin() + offset, data.begin() + offset + geometry->sectorSize);
         }
 
         std::vector<uint8_t> readSector() { return readSector(currentSector, currentTrack, currentSide); }
@@ -51,17 +53,17 @@ class DiskController8080 final : public DiskControllerBase<DiskController8080> {
                 return false;
             }
 
-            size_t absSector = trackNumber * (geometry.tracksPerDisk * geometry.tracksPerDisk) + sideNumber * geometry.tracksPerDisk + (sectorNumber - 1);
-            if(absSector >= geometry.totalSectors) {
+            size_t absSector = trackNumber * (geometry->tracksPerDisk * geometry->tracksPerDisk) + sideNumber * geometry->tracksPerDisk + (sectorNumber - 1);
+            if(absSector >= geometry->totalSectors) {
                 return false;
             }
 
-            size_t offset = absSector * geometry.sectorSize;
-            if(offset + geometry.sectorSize > data.size()) {
+            size_t offset = absSector * geometry->sectorSize;
+            if(offset + geometry->sectorSize > data.size()) {
                 return false;
             }
 
-            std::copy(sectorData.begin(), sectorData.begin() + geometry.sectorSize, this->data.begin() + offset);
+            std::copy(sectorData.begin(), sectorData.begin() + geometry->sectorSize, this->data.begin() + offset);
             return true;
         }
 
