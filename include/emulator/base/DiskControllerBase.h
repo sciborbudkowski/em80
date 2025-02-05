@@ -35,41 +35,11 @@ struct DiskGeometry {
     }
 };
 
-class DiskControllerInterface {
-    public:
-        virtual ~DiskControllerInterface() = default;
-
-        virtual void setData(const std::vector<uint8_t>& ptrData) = 0;
-
-        virtual void setSector(size_t sectorNumber) = 0;
-
-        virtual uint8_t read() = 0;
-        virtual void write(uint8_t value) = 0;
-
-        virtual std::vector<uint8_t> readSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber) = 0;
-        virtual std::vector<uint8_t> readSector() = 0;
-
-        virtual bool writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& data) = 0;
-        virtual bool writeSector(const std::vector<uint8_t>& data) = 0;
-
-        virtual void reset() = 0;
-
-        virtual void setDiskGeometry(const DiskGeometry& geometry) = 0;
-
-        virtual void setCurrentDrive(size_t driveNumber) = 0;
-        virtual void setCurrentSide(size_t sideNumber) = 0;
-        virtual void setCurrentTrack(size_t trackNumber) = 0;
-        virtual void setCurrentSector(size_t sectorNumber) = 0;
-
-        virtual void determineDiskFormat() = 0;
-};
-
-class DiskControllerBase : public DiskControllerInterface {
+class DiskControllerBase {
     public:
         DiskControllerBase() : data() {};
-        
 
-        void setData(const std::vector<uint8_t>& ptrData) override { data = ptrData; }
+        void setData(const std::vector<uint8_t>& ptrData) { data = ptrData; }
 
         virtual void setSector(size_t sectorNumber) = 0;
 

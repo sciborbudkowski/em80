@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ICPU.h"
+#include "RegistersBase.h"
 
 #include <deque>
 #include <string>
@@ -8,16 +8,16 @@
 #include <cstdint>
 #include <memory>
 
-template <typename Derived>
-class CPUBase { // : public ICPU {
+class CPUBase {
     public:
-        std::deque<std::string> lastInstructions;
+        CPUBase() = default;
+        virtual ~CPUBase() = default;
 
-        void reset() { static_cast<Derived*>(this)->reset();}
-        void step() { static_cast<Derived*>(this)->step(); }
-        void decodeAndExecute(uint16_t opcode) { static_cast<Derived*>(this)->decodeAndExecute(opcode); }
-        void decodeAndExecute(uint16_t opcode, uint8_t operand) { static_cast<Derived*>(this)->decodeAndExecute(opcode, operand); }
-        void run() { static_cast<Derived*>(this)->run(); }
+        virtual void reset() = 0;
+        virtual void step() = 0;
+        virtual void decodeAndExecute(uint16_t opcode) = 0;
+        virtual void decodeAndExecute(uint16_t opcode, uint8_t operand) { decodeAndExecute(opcode); }
+        virtual void run() = 0;
 
         void addLastInstruction(const std::string& instruction) {
             if(lastInstructions.size() >= 64) lastInstructions.pop_front();
@@ -38,6 +38,8 @@ class CPUBase { // : public ICPU {
         unsigned int getExecutedInstructions() const { return executedInstructions; }
 
     protected:
+        RegistersBase* registers;
+        std::deque<std::string> lastInstructions;
         unsigned int executedInstructions = 0;
         int currentTimer = 0;
         int totalSpeeding = 0;

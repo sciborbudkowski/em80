@@ -2,7 +2,7 @@
 
 #include "DiskControllerBase.h"
 
-class DiskControllerZ80 : public DiskControllerBase<DiskControllerZ80> {
+class DiskControllerZ80 : public DiskControllerBase {
     public:
         DiskControllerZ80() {};
         ~DiskControllerZ80() = default;
@@ -62,24 +62,25 @@ class DiskControllerZ80 : public DiskControllerBase<DiskControllerZ80> {
             return std::vector<uint8_t>(data.begin() + offset, data.begin() + offset + geometry->sectorSize);
         }
 
-        void writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& sectorData) {
+        bool writeSector(uint8_t sectorNumber, uint8_t trackNumber, uint8_t sideNumber, const std::vector<uint8_t>& sectorData) {
             if(sectorNumber < 1) {
-                throw std::invalid_argument("Sector number must be greater than 0");
+                return false;
             }
 
             size_t absSector, offset;
             if(geometry.has_value()) {
                 absSector = trackNumber * (geometry->tracksPerDisk * geometry->tracksPerDisk) + sideNumber * geometry->tracksPerDisk + (sectorNumber - 1);
                 if(absSector >= geometry->totalSectors) {
-                    throw std::out_of_range("Sector number out of range");
+                    return false;
                 }
 
                 offset = absSector * geometry->sectorSize;
                 if(offset + geometry->sectorSize > data.size()) {
-                    throw std::out_of_range("Sector out of range");
+                    return false;
                 }
 
                 std::copy(sectorData.begin(), sectorData.begin() + geometry->sectorSize, data.begin() + offset);
             }
+            return true;
         }
 };

@@ -3,9 +3,8 @@
 #include "RegistersBase.h"
 #include "BIOSBase.h"
 #include "MemoryBase.h"
-#include "TerminalBase.h"
-#include "DiskControllerBase.h"
 #include "CPMDeviceTable.h"
+#include "IOBase.h"
 #include "BitOps.h"
 
 #include <cstdint>
@@ -26,43 +25,6 @@ enum class CPMVersion {
     v2,
     v3,
     UNKNOWN
-};
-
-enum BIOSCALL : uint16_t {
-    BOOT       =  0,
-    WBOOT      =  1,
-    CONST      =  2,
-    CONIN      =  3,
-    CONOUT     =  4,
-    LIST       =  5,
-    PUNCH      =  6,
-    READER     =  7,
-    HOME       =  8,
-    SELDSK     =  9,
-    SETTRK     = 10,
-    SETSEC     = 11,
-    SETDMA     = 12,
-    READ       = 13,
-    WRITE      = 14,
-    // CP/M 2
-    LISTST     = 15,
-    SECTRAN    = 16,
-    // CP/M 3
-    CONOST     = 17,
-    AUXIST     = 18,
-    AUXOST     = 19,
-    DEVTBL     = 20,
-    DEVINI     = 21,
-    DRVTBL     = 22,
-    MULTIO     = 23,
-    MOVE       = 24,
-    TIME       = 25,
-    SELMEM     = 26,
-    SETBNK     = 27,
-    XMOVE      = 28,
-    USERF      = 29,
-    RESERV1    = 30,
-    RESERV2    = 31
 };
 
 #define HAS_BIOS_FUNCTION(functionName, signature) \
@@ -110,46 +72,44 @@ HAS_BIOS_FUNCTION(RESERV2, ())
 #define BIOS_CALL_FUNCTION(functionName) \
     static_cast<std::decay_t<decltype(*this)>*>(this)->functionName();
 
-template <typename RegistersType, typename MemoryType, typename TerminalType, typename DiskControllerType>
-class CPMBIOS : public BIOSBase<RegistersType> {
+class CPMBIOS : public BIOSBase {
     public:
-        CPMBIOS(RegistersType* registers, MemoryType* memory, TerminalType* terminal, DiskControllerType* diskController)
-            : BIOSBase<RegistersType>(registers), memory(memory), terminal(terminal), diskController(diskController) {}
+        CPMBIOS(RegistersBase* registers, MemoryBase* memory, IOBase* io) : registers(registers), memory(memory), io(io) {}
 
-        void call(BIOSCALL callNumber) {
+        void call(CPMBIOSCALL callNumber) override {
             switch(callNumber) {
-                case BIOSCALL::BOOT: BIOS_CALL_FUNCTION(BOOT); break;
-                case BIOSCALL::WBOOT: BIOS_CALL_FUNCTION(WBOOT); break;
-                case BIOSCALL::CONST: BIOS_CALL_FUNCTION(CONST); break;
-                case BIOSCALL::CONIN: BIOS_CALL_FUNCTION(CONIN); break;
-                case BIOSCALL::CONOUT: BIOS_CALL_FUNCTION(CONOUT); break;
-                case BIOSCALL::LIST: BIOS_CALL_FUNCTION(LIST); break;
-                case BIOSCALL::PUNCH: BIOS_CALL_FUNCTION(PUNCH); break;
-                case BIOSCALL::READER: BIOS_CALL_FUNCTION(READER); break;
-                case BIOSCALL::HOME: BIOS_CALL_FUNCTION(HOME); break;
-                case BIOSCALL::SELDSK: BIOS_CALL_FUNCTION(SELDSK); break;
-                case BIOSCALL::SETTRK: BIOS_CALL_FUNCTION(SETTRK); break;
-                case BIOSCALL::SETSEC: BIOS_CALL_FUNCTION(SETSEC); break;
-                case BIOSCALL::SETDMA: BIOS_CALL_FUNCTION(SETDMA); break;
-                case BIOSCALL::READ: BIOS_CALL_FUNCTION(READ); break;
-                case BIOSCALL::WRITE: BIOS_CALL_FUNCTION(WRITE); break;
-                case BIOSCALL::LISTST: BIOS_CALL_FUNCTION(LISTST); break;
-                case BIOSCALL::SECTRAN: BIOS_CALL_FUNCTION(SECTRAN); break;
-                case BIOSCALL::CONOST: BIOS_CALL_FUNCTION(CONOST); break;
-                case BIOSCALL::AUXIST: BIOS_CALL_FUNCTION(AUXIST); break;
-                case BIOSCALL::AUXOST: BIOS_CALL_FUNCTION(AUXOST); break;
-                case BIOSCALL::DEVTBL: BIOS_CALL_FUNCTION(DEVTBL); break;
-                case BIOSCALL::DEVINI: BIOS_CALL_FUNCTION(DEVINI); break;
-                case BIOSCALL::DRVTBL: BIOS_CALL_FUNCTION(DRVTBL); break;
-                case BIOSCALL::MULTIO: BIOS_CALL_FUNCTION(MULTIO); break;
-                case BIOSCALL::MOVE: BIOS_CALL_FUNCTION(MOVE); break;
-                case BIOSCALL::TIME: BIOS_CALL_FUNCTION(TIME); break;
-                case BIOSCALL::SELMEM: BIOS_CALL_FUNCTION(SELMEM); break;
-                case BIOSCALL::SETBNK: BIOS_CALL_FUNCTION(SETBNK); break;
-                case BIOSCALL::XMOVE: BIOS_CALL_FUNCTION(XMOVE); break;
-                case BIOSCALL::USERF: BIOS_CALL_FUNCTION(USERF); break;
-                case BIOSCALL::RESERV1: BIOS_CALL_FUNCTION(RESERV1); break;
-                case BIOSCALL::RESERV2: BIOS_CALL_FUNCTION(RESERV2); break;
+                case CPMBIOSCALL::BOOT: BIOS_CALL_FUNCTION(BOOT); break;
+                case CPMBIOSCALL::WBOOT: BIOS_CALL_FUNCTION(WBOOT); break;
+                case CPMBIOSCALL::CONST: BIOS_CALL_FUNCTION(CONST); break;
+                case CPMBIOSCALL::CONIN: BIOS_CALL_FUNCTION(CONIN); break;
+                case CPMBIOSCALL::CONOUT: BIOS_CALL_FUNCTION(CONOUT); break;
+                case CPMBIOSCALL::LIST: BIOS_CALL_FUNCTION(LIST); break;
+                case CPMBIOSCALL::PUNCH: BIOS_CALL_FUNCTION(PUNCH); break;
+                case CPMBIOSCALL::READER: BIOS_CALL_FUNCTION(READER); break;
+                case CPMBIOSCALL::HOME: BIOS_CALL_FUNCTION(HOME); break;
+                case CPMBIOSCALL::SELDSK: BIOS_CALL_FUNCTION(SELDSK); break;
+                case CPMBIOSCALL::SETTRK: BIOS_CALL_FUNCTION(SETTRK); break;
+                case CPMBIOSCALL::SETSEC: BIOS_CALL_FUNCTION(SETSEC); break;
+                case CPMBIOSCALL::SETDMA: BIOS_CALL_FUNCTION(SETDMA); break;
+                case CPMBIOSCALL::READ: BIOS_CALL_FUNCTION(READ); break;
+                case CPMBIOSCALL::WRITE: BIOS_CALL_FUNCTION(WRITE); break;
+                case CPMBIOSCALL::LISTST: BIOS_CALL_FUNCTION(LISTST); break;
+                case CPMBIOSCALL::SECTRAN: BIOS_CALL_FUNCTION(SECTRAN); break;
+                case CPMBIOSCALL::CONOST: BIOS_CALL_FUNCTION(CONOST); break;
+                case CPMBIOSCALL::AUXIST: BIOS_CALL_FUNCTION(AUXIST); break;
+                case CPMBIOSCALL::AUXOST: BIOS_CALL_FUNCTION(AUXOST); break;
+                case CPMBIOSCALL::DEVTBL: BIOS_CALL_FUNCTION(DEVTBL); break;
+                case CPMBIOSCALL::DEVINI: BIOS_CALL_FUNCTION(DEVINI); break;
+                case CPMBIOSCALL::DRVTBL: BIOS_CALL_FUNCTION(DRVTBL); break;
+                case CPMBIOSCALL::MULTIO: BIOS_CALL_FUNCTION(MULTIO); break;
+                case CPMBIOSCALL::MOVE: BIOS_CALL_FUNCTION(MOVE); break;
+                case CPMBIOSCALL::TIME: BIOS_CALL_FUNCTION(TIME); break;
+                case CPMBIOSCALL::SELMEM: BIOS_CALL_FUNCTION(SELMEM); break;
+                case CPMBIOSCALL::SETBNK: BIOS_CALL_FUNCTION(SETBNK); break;
+                case CPMBIOSCALL::XMOVE: BIOS_CALL_FUNCTION(XMOVE); break;
+                case CPMBIOSCALL::USERF: BIOS_CALL_FUNCTION(USERF); break;
+                case CPMBIOSCALL::RESERV1: BIOS_CALL_FUNCTION(RESERV1); break;
+                case CPMBIOSCALL::RESERV2: BIOS_CALL_FUNCTION(RESERV2); break;
                 default: throw std::runtime_error("Invalid BIOS call number");
             }
         }
@@ -175,23 +135,23 @@ class CPMBIOS : public BIOSBase<RegistersType> {
         }
         
         void CONST() {
-            registers->A = terminal->getStatus() ? 1 : 0;
+            registers->A = io->getTerminal().getStatus() ? 1 : 0;
         }
 
         void CONIN() {
-            registers->A = terminal->getLastChar();
+            registers->A = io->getTerminal().getLastChar();
         }
 
         void CONOUT() {
-            terminal->printChar(registers->C);
+            io->getTerminal().printChar(registers->C);
         }
 
         void LIST() {
-            terminal->printChar(registers->C);
+            io->getTerminal().printChar(registers->C);
         }
 
         void PUNCH() {
-            terminal->printChar(registers->C);
+            io->getTerminal().printChar(registers->C);
         }
 
         void READER() {
@@ -199,12 +159,12 @@ class CPMBIOS : public BIOSBase<RegistersType> {
         }
 
         void HOME() {
-            diskController->setCurrentDrive(0);
-            diskController->setCurrentSector(1);
+            io->getDiskController().setCurrentDrive(0);
+            io->getDiskController().setCurrentSector(1);
         }
 
         void SELDSK() {
-            diskController->setCurrentDrive(registers->C);
+            io->getDiskController().setCurrentDrive(registers->C);
             if(registers->C < HDDISKS) {
                 throw std::runtime_error("Invalid drive number");
             }
@@ -217,17 +177,17 @@ class CPMBIOS : public BIOSBase<RegistersType> {
 
         void SETTRK() {
             if(version == CPMVersion::v1) {
-                diskController->setCurrentTrack(registers->C());
+                io->getDiskController().setCurrentTrack(registers->C());
             } else {
-                diskController->setCurrentTrack(registers->BC());
+                io->getDiskController().setCurrentTrack(registers->BC());
             }
         }
 
         void SETSEC() {
             if(version == CPMVersion::v1) {
-                diskController->setCurrentSector(registers->C());
+                io->getDiskController().setCurrentSector(registers->C());
             } else {
-                diskController->setCurrentSector(registers->BC());
+                io->getDiskController().setCurrentSector(registers->BC());
             }
         }
 
@@ -236,18 +196,18 @@ class CPMBIOS : public BIOSBase<RegistersType> {
         }
 
         void READ() {
-            std::vector<uint8_t> sectorData = diskController->readSector();
+            std::vector<uint8_t> sectorData = io->getDiskController().readSector();
             if(sectorData.size() == 0) {
                 registers->A = 0x01;
                 // there needs to also be 0xFF if media changed
             } else {
                 registers->A = 0x00;
             }
-            memory->write(dmaAddress, diskController->read());
+            memory->write(dmaAddress, io->getDiskController().read());
         }
 
         void WRITE() {
-            bool result = diskController->writeSector(memory->read(dmaAddress));
+            bool result = io->getDiskController().writeSector(memory->read(dmaAddress));
             if(result) {
                 registers->A = 0x00;
             } else {
@@ -263,7 +223,7 @@ class CPMBIOS : public BIOSBase<RegistersType> {
 
         void SECTRAN() {
             uint16_t sector = registers->BC();
-            if(diskController->getCurrentDrive() < HDDISKS) {
+            if(io->getDiskController().getCurrentDrive() < HDDISKS) {
                 registers->HL(sectorTranslation[sector + 1]);
             } else {
                 registers->HL(sectorTranslation[sector]);
@@ -331,13 +291,12 @@ class CPMBIOS : public BIOSBase<RegistersType> {
         }
         
     protected:
-        RegistersType* registers;
-        MemoryType* memory;
-        TerminalType* terminal;
-        DiskControllerType* diskController;
+        RegistersBase* registers;
+        MemoryBase* memory;
+        IOBase* io;
         CPMVersion version;
         uint16_t dmaAddress;
-        std::shared_ptr<CPMDeviceTable<MemoryType>> deviceTable;
+        std::shared_ptr<CPMDeviceTable> deviceTable;
 
         std::array<uint8_t, 26> sectorTranslation = {
             1, 7, 13, 19, 25, 5, 11, 17, 23, 3,  9, 15, 21, 

@@ -2,31 +2,23 @@
 
 #include "CPUBase.h"
 #include "Registers8080.h"
-#include "CPUUtils.h"
 #include "CPMBIOS8080.h"
+#include "CPUUtils.h"
+#include "IO8080.h"
+#include "Memory8080.h"
 
 #include <vector>
 #include <memory>
 #include <stdexcept>
 
-class Terminal8080;
-class Memory8080;
-class IO8080;
-
-class CPU8080 : public CPUBase<CPU8080> {
+class CPU8080 : public CPUBase {
     public:
-        CPU8080(
-            std::shared_ptr<Terminal8080> terminalPtr,
-            std::shared_ptr<Memory8080> memoryPtr,
-            std::shared_ptr<IO8080> ioPtr,
-            std::shared_ptr<CPMBIOS8080> cpmbiosPtr
-        ) : terminal(terminalPtr), memory(memoryPtr), io(ioPtr), cpmbios(cpmbiosPtr) {
+        CPU8080(std::shared_ptr<Terminal8080> terminalPtr, std::shared_ptr<Memory8080> memoryPtr, std::shared_ptr<IO8080> ioPtr, std::shared_ptr<CPMBIOS8080> cpmbiosPtr)
+                : CPUBase<Registers8080>(&regs), terminal(terminalPtr), memory(memoryPtr), io(ioPtr), cpmbios(cpmbiosPtr) {
             utils = CPUUtils();
         }
 
         ~CPU8080() = default;
-
-        std::vector<std::string> lastInstructions;
 
         void reset();
         void step();
@@ -61,11 +53,8 @@ class CPU8080 : public CPUBase<CPU8080> {
 
     private:
         Registers8080 regs;
-        std::shared_ptr<Memory8080> memory;
-        std::shared_ptr<IO8080> io;
-        std::shared_ptr<Terminal8080> terminal;
-        std::shared_ptr<CPMBIOS8080> cpmbios;
-        CPUUtils utils;
+        Memory8080 memory;
+        IO8080 io;
 
         bool running = false;
         bool turboMode = false;

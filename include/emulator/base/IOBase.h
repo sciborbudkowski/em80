@@ -4,6 +4,7 @@
 #include "DiskControllerBase.h"
 #include <cstdint>
 #include <memory>
+
 class IOInterface {
     public:
         virtual ~IOInterface() = default;
@@ -23,13 +24,8 @@ class IOBase : public IOInterface {
         virtual uint8_t in(uint8_t port) const = 0;
         virtual void out(uint8_t port, uint8_t value) = 0;
 
-        TerminalBase& getTerminal() override {
-            return* terminal;
-        }
-        
-        DiskControllerBase& getDiskController() override {
-            return* disk;
-        }
+        TerminalBase& getTerminal() override { return* terminal; }
+        DiskControllerBase& getDiskController() override { return* disk; }
 
     protected:
         std::unique_ptr<TerminalBase> terminal;

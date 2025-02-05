@@ -26,8 +26,6 @@ struct RegistersZ80 : public RegistersBase<RegistersZ80> {
         else { Flags &= ~flag; }
     }
 
-    RegistersZ80() { reset(); }
-
     void reset() {
         A = B = C = D = E = H = L = 0;
         A_ = B_ = C_ = D_ = E_ = H_ = L_ = 0;
