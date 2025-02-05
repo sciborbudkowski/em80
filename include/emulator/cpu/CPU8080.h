@@ -13,11 +13,7 @@
 
 class CPU8080 : public CPUBase {
     public:
-        CPU8080(std::shared_ptr<Terminal8080> terminalPtr, std::shared_ptr<Memory8080> memoryPtr, std::shared_ptr<IO8080> ioPtr, std::shared_ptr<CPMBIOS8080> cpmbiosPtr)
-                : CPUBase<Registers8080>(&regs), terminal(terminalPtr), memory(memoryPtr), io(ioPtr), cpmbios(cpmbiosPtr) {
-            utils = CPUUtils();
-        }
-
+        CPU8080() = default;
         ~CPU8080() = default;
 
         void reset();
@@ -32,12 +28,10 @@ class CPU8080 : public CPUBase {
         Registers8080& getRegisters() { return regs; }
         const Registers8080& getRegisters() const { return regs; }
 
-        const Memory8080& getMemory() const { return *memory; }
+        const Memory8080& getMemory() const { return memory; }
 
-        const Terminal8080& getTerminal() const { return *terminal; }
-
-        IO8080& getIO() { return *io; }
-        const IO8080& getIO() const { return *io; }
+        IO8080& getIO() { return io; }
+        const IO8080& getIO() const { return io; }
         
         CPMBIOS8080& getCPMBIOS() { return *cpmbios; }
         const CPMBIOS8080& getCPMBIOS() const { return *cpmbios; }
